@@ -44,7 +44,7 @@
     }
   }
 
-  body > h1 {
+  #app > h1 {
     font-size: xx-large;
     text-align: center;
   }
