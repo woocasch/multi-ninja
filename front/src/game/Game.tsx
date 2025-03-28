@@ -74,6 +74,13 @@ export default function Game() {
                 <span className="equalsSymbol">=</span>
                 <input type="text" value={answer} onChange={handleAnswerChange} />
                 <button onClick={handleAcceptClick}>Accept</button>
+                <ul>
+                    {questions.map((q, i) => (
+                        <li>
+                            {i + 1}. {q.LeftHandSide} * {q.RightHandSide} = {q.ProvidedResult} (expected: {q.ExpectedResult})
+                        </li>
+                    ))}
+                </ul>
             </div>
         </div>
     );

@@ -8,9 +8,13 @@ import reportWebVitals from './reportWebVitals';
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+const getBaseName = () => {
+  const path = window.location.pathname;
+  return path.startsWith("/multi-ninja") ? "/multi-ninja" : "/";
+};
 root.render(
   <React.StrictMode>
-    <BrowserRouter>
+    <BrowserRouter basename={getBaseName()}>
       <App />
     </BrowserRouter>
   </React.StrictMode>
