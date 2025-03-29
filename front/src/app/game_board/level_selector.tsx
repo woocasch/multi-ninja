@@ -1,4 +1,4 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent } from "react";
 import { DifficultyLevel, GameManager } from "./game_manager";
 import { Localizations } from "./localizations";
 

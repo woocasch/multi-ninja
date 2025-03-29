@@ -1,6 +1,6 @@
 "use client"
 import { ChangeEvent, useState } from "react";
-import { DifficultyLevel, GameManager, StartGameParameters } from "./game_manager";
+import { GameManager, StartGameParameters } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
 import OptionsSelector from "./options_selector";
 
@@ -11,13 +11,11 @@ interface Question {
     ProvidedResult: number | null;
 }
 
-export default function Home() {
+export default function Page() {
     const [questions, setQuestions] = useState<Question[]>([]);
     const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
     const [answer, setAnswer] = useState('');
-    const [temp, setTemp] = useState(0);
     const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
-    const [selectedDifficultyLevel, setSelectedDifficultyLevel] = useState<DifficultyLevel>(DifficultyLevel.Easy);
 
     function CheckNotRepeated(leftHand: number, rightHand: number) {
         for (let i = 0; i < questions.length; i++) {

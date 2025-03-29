@@ -1,5 +1,5 @@
-import { ChangeEvent, useState } from "react";
-import { DifficultyLevel, GameManager, StartGameParameters } from "./game_manager";
+import { useState } from "react";
+import { DifficultyLevel, StartGameParameters } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
 import LevelSelector from "./level_selector";
 

@@ -63,7 +63,7 @@ class LocalizationsService {
 
     public TranslateStaticText(textId: StaticTexts, lang = 'pl-PL'): string {
         const languageTranslations = this.FindStaticTextLanguage(lang);
-        let translation = this.FindStaticTextTranslation(languageTranslations, textId);
+        const translation = this.FindStaticTextTranslation(languageTranslations, textId);
         if (!!translation) {
             return translation;
         }
@@ -84,7 +84,7 @@ class LocalizationsService {
         value: TEnum,
         lang: string) {
         const languageTranslations = this.FindLanguage<TEnum>(list, lang);
-        let translation = this.FindTranslation(languageTranslations, value);
+        const translation = this.FindTranslation(languageTranslations, value);
         if (!!translation) {
             return translation;
         }
@@ -103,7 +103,7 @@ class LocalizationsService {
     }
 
     private FindTranslation<TEnum>(translations: Language<TEnum>, value: TEnum) {
-        let translationIndex = translations.localizations.findIndex(v => v.value == value);
+        const translationIndex = translations.localizations.findIndex(v => v.value == value);
         if (translationIndex == -1) {
             return null;
         }
@@ -121,7 +121,7 @@ class LocalizationsService {
     }
 
     private FindStaticTextTranslation(translations: StaticTextLanguage, value: StaticTexts) {
-        let translationIndex = translations.translations.findIndex(v => v.textId == value);
+        const translationIndex = translations.translations.findIndex(v => v.textId == value);
         if (translationIndex == -1) {
             return null;
         }

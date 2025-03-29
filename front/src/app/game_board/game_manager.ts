@@ -36,6 +36,7 @@ class GameManagerService {
     }
 
     public StartGame(input: StartGameParameters): boolean {
+        console.log("Starting game", input);
         return true;
     }
 }
