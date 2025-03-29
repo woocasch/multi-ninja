@@ -15,6 +15,10 @@ export enum DifficultyLevel {
     Hard = 3,
 }
 
+export interface StartGameParameters {
+    level: DifficultyLevel;
+}
+
 class GameManagerService {
     private questions: Question[] = [];
 
@@ -31,7 +35,7 @@ class GameManagerService {
         return [DifficultyLevel.Easy, DifficultyLevel.Medium, DifficultyLevel.Hard];
     }
 
-    public StartGame(): boolean {
+    public StartGame(input: StartGameParameters): boolean {
         return true;
     }
 }

@@ -1,7 +1,8 @@
 "use client"
 import { ChangeEvent, useState } from "react";
-import { DifficultyLevel, GameManager } from "./game_manager";
+import { DifficultyLevel, GameManager, StartGameParameters } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
+import OptionsSelector from "./options_selector";
 
 interface Question {
     LeftHandSide: number;
@@ -73,22 +74,14 @@ export default function Home() {
         setAnswer('');
     }
 
-    function handleStartGame() {
-        GameManager.SelectDifficultyLevel(selectedDifficultyLevel);
+    function handleStartGame(params: StartGameParameters) {
+        setIsGameStarted(GameManager.StartGame(params));
         SwitchQuestion();
-        setIsGameStarted(GameManager.StartGame());
     }
 
     return (
         <div>
-            <div>
-                <select>
-                    {GameManager.GetAvailableDifficultyLevels().map(l => (
-                        <option value={l} selected={l == selectedDifficultyLevel} key={l}>{Localizations.GetDifficultyLevelText(l)}</option>
-                    ))}
-                </select>
-                <button onClick={handleStartGame}>{Localizations.TranslateStaticText(StaticTexts.BtnStartGame_Text)}</button>
-            </div>
+            <OptionsSelector startGameCallback={handleStartGame} />
             {isGameStarted ?
                 (<div>
                     <span className="leftHand">{currentQuestion?.LeftHandSide}</span>
