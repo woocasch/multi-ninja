@@ -1,16 +1,20 @@
 import { useState } from "react";
-import { DifficultyLevel, StartGameParameters } from "./game_manager";
+import { DifficultyLevel } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
 import LevelSelector from "./level_selector";
 
 export interface Properties {
-    startGameCallback: (parameters: StartGameParameters) => void;
+    startGameCallback: (parameters: SelectedOptions) => void;
 }
 
-export default function OptionsSelector(prop: Properties) {
+export interface SelectedOptions {
+    level: DifficultyLevel;
+}
+
+export default function GameOptions(prop: Properties) {
     const [selectedLevel, setSelectedLevel] = useState<DifficultyLevel>(DifficultyLevel.Easy);
     function handleStartGame() {
-        const params: StartGameParameters = {
+        const params: SelectedOptions = {
             level: selectedLevel,
         };
         prop.startGameCallback(params);

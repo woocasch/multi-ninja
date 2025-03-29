@@ -2,7 +2,7 @@
 import { ChangeEvent, useState } from "react";
 import { GameManager, StartGameParameters } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
-import OptionsSelector from "./options_selector";
+import OptionsSelector, { SelectedOptions } from "./game_options";
 
 interface Question {
     LeftHandSide: number;
@@ -67,13 +67,18 @@ export default function Page() {
             return;
         }
 
-        currentQuestion!.ProvidedResult = result;
-        SwitchQuestion();
-        setAnswer('');
+        GameManager.SetAnswer(result);
+        // currentQuestion!.ProvidedResult = result;
+        // SwitchQuestion();
+        // setAnswer('');
     }
 
-    function handleStartGame(params: StartGameParameters) {
-        setIsGameStarted(GameManager.StartGame(params));
+    function handleStartGame(params: SelectedOptions) {
+        const gameInput: StartGameParameters = {
+            level: params.level,
+            setQuestionCallback: (newQuestion) => setCurrentQuestion({ LeftHandSide: newQuestion.LeftFactor, RightHandSide: newQuestion.RightFactor, ExpectedResult: newQuestion.LeftFactor * newQuestion.RightFactor, ProvidedResult: null }),
+        }
+        setIsGameStarted(GameManager.StartGame(gameInput));
         SwitchQuestion();
     }
 
