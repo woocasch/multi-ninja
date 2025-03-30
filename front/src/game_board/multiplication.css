@@ -1,0 +1,31 @@
+.multiplication_display {
+    display: grid;
+    gap: 0;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    grid-template-rows: 3em;
+    max-width: 300px;
+    margin: auto;
+}
+
+.leftFactor,
+.multiplicationSign,
+.rightFactor,
+.equalsSign,
+.result {
+    grid-row: 1;
+}
+
+.button {
+    grid-column-start: 1;
+    grid-column-end: 6;
+    height: 3em;
+}
+
+.multiplication_display > * {
+    text-align: center;
+    align-content: center;
+}
+
+.result input {
+    width: 3em;
+}

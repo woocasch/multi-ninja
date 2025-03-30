@@ -9,6 +9,7 @@ interface DifficultyLevelSettings {
     MinResult: number;
     MaxResult: number;
     RoundsCount: number;
+    LifesCount: number;
 }
 
 interface DifficultyLevelDefinition {
@@ -23,6 +24,7 @@ const difficultyLevels: DifficultyLevelDefinition[] = [
             MinResult: 1,
             MaxResult: 30,
             RoundsCount: 10,
+            LifesCount: 5,
         },
     },
     {
@@ -31,6 +33,7 @@ const difficultyLevels: DifficultyLevelDefinition[] = [
             MinResult: 1,
             MaxResult: 60,
             RoundsCount: 15,
+            LifesCount: 4,
         },
     },
     {
@@ -39,6 +42,7 @@ const difficultyLevels: DifficultyLevelDefinition[] = [
             MinResult: 1,
             MaxResult: 100,
             RoundsCount: 20,
+            LifesCount: 3,
         },
     }
 ]

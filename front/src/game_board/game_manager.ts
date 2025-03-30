@@ -1,5 +1,6 @@
 import { DifficultyLevel, DifficultyLevelSettings } from "./difficulty_level_settings";
 import { FactorGenerator } from "./factor_generator";
+import { GameState } from "./game_state";
 
 export interface Question {
     LeftFactor: number;
@@ -14,38 +15,39 @@ export interface AnsweredQuestion {
 export interface StartGameParameters {
     level: DifficultyLevel;
     setQuestionCallback: (newQuestion: Question) => void;
-    setAnswersCallback: (answeredQuestions: AnsweredQuestion[]) => void;
 }
 
 class GameManagerService {
-    private previousQuestions: AnsweredQuestion[] = [];
-
     private currentQuestion: Question | null = null;
 
     private gameSettings: StartGameParameters | null = null;
+
+    private gameState: GameState | null = null;
 
     public GetAvailableDifficultyLevels(): DifficultyLevel[] {
         return [DifficultyLevel.Easy, DifficultyLevel.Medium, DifficultyLevel.Hard];
     }
 
-    public SetAnswer(answer: number) {
-        const answeredQuestion: AnsweredQuestion = {
-            Question: this.currentQuestion!,
-            Answer: answer,
-        };
-        this.previousQuestions.push(answeredQuestion);
-        this.gameSettings?.setAnswersCallback(this.previousQuestions);
+    public SetAnswers(answers: number[]) {
+        if (this.IsGameCompleted()) {
+            alert('Game completed, no answers accepted');
+            return;
+        }
+
+        this.gameState!.AddAnsweredQuestion(this.currentQuestion!.LeftFactor, this.currentQuestion!.RightFactor, answers);
         this.ProvideNewQuestion();
     }
 
     public StartGame(input: StartGameParameters): boolean {
         this.gameSettings = input;
+        this.gameState = new GameState();
         this.ProvideNewQuestion();
         return true;
     }
 
     public ProvideNewQuestion() {
         if (this.IsGameCompleted()) {
+            alert('Game completed, no new questions can be generated');
             return;
         }
 
@@ -55,8 +57,13 @@ class GameManagerService {
     }
 
     public IsGameCompleted(): boolean {
+        const settings = DifficultyLevelSettings.GetSettings(this.gameSettings!.level).settings;
+        if (this.gameState!.GetLifesLost() >= settings.LifesCount) {
+            return true;
+        }
+
         const roundsToPlay = DifficultyLevelSettings.GetSettings(this.gameSettings!.level).settings.RoundsCount;
-        if (this.previousQuestions.length <= roundsToPlay) {
+        if (this.gameState!.GetAllQuestions().length < roundsToPlay) {
             return false;
         }
 
@@ -82,7 +89,7 @@ class GameManagerService {
     }
 
     public AreFactorsTaken(left: number, right: number): boolean {
-        for (const current of this.previousQuestions.map(q => q.Question)) {
+        for (const current of this.gameState!.GetAllQuestions()) {
             if (current.LeftFactor == left && current.RightFactor == right) {
                 return true;
             }
