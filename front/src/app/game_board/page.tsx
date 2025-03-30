@@ -1,61 +1,13 @@
 "use client"
 import { ChangeEvent, useState } from "react";
-import { DifficultyLevel, GameManager } from "./game_manager";
+import { GameManager, Question, StartGameParameters } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
+import OptionsSelector, { SelectedOptions } from "./game_options";
 
-interface Question {
-    LeftHandSide: number;
-    RightHandSide: number;
-    ExpectedResult: number;
-    ProvidedResult: number | null;
-}
-
-export default function Home() {
-    const [questions, setQuestions] = useState<Question[]>([]);
+export default function Page() {
     const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
     const [answer, setAnswer] = useState('');
-    const [temp, setTemp] = useState(0);
     const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
-    const [selectedDifficultyLevel, setSelectedDifficultyLevel] = useState<DifficultyLevel>(DifficultyLevel.Easy);
-
-    function CheckNotRepeated(leftHand: number, rightHand: number) {
-        for (let i = 0; i < questions.length; i++) {
-            const current = questions[i];
-            if (current.LeftHandSide != leftHand && current.RightHandSide != leftHand) {
-                continue;
-            }
-
-            if (current.LeftHandSide != rightHand && current.RightHandSide != rightHand) {
-                continue;
-            }
-
-            return false;
-        }
-    }
-
-    function GenerateQuestion(): Question {
-        const leftHand = Math.ceil(Math.random() * 10);
-        const rightHand = Math.ceil(Math.random() * 10);
-        if (CheckNotRepeated(leftHand, rightHand)) {
-            return GenerateQuestion();
-        }
-
-        return {
-            LeftHandSide: leftHand,
-            RightHandSide: rightHand,
-            ExpectedResult: leftHand * rightHand,
-            ProvidedResult: null,
-        };
-    }
-
-    function SwitchQuestion() {
-        if (!!currentQuestion) {
-            questions.push(currentQuestion);
-        }
-
-        setCurrentQuestion(GenerateQuestion());
-        setQuestions(questions);
-    }
 
     function handleAnswerChange(e: ChangeEvent<HTMLInputElement>) {
         setAnswer(e.target.value);
@@ -68,42 +20,28 @@ export default function Home() {
             return;
         }
 
-        currentQuestion!.ProvidedResult = result;
-        SwitchQuestion();
-        setAnswer('');
+        GameManager.SetAnswer(result);
     }
 
-    function handleStartGame() {
-        GameManager.SelectDifficultyLevel(selectedDifficultyLevel);
-        SwitchQuestion();
-        setIsGameStarted(GameManager.StartGame());
+    function handleStartGame(params: SelectedOptions) {
+        const gameInput: StartGameParameters = {
+            level: params.level,
+            setQuestionCallback: (newQuestion) => { setCurrentQuestion(newQuestion); setAnswer(''); },
+        }
+        setIsGameStarted(GameManager.StartGame(gameInput));
     }
 
     return (
         <div>
-            <div>
-                <select>
-                    {GameManager.GetAvailableDifficultyLevels().map(l => (
-                        <option value={l} selected={l == selectedDifficultyLevel} key={l}>{Localizations.GetDifficultyLevelText(l)}</option>
-                    ))}
-                </select>
-                <button onClick={handleStartGame}>{Localizations.TranslateStaticText(StaticTexts.BtnStartGame_Text)}</button>
-            </div>
+            <OptionsSelector startGameCallback={handleStartGame} />
             {isGameStarted ?
                 (<div>
-                    <span className="leftHand">{currentQuestion?.LeftHandSide}</span>
+                    <span className="leftHand">{currentQuestion?.LeftFactor}</span>
                     <span className="multiplicationSymbol">*</span>
-                    <span className="rightHand">{currentQuestion?.RightHandSide}</span>
+                    <span className="rightHand">{currentQuestion?.RightFactor}</span>
                     <span className="equalsSymbol">=</span>
                     <input type="text" value={answer} onChange={handleAnswerChange} />
                     <button onClick={handleAcceptClick}>{Localizations.TranslateStaticText(StaticTexts.BtnAcceptRespose_Text)}</button>
-                    <ul>
-                        {questions.map((q, i) => (
-                            <li key={i}>
-                                {i + 1}. {q.LeftHandSide} * {q.RightHandSide} = {q.ProvidedResult} (expected: {q.ExpectedResult})
-                            </li>
-                        ))}
-                    </ul>
                 </div>) : null}
         </div>
     )
