@@ -33,8 +33,14 @@ export default function GameBoard() {
             {isGameStarted ?
                 (
                     <>
-                        <MultiplicationView LeftFactor={currentQuestion!.LeftFactor} RightFactor={currentQuestion!.RightFactor} RemainingErrors={3} ResultCallback={questionResultCallback} />
-                        <GameHudView lifesLost={lifesLost} availableLifes={GameManager.GetNumberOfLifes()} />
+                        <MultiplicationView
+                            LeftFactor={currentQuestion!.LeftFactor}
+                            RightFactor={currentQuestion!.RightFactor}
+                            RemainingErrors={GameManager.GetNumberOfLifes() - lifesLost}
+                            ResultCallback={questionResultCallback} />
+                        <GameHudView
+                            lifesLost={lifesLost}
+                            availableLifes={GameManager.GetNumberOfLifes()} />
                     </>
                 ) : null}
         </div>
