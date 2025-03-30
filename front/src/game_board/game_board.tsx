@@ -6,16 +6,19 @@ import { AnsweredQuestion, GameManager, Question, StartGameParameters } from "./
 import { Localizations, StaticTexts } from "./localizations";
 import OptionsSelector, { SelectedOptions } from "./game_options";
 import MultiplicationView, { MultiplicationResultModel } from "./multiplication";
+import GameHudView from './game_hud';
 
 export default function GameBoard() {
     const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
-    const [answer, setAnswer] = useState('');
+    const [_, setAnswer] = useState('');
     const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
+    const [lifesLost, setLifesLost] = useState<number>(0);
 
     function handleStartGame(params: SelectedOptions) {
         const gameInput: StartGameParameters = {
             level: params.level,
             setQuestionCallback: (newQuestion) => { setCurrentQuestion(newQuestion); setAnswer(''); },
+            updateGameStatusCallback: (model) => { setLifesLost(model.LifesLost); },
         }
         setIsGameStarted(GameManager.StartGame(gameInput));
     }
@@ -29,7 +32,10 @@ export default function GameBoard() {
             <OptionsSelector startGameCallback={handleStartGame} />
             {isGameStarted ?
                 (
-                    <MultiplicationView LeftFactor={currentQuestion!.LeftFactor} RightFactor={currentQuestion!.RightFactor} RemainingErrors={3} ResultCallback={questionResultCallback} />
+                    <>
+                        <MultiplicationView LeftFactor={currentQuestion!.LeftFactor} RightFactor={currentQuestion!.RightFactor} RemainingErrors={3} ResultCallback={questionResultCallback} />
+                        <GameHudView lifesLost={lifesLost} availableLifes={GameManager.GetNumberOfLifes()} />
+                    </>
                 ) : null}
         </div>
     )

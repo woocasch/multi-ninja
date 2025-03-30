@@ -12,9 +12,14 @@ export interface AnsweredQuestion {
     Answer: number;
 }
 
+export interface GameStatusUpdateModel {
+    LifesLost: number;
+}
+
 export interface StartGameParameters {
     level: DifficultyLevel;
     setQuestionCallback: (newQuestion: Question) => void;
+    updateGameStatusCallback: (model: GameStatusUpdateModel) => void;
 }
 
 class GameManagerService {
@@ -36,13 +41,20 @@ class GameManagerService {
 
         this.gameState!.AddAnsweredQuestion(this.currentQuestion!.LeftFactor, this.currentQuestion!.RightFactor, answers);
         this.ProvideNewQuestion();
+        this.gameSettings!.updateGameStatusCallback({ LifesLost: this.gameState!.GetLifesLost() });
     }
 
     public StartGame(input: StartGameParameters): boolean {
         this.gameSettings = input;
         this.gameState = new GameState();
         this.ProvideNewQuestion();
+        this.gameSettings.updateGameStatusCallback({ LifesLost: this.gameState.GetLifesLost() });
         return true;
+    }
+
+    public GetNumberOfLifes(): number {
+        const settings = DifficultyLevelSettings.GetSettings(this.gameSettings!.level).settings;
+        return settings.LifesCount;
     }
 
     public ProvideNewQuestion() {
