@@ -18,7 +18,6 @@ export enum DifficultyLevel {
 export interface StartGameParameters {
     level: DifficultyLevel;
     setQuestionCallback: (newQuestion: Question) => void;
-    setHistoryCallback: (answeredQuestions: AnsweredQuestion[]) => void;
 }
 
 type EnumDictionary<T extends string | symbol | number, U> = {
@@ -42,7 +41,6 @@ class GameManagerService {
             Answer: answer,
         };
         this.previousQuestions.push(answeredQuestion);
-        this.gameSettings?.setHistoryCallback(this.previousQuestions);
         this.ProvideNewQuestion();
     }
 

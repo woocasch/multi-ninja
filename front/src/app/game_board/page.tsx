@@ -1,11 +1,10 @@
 "use client"
 import { ChangeEvent, useState } from "react";
-import { AnsweredQuestion, GameManager, Question, StartGameParameters } from "./game_manager";
+import { GameManager, Question, StartGameParameters } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
 import OptionsSelector, { SelectedOptions } from "./game_options";
 
 export default function Page() {
-    const [questions, setQuestions] = useState<AnsweredQuestion[]>([]);
     const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
     const [answer, setAnswer] = useState('');
     const [isGameStarted, setIsGameStarted] = useState<boolean>(false);
@@ -28,7 +27,6 @@ export default function Page() {
         const gameInput: StartGameParameters = {
             level: params.level,
             setQuestionCallback: (newQuestion) => { setCurrentQuestion(newQuestion); setAnswer(''); },
-            setHistoryCallback: (previousQuestion) => setQuestions(previousQuestion),
         }
         setIsGameStarted(GameManager.StartGame(gameInput));
     }
@@ -44,13 +42,6 @@ export default function Page() {
                     <span className="equalsSymbol">=</span>
                     <input type="text" value={answer} onChange={handleAnswerChange} />
                     <button onClick={handleAcceptClick}>{Localizations.TranslateStaticText(StaticTexts.BtnAcceptRespose_Text)}</button>
-                    <ul>
-                        {questions.map((q, i) => (
-                            <li key={i}>
-                                {i + 1}. {q.Question.LeftFactor} * {q.Question.RightFactor} = {q.Answer} (expected: {q.Question.LeftFactor * q.Question.RightFactor})
-                            </li>
-                        ))}
-                    </ul>
                 </div>) : null}
         </div>
     )
