@@ -1,3 +1,4 @@
+import React from "react";
 import { useState } from "react";
 import { DifficultyLevel } from "./game_manager";
 import { Localizations, StaticTexts } from "./localizations";
