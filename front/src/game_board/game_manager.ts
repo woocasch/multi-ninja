@@ -1,3 +1,6 @@
+import { DifficultyLevel, DifficultyLevelSettings } from "./difficulty_level_settings";
+import { FactorGenerator } from "./factor_generator";
+
 export interface Question {
     LeftFactor: number;
     RightFactor: number;
@@ -8,21 +11,11 @@ export interface AnsweredQuestion {
     Answer: number;
 }
 
-export enum DifficultyLevel {
-    None = 0,
-    Easy = 1,
-    Medium = 2,
-    Hard = 3,
-}
-
 export interface StartGameParameters {
     level: DifficultyLevel;
     setQuestionCallback: (newQuestion: Question) => void;
+    setAnswersCallback: (answeredQuestions: AnsweredQuestion[]) => void;
 }
-
-type EnumDictionary<T extends string | symbol | number, U> = {
-    [K in T]: U;
-};
 
 class GameManagerService {
     private previousQuestions: AnsweredQuestion[] = [];
@@ -41,6 +34,7 @@ class GameManagerService {
             Answer: answer,
         };
         this.previousQuestions.push(answeredQuestion);
+        this.gameSettings?.setAnswersCallback(this.previousQuestions);
         this.ProvideNewQuestion();
     }
 
@@ -51,9 +45,23 @@ class GameManagerService {
     }
 
     public ProvideNewQuestion() {
+        if (this.IsGameCompleted()) {
+            return;
+        }
+
         const newQuestion: Question = this.GenerateQuestion();
         this.currentQuestion = newQuestion;
         this.gameSettings?.setQuestionCallback(this.currentQuestion);
+    }
+
+    public IsGameCompleted(): boolean {
+        const roundsToPlay = DifficultyLevelSettings.GetSettings(this.gameSettings!.level).settings.RoundsCount;
+        if (this.previousQuestions.length <= roundsToPlay) {
+            return false;
+        }
+
+        alert('Game complete');
+        return true;
     }
 
     public GenerateQuestion(): Question {
@@ -68,20 +76,9 @@ class GameManagerService {
     }
 
     public GenerateFactors(): { left: number, right: number } {
-        const left = this.GenerateFactor();
-        const right = this.GenerateFactor();
-        return { left: left, right: right };
-    }
-
-    public GenerateFactor(): number {
-        const ranges: EnumDictionary<DifficultyLevel, { size: number, offset: number }> = {
-            [DifficultyLevel.None]: { size: -1, offset: -1 },
-            [DifficultyLevel.Easy]: { size: 5, offset: 0 },
-            [DifficultyLevel.Medium]: { size: 6, offset: 1 },
-            [DifficultyLevel.Hard]: { size: 8, offset: 2 },
-        };
-        const range = ranges[this.gameSettings!.level];
-        return Math.ceil(Math.random() * range.size + range.offset);
+        const difficultyLevelSettings = DifficultyLevelSettings.GetSettings(this.gameSettings!.level);
+        const combination = FactorGenerator.GetRandom(difficultyLevelSettings.settings.MinResult, difficultyLevelSettings.settings.MaxResult);
+        return { left: combination.Left, right: combination.Right };
     }
 
     public AreFactorsTaken(left: number, right: number): boolean {
@@ -108,3 +105,4 @@ class GameManagerService {
 }
 
 export const GameManager: GameManagerService = new GameManagerService();
+export { DifficultyLevel };
