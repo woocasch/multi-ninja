@@ -1,5 +1,4 @@
 import React from "react";
-import { useState } from "react";
 
 export interface Properties {
     lifesLost: number;
@@ -8,7 +7,7 @@ export interface Properties {
 
 export default function GameHudView(props: Properties) {
     return (
-        <div>
+        <div className="hud">
             <div>
                 Lifes: {props.lifesLost} / {props.availableLifes}
             </div>

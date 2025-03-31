@@ -1,3 +1,10 @@
+export enum GameStatus {
+    None = 0,
+    NotStarted = 1,
+    Started = 2,
+    Completed = 3,
+}
+
 export interface AnsweredQuestion {
     LeftFactor: number;
     RightFactor: number;
@@ -9,6 +16,8 @@ export class GameState {
     private _questionsAnswered: AnsweredQuestion[] = [];
 
     private _lifesLost: number = 0;
+
+    private _gameStatus: GameStatus = GameStatus.NotStarted;
 
     public AddAnsweredQuestion(
         leftFactor: number,
@@ -34,8 +43,20 @@ export class GameState {
         return this._questionsAnswered;
     }
 
+    public GetGameStatus(): GameStatus {
+        return this._gameStatus;
+    }
+
     public GetLifesLost(): number {
         return this._lifesLost;
+    }
+
+    public StartGame() {
+        this._gameStatus = GameStatus.Started;
+    }
+
+    public CompleteGame() {
+        this._gameStatus = GameStatus.Completed;
     }
 
     private LooseLife() {

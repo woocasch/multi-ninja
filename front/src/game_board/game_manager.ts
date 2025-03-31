@@ -1,19 +1,15 @@
 import { DifficultyLevel, DifficultyLevelSettings } from "./difficulty_level_settings";
 import { FactorGenerator } from "./factor_generator";
-import { GameState } from "./game_state";
+import { AnsweredQuestion, GameState, GameStatus } from "./game_state";
 
 export interface Question {
     LeftFactor: number;
     RightFactor: number;
 }
 
-export interface AnsweredQuestion {
-    Question: Question;
-    Answer: number;
-}
-
 export interface GameStatusUpdateModel {
     LifesLost: number;
+    GameStatus: GameStatus;
 }
 
 export interface StartGameParameters {
@@ -41,14 +37,15 @@ class GameManagerService {
 
         this.gameState!.AddAnsweredQuestion(this.currentQuestion!.LeftFactor, this.currentQuestion!.RightFactor, answers);
         this.ProvideNewQuestion();
-        this.gameSettings!.updateGameStatusCallback({ LifesLost: this.gameState!.GetLifesLost() });
+        this.gameSettings!.updateGameStatusCallback({ LifesLost: this.gameState!.GetLifesLost(), GameStatus: this.gameState!.GetGameStatus() });
     }
 
     public StartGame(input: StartGameParameters): boolean {
         this.gameSettings = input;
         this.gameState = new GameState();
         this.ProvideNewQuestion();
-        this.gameSettings.updateGameStatusCallback({ LifesLost: this.gameState.GetLifesLost() });
+        this.gameState.StartGame();
+        this.gameSettings.updateGameStatusCallback({ LifesLost: this.gameState.GetLifesLost(), GameStatus: this.gameState!.GetGameStatus() });
         return true;
     }
 
@@ -57,9 +54,16 @@ class GameManagerService {
         return settings.LifesCount;
     }
 
+    public GetAnsweredQuestions(): AnsweredQuestion[] {
+        return this.gameState?.GetAllQuestions() || [];
+    }
+
+    public GetAnsweredQuestionsCount(): number {
+        return this.GetAnsweredQuestions().length;
+    }
+
     public ProvideNewQuestion() {
         if (this.IsGameCompleted()) {
-            alert('Game completed, no new questions can be generated');
             return;
         }
 
@@ -71,6 +75,7 @@ class GameManagerService {
     public IsGameCompleted(): boolean {
         const settings = DifficultyLevelSettings.GetSettings(this.gameSettings!.level).settings;
         if (this.gameState!.GetLifesLost() >= settings.LifesCount) {
+            this.gameState?.CompleteGame();
             return true;
         }
 
@@ -79,7 +84,7 @@ class GameManagerService {
             return false;
         }
 
-        alert('Game complete');
+        this.gameState?.CompleteGame();
         return true;
     }
 
@@ -125,3 +130,5 @@ class GameManagerService {
 
 export const GameManager: GameManagerService = new GameManagerService();
 export { DifficultyLevel };
+export type { AnsweredQuestion };
+

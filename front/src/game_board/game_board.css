@@ -5,4 +5,10 @@
     max-height: 300px;
     margin: auto;
     border: solid black 1px;
+    display: grid;
+}
+
+.active_game {
+    display: grid;
+    grid-template-rows: 1fr auto;
 }
