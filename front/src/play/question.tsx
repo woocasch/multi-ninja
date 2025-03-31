@@ -1,0 +1,56 @@
+import React, { ChangeEvent, useState } from "react";
+import './question.css';
+
+export interface Properties {
+    LeftFactor?: number;
+    RightFactor?: number;
+    OnAnswerAcceptedNotification: (answer: number) => void;
+}
+
+export default function QuestionComponent(props: Properties) {
+    const [answerText, setAnswerText] = useState<string>('');
+    const [answer, setAnswer] = useState<number>(0);
+    
+    function onAnswerChange(e: ChangeEvent<HTMLInputElement>) {
+        const parsed = parseInt(e.target.value);
+        if (isNaN(parsed)) {
+            setAnswerText('');
+            setAnswer(0);
+            return;
+        }
+
+        setAnswerText(e.target.value);
+        setAnswer(parsed);
+    }
+
+    function onAnswerAccepted() {
+        if (answerText != '') {
+            props.OnAnswerAcceptedNotification(answer);
+            setAnswerText('');
+            setAnswer(0);
+        }
+    }
+
+    return (
+        <div className="question">
+            <div className="leftFactor">
+                {props.LeftFactor}
+            </div>
+            <div className="multiplicationSign">
+                *
+            </div>
+            <div className="rightFactor">
+                {props.RightFactor}
+            </div>
+            <div className="equalsSign">
+                =
+            </div>
+            <div className="result">
+                <input type="text" value={answerText} onChange={onAnswerChange} />
+            </div>
+            <div className="button">
+                <button onClick={onAnswerAccepted}>Zatwierdź</button>
+            </div>
+        </div>
+    );
+}

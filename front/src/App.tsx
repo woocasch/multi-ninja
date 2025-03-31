@@ -11,6 +11,9 @@ export default function App() {
       <p>
         To start new game click <NavLink to={`/game_board`}>here</NavLink>
       </p>
+      <p>
+        To use new game board click <NavLink to={`/play`}>here</NavLink>
+      </p>
     </div>
   );
 }
