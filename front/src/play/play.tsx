@@ -3,6 +3,8 @@ import * as Model from './types';
 import * as Logic from "./game_logic";
 import GameSettingsComponent from "./game_settings";
 import QuestionComponent from "./question";
+import LifesComponent from "./lifes";
+import ResultsComponent from "./results";
 
 export default function PlayComponent() {
     const [gameStatus, setGameStatus] = useState<Model.GameStatus>(Model.GameStatus.NotStarted);
@@ -54,6 +56,12 @@ export default function PlayComponent() {
             return;
         }
 
+        const params: Logic.CheckGameCompletedParameters = { difficultyLevel: difficultyLevel, lifesLost: lifesLost, questionsAsked: questionsAnswered };
+        const result = Logic.GameLogic.CheckGameCompleted(params);
+        if (result.isCompleted) {
+            setGameStatus(Model.GameStatus.Completed);
+            setGameResult(result.result);
+        }
         console.log('GAME IS DONE');
     }, [gameCompletedTriggerRequired]);
 
@@ -101,7 +109,14 @@ export default function PlayComponent() {
     return (
         <div>
             {isGameNotStarted ? (<GameSettingsComponent difficultyLevel={difficultyLevel} setDifficultyLevel={setDifficultyLevel} onStartGameRequested={onStartGameRequested} />) : null}
-            {isGameInProgress ? (<QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} OnAnswerAcceptedNotification={onAnswerAccepted} />) : null}
-         </div>
+            {isGameInProgress ?
+                (
+                    <div className="game_board">
+                        <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
+                        <QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} OnAnswerAcceptedNotification={onAnswerAccepted} />
+                    </div>
+                ) : null}
+            {isGameCompleted ? (<ResultsComponent answeredQuestions={previousQuestions} />) : null}
+        </div>
     )
 }
