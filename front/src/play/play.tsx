@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import * as Model from './types';
 import * as Logic from "./game_logic";
 import GameSettingsComponent from "./game_settings";
@@ -18,6 +18,44 @@ export default function PlayComponent() {
     const isGameInProgress = createGameStatusMemo(Model.GameStatus.InProgress);
     const isGameCompleted = createGameStatusMemo(Model.GameStatus.Completed);
     const questionsAnswered = useMemo(() => previousQuestions.length, [previousQuestions]);
+    const checkAnswerObserver = useEffect(() => {
+        if (currentAnswers.length == 0) {
+            return;
+        }
+
+        const currentAnswer = currentAnswers[currentAnswers.length - 1];
+        const params: Logic.ValidateAnswerParameters = { question: currentQuestion!, providedAnswer: currentAnswer };
+        const result = Logic.GameLogic.ValidateAnswer(params);
+        if (!result.isValid) {
+            setLifesLost(prev => prev + 1);
+        }
+        else {
+            StartNextQuestion(false);
+        }
+    }, [currentQuestion, currentAnswers]);
+    const gameCompletedTriggerRequired = useMemo(() => {
+        if (gameStatus != Model.GameStatus.InProgress) {
+            return false;
+        }
+
+        if (lifesLost >= totalLifes) {
+            return true;
+        }
+
+        if (questionsAnswered >= questionsToAnswer) {
+            return true;
+        }
+
+        return false;
+    }, [lifesLost, totalLifes, questionsAnswered, questionsToAnswer]);
+
+    const gameCompletedHandler = useMemo(() => {
+        if (!gameCompletedTriggerRequired) {
+            return;
+        }
+
+        console.log('GAME IS DONE');
+    }, [gameCompletedTriggerRequired]);
 
     function onStartGameRequested() {
         const startGameParameters: Logic.StartGameParameters = { difficultyLevel: difficultyLevel };
@@ -53,31 +91,7 @@ export default function PlayComponent() {
     }
 
     function onAnswerAccepted(value: number) {
-        let lostLifes = lifesLost;
-        let questionsAsked = previousQuestions.length;
-        const params: Logic.ValidateAnswerParameters = { question: currentQuestion!, providedAnswer: value };
-        const result = Logic.GameLogic.ValidateAnswer(params);
-        setCurrentAnswers(old => [...old, value]);
-        if (!result.isValid) {
-            setLifesLost(old => old + 1);
-            lostLifes++;
-        }
-
-        const completedParams: Logic.CheckGameCompletedParameters = {
-            difficultyLevel: difficultyLevel,
-            lifesLost: lostLifes,
-            questionsAsked: questionsAsked,
-        };
-        const completedResult = Logic.GameLogic.CheckGameCompleted(completedParams);
-        if (completedResult.isCompleted) {
-            setGameStatus(Model.GameStatus.Completed);
-            setGameResult(completedResult.result);
-            return;
-        }
-
-        if (result.isValid) {
-            StartNextQuestion(false);
-        }
+        setCurrentAnswers(prev => [...prev, value]);
     }
 
     function createGameStatusMemo(status: Model.GameStatus) {
@@ -88,13 +102,6 @@ export default function PlayComponent() {
         <div>
             {isGameNotStarted ? (<GameSettingsComponent difficultyLevel={difficultyLevel} setDifficultyLevel={setDifficultyLevel} onStartGameRequested={onStartGameRequested} />) : null}
             {isGameInProgress ? (<QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} OnAnswerAcceptedNotification={onAnswerAccepted} />) : null}
-            Current answers: {JSON.stringify(currentAnswers)}<br />
-            Lifes lost: {lifesLost}<br />
-            Questions answered: {questionsAnswered}<br />
-            Game result: {gameResult}<br/>
-            <pre>
-                {JSON.stringify(previousQuestions)}
-            </pre>
-        </div>
+         </div>
     )
 }
