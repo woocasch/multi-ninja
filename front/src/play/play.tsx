@@ -63,7 +63,6 @@ export default function PlayComponent() {
             setGameStatus(Model.GameStatus.Completed);
             setGameResult(result.result);
         }
-        console.log('GAME IS DONE');
     }, [gameCompletedTriggerRequired]);
 
     function onStartGameRequested() {
