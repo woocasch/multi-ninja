@@ -32,20 +32,11 @@ export default function QuestionComponent(props: Properties) {
     }
 
     return (
-        <div className="question">
-            <div className="leftFactor">
-                {props.LeftFactor}
+        <div className="task">
+            <div className="question">
+                {props.LeftFactor} * {props.RightFactor}
             </div>
-            <div className="multiplicationSign">
-                *
-            </div>
-            <div className="rightFactor">
-                {props.RightFactor}
-            </div>
-            <div className="equalsSign">
-                =
-            </div>
-            <div className="result">
+            <div className="answer">
                 <input type="text" value={answerText} onChange={onAnswerChange} />
             </div>
             <div className="button">

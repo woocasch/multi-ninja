@@ -1,29 +1,42 @@
-.question {
-    display: grid;
-    gap: 0;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    grid-template-rows: 3em;
-}
-
-.leftFactor,
-.multiplicationSign,
-.rightFactor,
-.equalsSign,
-.result {
-    grid-row: 1;
-}
-
-.button {
-    grid-column-start: 1;
-    grid-column-end: 6;
-    height: 3em;
-}
-
-.question > * {
+.task {
     text-align: center;
-    align-content: center;
+    margin: 50px 0 40px;
 }
 
-.result input {
-    width: 3em;
+.question {
+    font-size: 52px;
+    font-weight: bold;
+    color: #2d3748;
+    background-color: white;
+    padding: 25px 40px;
+    border-radius: 20px;
+    display: inline-block;
+    min-width: 180px;
+    box-shadow: 0 8px 0 #e2e8f0, 0 12px 20px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
+}
+
+.answer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin: 30px 0;
+}
+
+.answer>* {
+    grid-column: 2;
+    background: linear-gradient(135deg, #4299e1, #63b3ed);
+    color: white;
+    font-size: 22px;
+    font-weight: bold;
+    padding: 16px 10px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(66, 153, 225, 0.3);
+    transition: all 0.2s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
 }
