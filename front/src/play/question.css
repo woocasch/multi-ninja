@@ -24,8 +24,10 @@
     margin: 30px 0;
 }
 
-.answer>* {
+.answer>input {
     grid-column: 2;
+}
+.answer>* {
     background: linear-gradient(135deg, #4299e1, #63b3ed);
     color: white;
     font-size: 22px;

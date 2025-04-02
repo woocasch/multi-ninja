@@ -33,7 +33,7 @@ class QuestionsGeneratorService {
     public GenerateQuestions(params: GenerateQuestionsParameters): GenerateQuestionsResult {
         const questions: Model.Question[] = this.allQuestions
             .filter(c => c.result >= params.minResult && c.result <= params.maxResult)
-            .map(c => <Model.Question>{ leftHand: c.leftHand, rightHand: c.rightHand });
+            .map(c => <Model.Question>{ leftHand: c.leftHand, rightHand: c.rightHand, answerPropositions: [] });
         return {
             questions: questions,
         };

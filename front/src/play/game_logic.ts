@@ -61,11 +61,12 @@ class GameLogicService {
         let index = Math.floor(Math.random() * questions.questions.length);
         let selectedQuestion = questions.questions[index];
         let remainingRetries = 3;
-        while(this.IsQuestionRepeated(selectedQuestion, params.previousQuestions.map(q => q.question)) && remainingRetries > 0) {
+        while (this.IsQuestionRepeated(selectedQuestion, params.previousQuestions.map(q => q.question)) && remainingRetries > 0) {
             index = Math.floor(Math.random() * questions.questions.length);
             selectedQuestion = questions.questions[index];
         }
 
+        this.AddAnswers(selectedQuestion);
         return {
             nextQuestion: selectedQuestion,
         }
@@ -88,20 +89,57 @@ class GameLogicService {
         }
 
         if (params.questionsAsked >= settings.questionsToAnswer) {
-            return { 
+            return {
                 isCompleted: true,
                 result: Model.GameResult.Won,
             };
         }
 
-        return { 
+        return {
             isCompleted: false,
             result: Model.GameResult.NotCompleted,
         };
     }
 
+    private AddAnswers(question: Model.Question) {
+        const offset_length = 10;
+        const max = 100;
+        const correctAnswer = question.leftHand * question.rightHand;
+        let result = [correctAnswer];
+        let offset_adjustement = 0;
+        if (correctAnswer <= offset_length / 2) {
+            offset_adjustement = (offset_length / 2) - correctAnswer + 1;
+        }
+
+        if (correctAnswer > max - (offset_length / 2)) {
+            offset_adjustement = (offset_length / 2) - (max - correctAnswer);
+        }
+
+        function generateWrongAnswer() {
+            let offset = Math.floor(Math.random() * 10) - 5;
+            offset += offset_adjustement;
+            return offset === 0 ? correctAnswer + 1 : correctAnswer + offset;
+        }
+
+        let testCount = 0;
+        while (result.length < 6) {
+            const wrongAnswer = generateWrongAnswer();
+            if (wrongAnswer !== correctAnswer && !result.includes(wrongAnswer) && wrongAnswer > 0) {
+                result.push(wrongAnswer);
+            }
+
+            testCount++;
+            if (testCount > 20) {
+                throw new Error('Problem generating answers for question');
+            }
+        }
+
+        result = result.sort(() => Math.random() - 0.5);
+        question.answerPropositions = result;
+    }
+
     private IsQuestionRepeated(selected: Model.Question, previousQuestions: Model.Question[]): boolean {
-        for(const current of previousQuestions) {
+        for (const current of previousQuestions) {
             if (current.leftHand == selected.leftHand && current.rightHand == selected.rightHand) {
                 return true;
             }

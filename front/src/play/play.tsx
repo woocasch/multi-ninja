@@ -12,7 +12,7 @@ export default function PlayComponent() {
     const [difficultyLevel, setDifficultyLevel] = useState<Model.DifficultyLevel>(Model.DifficultyLevel.Easy);
     const [totalLifes, setTotalLifes] = useState<number>(0);
     const [lifesLost, setLifesLost] = useState<number>(0);
-    const [currentQuestion, setCurrentQuestion] = useState<Model.Question>({ leftHand: 0, rightHand: 0 });
+    const [currentQuestion, setCurrentQuestion] = useState<Model.Question>({ leftHand: 0, rightHand: 0, answerPropositions: [] });
     const [currentAnswers, setCurrentAnswers] = useState<number[]>([]);
     const [previousQuestions, setPreviousQuestions] = useState<Model.AnsweredQuestion[]>([]);
     const [questionsToAnswer, setQuestionsToAnswer] = useState<number>(0);
@@ -82,6 +82,7 @@ export default function PlayComponent() {
                 question: {
                     leftHand: currentQuestion.leftHand,
                     rightHand: currentQuestion.rightHand,
+                    answerPropositions: currentQuestion.answerPropositions,
                 },
                 expectedAnswer: currentQuestion.leftHand * currentQuestion.rightHand,
                 providedAnswers: currentAnswers,
@@ -93,6 +94,7 @@ export default function PlayComponent() {
         setCurrentQuestion(old => {
             old.leftHand = selectQuestionResult.nextQuestion.leftHand;
             old.rightHand = selectQuestionResult.nextQuestion.rightHand;
+            old.answerPropositions = selectQuestionResult.nextQuestion.answerPropositions;
             return old;
         });
         setCurrentAnswers([]);
@@ -113,7 +115,7 @@ export default function PlayComponent() {
                 (
                     <div className="game_board">
                         <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
-                        <QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} OnAnswerAcceptedNotification={onAnswerAccepted} />
+                        <QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} Answers={currentQuestion.answerPropositions} OnAnswerAcceptedNotification={onAnswerAccepted} />
                     </div>
                 ) : null}
             {isGameCompleted ? (<ResultsComponent answeredQuestions={previousQuestions} />) : null}

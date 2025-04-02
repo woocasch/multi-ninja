@@ -15,6 +15,7 @@ export enum DifficultyLevel {
 export interface Question {
     leftHand: number;
     rightHand: number;
+    answerPropositions: number[];
 }
 
 export interface AnsweredQuestion {
