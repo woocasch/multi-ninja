@@ -12,3 +12,21 @@
     display: flex;
     align-items: center;
 }
+
+.lifes-switched {
+    animation: pulse 0.75s 1;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
