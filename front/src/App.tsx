@@ -13,7 +13,7 @@ export default function App() {
         To start new game click <NavLink to={`/play`}>here</NavLink>
       </p>
       <p>
-        <img src={multi_ninja} alt="Multi-Ninja lemur" />
+        <img className='ninja-lemur' src={multi_ninja} alt="Multi-Ninja lemur" />
       </p>
     </div>
   );

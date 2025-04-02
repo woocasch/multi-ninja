@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './assets/index.css';
 import { createBrowserRouter, RouterProvider } from "react-router";
 import PlayComponent from './play/play';
 
@@ -17,5 +18,7 @@ const router = createBrowserRouter([
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <RouterProvider router={router} />,
+  <div className="root_container">
+    <RouterProvider router={router} />
+  </div>,
 );
