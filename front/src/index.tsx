@@ -1,12 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
+import './assets/index.css';
 import { createBrowserRouter, RouterProvider } from "react-router";
-import GameBoard from './game_board/game_board';
-
-function Root() {
-  return <h1>Hello world</h1>;
-}
+import PlayComponent from './play/play';
 
 const router = createBrowserRouter([
   {
@@ -14,12 +11,14 @@ const router = createBrowserRouter([
     Component: App
   },
   {
-    path: 'game_board',
-    Component: GameBoard
+    path: 'play',
+    Component: PlayComponent
   }
 ]);
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-  <RouterProvider router={router} />,
+  <div className="root_container">
+    <RouterProvider router={router} />
+  </div>,
 );

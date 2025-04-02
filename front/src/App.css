@@ -1,0 +1,8 @@
+p:has(.ninja-lemur) {
+    text-align: center;
+}
+
+.ninja-lemur {
+    width: 90%;
+    margin: auto;
+}
