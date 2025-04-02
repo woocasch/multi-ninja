@@ -5,6 +5,7 @@ import GameSettingsComponent from "./game_settings";
 import QuestionComponent from "./question";
 import LifesComponent from "./lifes";
 import ResultsComponent from "./results";
+import RemainingQuestionsComponent from "./remaining_questions";
 
 export default function PlayComponent() {
     const [gameStatus, setGameStatus] = useState<Model.GameStatus>(Model.GameStatus.NotStarted);
@@ -115,6 +116,7 @@ export default function PlayComponent() {
                 (
                     <div className="game_board">
                         <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
+                        <RemainingQuestionsComponent answeredQuestions={questionsAnswered} totalQuestions={questionsToAnswer} />
                         <QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} Answers={currentQuestion.answerPropositions} OnAnswerAcceptedNotification={onAnswerAccepted} />
                     </div>
                 ) : null}
