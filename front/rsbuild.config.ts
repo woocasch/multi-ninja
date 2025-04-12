@@ -3,12 +3,9 @@ import { pluginReact } from '@rsbuild/plugin-react';
 import { pluginSass } from '@rsbuild/plugin-sass';
 
 export default defineConfig({
-  plugins: [
-    pluginReact(),
-    pluginSass()
-  ],
+  plugins: [pluginReact(), pluginSass()],
   html: {
     title: 'Multi-Ninja',
-    favicon: './public/favicon.ico'
-  }
+    favicon: './public/favicon.ico',
+  },
 });
