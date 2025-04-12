@@ -30,3 +30,4 @@ export enum GameResult {
     Won = 2,
     Lost = 3,
 }
+

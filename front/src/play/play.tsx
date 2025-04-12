@@ -6,6 +6,7 @@ import QuestionComponent from "./question";
 import LifesComponent from "./lifes";
 import ResultsComponent from "./results";
 import RemainingQuestionsComponent from "./remaining_questions";
+import FlawlessVictoryComponent from "./flawless-victory";
 
 export default function PlayComponent() {
     const [gameStatus, setGameStatus] = useState<Model.GameStatus>(Model.GameStatus.NotStarted);
@@ -13,6 +14,8 @@ export default function PlayComponent() {
     const [difficultyLevel, setDifficultyLevel] = useState<Model.DifficultyLevel>(Model.DifficultyLevel.Easy);
     const [totalLifes, setTotalLifes] = useState<number>(0);
     const [lifesLost, setLifesLost] = useState<number>(0);
+    const [isPerfectGame, setIsPerfectGame] = useState<boolean>(false);
+    const [pointsScored, setPointsScored] = useState<number>(0);
     const [currentQuestion, setCurrentQuestion] = useState<Model.Question>({ leftHand: 0, rightHand: 0, answerPropositions: [] });
     const [currentAnswers, setCurrentAnswers] = useState<number[]>([]);
     const [previousQuestions, setPreviousQuestions] = useState<Model.AnsweredQuestion[]>([]);
@@ -20,6 +23,12 @@ export default function PlayComponent() {
     const isGameNotStarted = createGameStatusMemo(Model.GameStatus.NotStarted);
     const isGameInProgress = createGameStatusMemo(Model.GameStatus.InProgress);
     const isGameCompleted = createGameStatusMemo(Model.GameStatus.Completed);
+    const isPerfectGameCompleted = useMemo(() => {
+        return isGameCompleted && isPerfectGame;
+    }, [isGameCompleted, isPerfectGame]);
+    const isNotPerfectGameCompleted = useMemo(() => {
+        return isGameCompleted && !isPerfectGame;
+    }, [isGameCompleted, isPerfectGame]);
     const questionsAnswered = useMemo(() => previousQuestions.length, [previousQuestions]);
     const checkAnswerObserver = useEffect(() => {
         if (currentAnswers.length == 0) {
@@ -60,8 +69,15 @@ export default function PlayComponent() {
         const params: Logic.CheckGameCompletedParameters = { difficultyLevel: difficultyLevel, lifesLost: lifesLost, questionsAsked: questionsAnswered };
         const result = Logic.GameLogic.CheckGameCompleted(params);
         if (result.isCompleted) {
+            const calculateScoreParams: Logic.CalculateGameScoreParameters = {
+                difficultyLevel: difficultyLevel,
+                questions: previousQuestions
+            };
             setGameStatus(Model.GameStatus.Completed);
             setGameResult(result.result);
+            const calculateScoreResult = Logic.GameLogic.CalculateGameScore(calculateScoreParams);
+            setIsPerfectGame(calculateScoreResult.isPerfect);
+            setPointsScored(calculateScoreResult.points);
         }
     }, [gameCompletedTriggerRequired]);
 
@@ -119,7 +135,8 @@ export default function PlayComponent() {
                         <QuestionComponent LeftFactor={currentQuestion.leftHand} RightFactor={currentQuestion.rightHand} Answers={currentQuestion.answerPropositions} OnAnswerAcceptedNotification={onAnswerAccepted} />
                     </div>
                 ) : null}
-            {isGameCompleted ? (<ResultsComponent answeredQuestions={previousQuestions} />) : null}
+            {isNotPerfectGameCompleted ? (<ResultsComponent answeredQuestions={previousQuestions} />) : null}
+            {isPerfectGameCompleted ? (<FlawlessVictoryComponent pointsScored={pointsScored} />) : null}
         </div>
     )
 }

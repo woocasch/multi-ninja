@@ -4,6 +4,7 @@ import App from './App';
 import './assets/index.css';
 import { createBrowserRouter, RouterProvider } from "react-router";
 import PlayComponent from './play/play';
+import FlawlessVictoryComponent from './play/flawless-victory';
 
 const router = createBrowserRouter([
   {

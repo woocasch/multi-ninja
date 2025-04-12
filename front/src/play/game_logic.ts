@@ -40,6 +40,16 @@ export interface CheckGameCompletedResult {
     result: Model.GameResult;
 }
 
+export interface CalculateGameScoreParameters {
+    difficultyLevel: Model.DifficultyLevel;
+    questions: Model.AnsweredQuestion[];
+}
+
+export interface CalculateGameScoreResult {
+    isPerfect: boolean;
+    points: number;
+}
+
 class GameLogicService {
     public StartGame(params: StartGameParameters): StartGameResult {
         const settings = DifficultyLevels.DifficultyLevels.GetDifficultyLevelSettings(params.difficultyLevel);
@@ -101,6 +111,26 @@ class GameLogicService {
         };
     }
 
+    public CalculateGameScore(params: CalculateGameScoreParameters): CalculateGameScoreResult {
+        let isPerfect: boolean = true;
+        let score: number = 0;
+        for (let i = 0; i < params.questions.length; i++) {
+            const currentQuestion = params.questions[i];
+            const currentQuestionScore = this.CalculateQuestionScore(
+                params.difficultyLevel,
+                currentQuestion);
+            if (!currentQuestionScore.isPerfect) {
+                isPerfect = false;
+            }
+
+            score += currentQuestionScore.points;
+        }
+        return {
+            isPerfect: isPerfect,
+            points: score,
+        };
+    }
+
     private AddAnswers(question: Model.Question) {
         const offset_length = 10;
         const max = 100;
@@ -150,6 +180,23 @@ class GameLogicService {
         }
 
         return false;
+    }
+
+    private CalculateQuestionScore(difficultyLevel: Model.DifficultyLevel, question: Model.AnsweredQuestion): CalculateGameScoreResult {
+        let isPerfect: boolean = false;
+        if (question.providedAnswers.length == 1 && question.providedAnswers[0] == question.expectedAnswer) {
+            isPerfect = true;
+        }
+
+        const settings = DifficultyLevels.DifficultyLevels.GetDifficultyLevelSettings(difficultyLevel);
+        const correctAnswerIndex = Math.min(
+            question.providedAnswers.indexOf(question.expectedAnswer),
+            settings.pointsEvolution.length - 1);
+        const points = settings.pointsEvolution[correctAnswerIndex];
+        return {
+            isPerfect: isPerfect,
+            points: points,
+        };
     }
 }
 
