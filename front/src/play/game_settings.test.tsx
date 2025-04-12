@@ -11,7 +11,7 @@ describe('GameSettingsComponent', () => {
     it('should should have difficulty level selector', () => {
         const { container } = render(<GameSettingsComponent difficultyLevel={Model.DifficultyLevel.Easy} setDifficultyLevel={setDifficultyLevel} onStartGameRequested={onStartRequested} />);
         const levelSelector: HTMLSelectElement = container.querySelector("select[id='difficultyLevel'")!;
-        expect(levelSelector.options.length).toBe(3);
+        expect(levelSelector.options.length).toBe(4);
     })
 })
 
