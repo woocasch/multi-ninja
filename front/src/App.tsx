@@ -13,6 +13,9 @@ export default function App() {
         Aby rozpocząć szkolenie kliknij <NavLink to={`/play`}>tutaj</NavLink>
       </p>
       <p>
+        <NavLink to={`/flawless-victory`}>Test screen</NavLink>
+      </p>
+      <p>
         <img className='ninja-lemur' src={multi_ninja} alt="Multi-Ninja lemur" />
       </p>
     </div>
