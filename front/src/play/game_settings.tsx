@@ -4,7 +4,7 @@ import { DifficultyLevel } from './types';
 
 interface Properties {
   difficultyLevel: DifficultyLevel;
-  setDifficultyLevel: Dispatch<SetStateAction<DifficultyLevel>>;
+  setDifficultyLevel: (difLev: DifficultyLevel) => void;
   onStartGameRequested: () => void;
 }
 
@@ -21,7 +21,7 @@ export default function GameSettingsComponent(props: Properties) {
     <div>
       <div>
         Poziom trudności:
-        <select value={props.difficultyLevel} onChange={onSelectedLevelChange}>
+        <select value={props.difficultyLevel} id='difficultyLevel' onChange={onSelectedLevelChange}>
           {DifficultyLevels.GetDifficultyLevels().map((l) => (
             <option value={l.level} key={l.level}>
               {l.displayName}
