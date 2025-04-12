@@ -21,7 +21,11 @@ export default function GameSettingsComponent(props: Properties) {
     <div>
       <div>
         Poziom trudności:
-        <select value={props.difficultyLevel} id='difficultyLevel' onChange={onSelectedLevelChange}>
+        <select
+          value={props.difficultyLevel}
+          id="difficultyLevel"
+          onChange={onSelectedLevelChange}
+        >
           {DifficultyLevels.GetDifficultyLevels().map((l) => (
             <option value={l.level} key={l.level}>
               {l.displayName}

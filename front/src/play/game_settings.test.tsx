@@ -5,12 +5,21 @@ import * as Model from './types';
 import React from 'react';
 
 describe('GameSettingsComponent', () => {
-    let difficultyLevel: Model.DifficultyLevel= Model.DifficultyLevel.Easy;
-    const setDifficultyLevel:(difLev: Model.DifficultyLevel) => void = (l) => difficultyLevel = l;
-    const onStartRequested: () => void = () => {};
-    it('should should have difficulty level selector', () => {
-        const { container } = render(<GameSettingsComponent difficultyLevel={Model.DifficultyLevel.Easy} setDifficultyLevel={setDifficultyLevel} onStartGameRequested={onStartRequested} />);
-        const levelSelector: HTMLSelectElement = container.querySelector("select[id='difficultyLevel'")!;
-        expect(levelSelector.options.length).toBe(3);
-    })
-})
+  let difficultyLevel: Model.DifficultyLevel = Model.DifficultyLevel.Easy;
+  const setDifficultyLevel: (difLev: Model.DifficultyLevel) => void = (l) =>
+    (difficultyLevel = l);
+  const onStartRequested: () => void = () => {};
+  it('should should have difficulty level selector', () => {
+    const { container } = render(
+      <GameSettingsComponent
+        difficultyLevel={Model.DifficultyLevel.Easy}
+        setDifficultyLevel={setDifficultyLevel}
+        onStartGameRequested={onStartRequested}
+      />,
+    );
+    const levelSelector: HTMLSelectElement = container.querySelector(
+      "select[id='difficultyLevel'",
+    )!;
+    expect(levelSelector.options.length).toBe(3);
+  });
+});

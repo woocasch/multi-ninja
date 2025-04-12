@@ -1,5 +1,5 @@
-import { defineConfig, UserConfig } from 'vite'
-import react from '@vitejs/plugin-react'
+import { defineConfig, UserConfig } from 'vite';
+import react from '@vitejs/plugin-react';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,5 +9,5 @@ export default defineConfig({
     // hey! 👋 over here
     globals: true,
     setupFiles: './vite.setup.js',
-  }
-} as UserConfig)
+  },
+} as UserConfig);
