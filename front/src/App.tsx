@@ -8,7 +8,7 @@ export default function App() {
     <div className="HomePage">
       <h2>Witaj na szkoleniu Multi-Ninja</h2>
       <p>
-        Aby rozpocząć szkolenie kliknij <NavLink to={`/play`}>tutaj</NavLink>
+        <NavLink to={`/multiplication`}>Ćwicz mnożenie</NavLink>
       </p>
       <p>
         <NavLink to={`/flawless-victory`}>Test screen</NavLink>

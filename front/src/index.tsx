@@ -4,7 +4,7 @@ import App from './App';
 import './assets/reset.css';
 import './assets/index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import PlayComponent from './play/play';
+import MultiplicationComponent from './multiplication/multiplication';
 
 const router = createBrowserRouter([
   {
@@ -12,8 +12,8 @@ const router = createBrowserRouter([
     Component: App,
   },
   {
-    path: 'play',
-    Component: PlayComponent,
+    path: 'multiplication',
+    Component: MultiplicationComponent,
   },
 ]);
 

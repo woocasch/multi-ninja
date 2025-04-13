@@ -8,7 +8,7 @@ import ResultsComponent from './results';
 import RemainingQuestionsComponent from './remaining_questions';
 import FlawlessVictoryComponent from './flawless-victory';
 
-export default function PlayComponent() {
+export default function MultiplicationComponent() {
   const [gameStatus, setGameStatus] = useState<Model.GameStatus>(
     Model.GameStatus.NotStarted,
   );
