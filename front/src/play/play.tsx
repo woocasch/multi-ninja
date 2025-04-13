@@ -41,10 +41,10 @@ export default function PlayComponent() {
   const isNotPerfectGameCompleted = useMemo(() => {
     return isGameCompleted && !isPerfectGame;
   }, [isGameCompleted, isPerfectGame]);
-  const questionsAnswered = useMemo(
-    () => previousQuestions.length,
-    [previousQuestions],
-  );
+  // const questionsAnswered = useMemo(
+  //   () => previousQuestions.length,
+  //   [previousQuestions],
+  // );
   const checkAnswerObserver = useEffect(() => {
     if (currentAnswers.length == 0) {
       return;
@@ -71,12 +71,12 @@ export default function PlayComponent() {
       return true;
     }
 
-    if (questionsAnswered >= questionsToAnswer) {
+    if (previousQuestions.length >= questionsToAnswer) {
       return true;
     }
 
     return false;
-  }, [lifesLost, totalLifes, questionsAnswered, questionsToAnswer]);
+  }, [lifesLost, totalLifes, previousQuestions, questionsToAnswer]);
 
   const gameCompletedHandler = useMemo(() => {
     if (!gameCompletedTriggerRequired) {
@@ -86,7 +86,7 @@ export default function PlayComponent() {
     const params: Logic.CheckGameCompletedParameters = {
       difficultyLevel: difficultyLevel,
       lifesLost: lifesLost,
-      questionsAsked: questionsAnswered,
+      questionsAsked: previousQuestions.length,
     };
     const result = Logic.GameLogic.CheckGameCompleted(params);
     if (result.isCompleted) {
@@ -149,6 +149,38 @@ export default function PlayComponent() {
     setCurrentAnswers((prev) => [...prev, value]);
   }
 
+  function onNewGameRequested() {
+    ResetToStartConfiguration();
+    onStartGameRequested();
+  }
+
+  function onGameConfigurationRequested() {
+    ResetToStartConfiguration();
+    setGameStatus(Model.GameStatus.NotStarted);
+  }
+
+  function ResetToStartConfiguration() {
+    setGameResult(Model.GameResult.NotCompleted);
+    setLifesLost(0);
+    setIsPerfectGame(false);
+    setPointsScored(0);
+    setCurrentQuestion((q) => {
+      q.leftHand = 0;
+      q.rightHand = 0;
+      q.answerPropositions.length = 0;
+      return q;
+    });
+    setCurrentAnswers((a) => {
+      a.length = 0;
+      return a;
+    });
+    setPreviousQuestions((q) => {
+      q.length = 0;
+      return q;
+    });
+    setGameStatus(Model.GameStatus.None);
+  }
+
   function createGameStatusMemo(status: Model.GameStatus) {
     return useMemo(() => gameStatus == status, [gameStatus]);
   }
@@ -166,7 +198,7 @@ export default function PlayComponent() {
         <div className="game_board">
           <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
           <RemainingQuestionsComponent
-            answeredQuestions={questionsAnswered}
+            answeredQuestions={previousQuestions.length}
             totalQuestions={questionsToAnswer}
           />
           <QuestionComponent
@@ -181,7 +213,11 @@ export default function PlayComponent() {
         <ResultsComponent answeredQuestions={previousQuestions} />
       ) : null}
       {isPerfectGameCompleted ? (
-        <FlawlessVictoryComponent pointsScored={pointsScored} />
+        <FlawlessVictoryComponent
+          pointsScored={pointsScored}
+          onNewGameRequested={onNewGameRequested}
+          onGameConfigurationRequested={onGameConfigurationRequested}
+        />
       ) : null}
     </div>
   );
