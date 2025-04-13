@@ -1,0 +1,31 @@
+name: TestCD
+run-name: CD for '${{ github.event_name}}' run on '${{ github.ref_name }}'
+
+on:
+  workflow_run:
+    workflows: ["CI"]
+    types: [completed]
+    branches: [develop]
+  workflow_dispatch:
+
+jobs:
+  deploy-front-to-test:
+    name: Deploy frontend to test
+    runs-on: ubuntu-latest
+    environment: TEST
+
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: front
+          path: ./artifacts/front
+    
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.SERVER_ADRESS }}
+          username: ${{ secrets.USER_NAME }}
+          password: ${{ secrets.PASSWORD }}
+          local-dir: ./artifacts/front/
+          server-dir: ${{ secrets.DEPLOYMENT_PATH }}
