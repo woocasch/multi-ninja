@@ -3,7 +3,7 @@ run-name: Build and test for '${{ github.event_name}}' run on '${{ github.ref_na
 
 on:
   pull_request:
-    branches: ["master", "develop"]
+    branches: [master, develop]
   workflow_dispatch:
 
 jobs:
