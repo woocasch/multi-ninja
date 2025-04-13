@@ -1,5 +1,5 @@
 name: TestCD
-run-name: Test CD for '${{ github.event_name}}' run on '${{ github.ref_name }}'
+run-name: Test deployment of '${{ github.ref_name }}'
 
 on:
   workflow_run:
