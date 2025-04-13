@@ -20,6 +20,8 @@ jobs:
         with:
           name: front
           path: ./artifacts/front
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: ${{ github.event.workflow_run.id }}
     
       - name: Sync files
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
