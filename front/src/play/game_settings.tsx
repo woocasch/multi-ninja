@@ -1,4 +1,5 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
+import './game_settings.scss';
 import { DifficultyLevels } from './difficulty_levels';
 import { DifficultyLevel } from './types';
 
@@ -18,13 +19,16 @@ export default function GameSettingsComponent(props: Properties) {
   }
 
   return (
-    <div>
+    <div className='game-settings'>
       <div>
-        Poziom trudności:
+        Wybierz poziom trudności:
+      </div>
+      <div className='difficulty-level'>
         <select
           value={props.difficultyLevel}
           id="difficultyLevel"
           onChange={onSelectedLevelChange}
+          className='difficulty-level'
         >
           {DifficultyLevels.GetDifficultyLevels().map((l) => (
             <option value={l.level} key={l.level}>
@@ -33,7 +37,7 @@ export default function GameSettingsComponent(props: Properties) {
           ))}
         </select>
       </div>
-      <div>
+      <div className='buttons'>
         <button onClick={props.onStartGameRequested}>Rozpocznij</button>
       </div>
     </div>

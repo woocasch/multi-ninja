@@ -26,6 +26,8 @@ root.render(
       <a href="/">Start</a>
     </div>
     <RouterProvider router={router} />
-    <div className="footer">Copyright © 2025</div>
+    <div className="footer">
+      Znalazłeś błąd? Opisz go <a href="https://github.com/woocasch/multi-ninja/issues/new" target='_blank'>tutaj</a>.
+    </div>
   </div>,
 );
