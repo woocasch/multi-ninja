@@ -2,7 +2,7 @@ name: CI
 run-name: CI for '${{ github.event_name}}' run on '${{ github.ref_name }}'
 
 on:
-  pull_request:
+  push:
     branches: ["master", "develop"]
   workflow_dispatch:
 
