@@ -1,17 +1,17 @@
-name: TestCD
-run-name: Test CD for '${{ github.event_name}}' run on '${{ github.ref_name }}'
+name: DevCD
+run-name: Dev CD for '${{ github.event_name}}' run on '${{ github.ref_name }}'
 
 on:
   workflow_run:
     workflows: ["CI"]
     types: [completed]
-    branches: [develop]
+    branches: [feature/**]
 
 jobs:
   deploy-front-to-test:
     name: Deploy frontend to test
     runs-on: ubuntu-latest
-    environment: TEST
+    environment: DEV
 
     steps:
       - name: Download artifact
