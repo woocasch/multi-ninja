@@ -1,6 +1,7 @@
 .task {
   text-align: center;
-  margin: 50px 0 40px;
+  padding-top: 5em;
+  padding-bottom: 5em;
 }
 
 .task .question {
@@ -23,7 +24,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 15px;
-  margin: 30px 0;
+  margin-top: 3em;
 }
 
 .task .answer > * {

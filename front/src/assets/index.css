@@ -1,10 +1,30 @@
 .root_container {
   max-width: 600px;
   margin: 0 auto;
-  padding: 20px;
   font-family: 'Nunito', 'Quicksand', sans-serif;
-  background-color: #f8f8ff;
+}
+
+.root_container .menu {
+  background: linear-gradient(135deg, hsl(230 34% 69%), hsl(230, 35%, 35%));
   border-radius: 15px;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  line-height: 3;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+.root_container > div:nth-child(2) {
+  background-color: #f8f8ff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   position: relative;
+}
+
+.root_container .footer {
+  background: linear-gradient(135deg, hsl(230, 35%, 35%), hsl(230 34% 69%));
+  border-radius: 15px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+  line-height: 3;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  text-align: center;
 }
