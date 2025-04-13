@@ -46,7 +46,7 @@ export default function FlawlessVictoryComponent(props: Properties) {
           id="nextLevelButton"
           onClick={props.onGameConfigurationRequested}
         >
-          Następny poziom
+          Nowa gra
         </button>
       </div>
       <div className="pyro">
