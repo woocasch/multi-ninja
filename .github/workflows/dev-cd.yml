@@ -1,5 +1,5 @@
 name: DevCD
-run-name: Dev CD for '${{ github.event_name}}' run on '${{ github.ref_name }}'
+run-name: Dev deployment of '${{ github.ref_name }}'
 
 on:
   workflow_run:
