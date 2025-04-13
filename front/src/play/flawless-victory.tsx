@@ -4,6 +4,8 @@ import './flawless-victory.scss';
 
 export interface Properties {
   pointsScored: number;
+  onNewGameRequested: () => void;
+  onGameConfigurationRequested: () => void;
 }
 
 export default function FlawlessVictoryComponent(props: Properties) {
@@ -32,10 +34,18 @@ export default function FlawlessVictoryComponent(props: Properties) {
       </p>
 
       <div className="buttons-container">
-        <button className="button button-restart" id="restartButton">
+        <button
+          className="button button-restart"
+          id="restartButton"
+          onClick={props.onNewGameRequested}
+        >
           Zagraj ponownie
         </button>
-        <button className="button" id="nextLevelButton">
+        <button
+          className="button"
+          id="nextLevelButton"
+          onClick={props.onGameConfigurationRequested}
+        >
           Następny poziom
         </button>
       </div>
