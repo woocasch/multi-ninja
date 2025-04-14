@@ -1,5 +1,5 @@
 import * as Model from '../common/types';
-import * as DifficultyLevels from './difficulty_levels';
+import * as DifficultyLevels from '../common/difficulty_levels';
 import * as QuestionGeneration from './questions_generator';
 
 export interface StartGameParameters {

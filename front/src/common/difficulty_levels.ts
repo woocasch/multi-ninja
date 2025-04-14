@@ -1,4 +1,4 @@
-import { DifficultyLevel } from '../common/types';
+import { DifficultyLevel } from './types';
 
 export interface DifficultyLevelDetails {
   level: DifficultyLevel;
