@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import './lifes.css';
+import './lifes.scss';
 import lostLifeImage from '../assets/shuriken-empty.svg';
 import remainingLifeImage from '../assets/shuriken-full.svg';
 

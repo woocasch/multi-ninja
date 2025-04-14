@@ -1,7 +1,4 @@
 .questions-display {
-  position: absolute;
-  top: 15px;
-  right: 20px;
   background: linear-gradient(135deg, #c355f6, #79799b);
   color: white;
   font-size: 18px;

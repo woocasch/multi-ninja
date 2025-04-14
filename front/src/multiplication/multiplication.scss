@@ -1,0 +1,17 @@
+.game-board {
+    .lifes-display {
+        position: absolute;
+        top: 15px;
+        left: 20px;
+    }
+
+    .questions-display {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+    }
+
+    .question {
+        margin-top: 50px;
+    }
+}

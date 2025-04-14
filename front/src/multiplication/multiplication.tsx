@@ -1,8 +1,9 @@
 import React, { useEffect, useMemo, useState } from 'react';
+import './multiplication.scss';
 import * as Model from './types';
 import * as Logic from './game_logic';
 import GameSettingsComponent from './game_settings';
-import QuestionComponent from './question';
+import QuestionComponent, { DisplayMode } from '../controls/question';
 import LifesComponent from '../controls/lifes';
 import ResultsComponent from './results';
 import RemainingQuestionsComponent from '../controls/remaining_questions';
@@ -41,10 +42,6 @@ export default function MultiplicationComponent() {
   const isNotPerfectGameCompleted = useMemo(() => {
     return isGameCompleted && !isPerfectGame;
   }, [isGameCompleted, isPerfectGame]);
-  // const questionsAnswered = useMemo(
-  //   () => previousQuestions.length,
-  //   [previousQuestions],
-  // );
   const checkAnswerObserver = useEffect(() => {
     if (currentAnswers.length == 0) {
       return;
@@ -195,17 +192,19 @@ export default function MultiplicationComponent() {
         />
       ) : null}
       {isGameInProgress ? (
-        <div className="game_board">
-          <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
+        <div className="game-board">
+          <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} className='lifes' />
           <RemainingQuestionsComponent
             answeredQuestions={previousQuestions.length}
             totalQuestions={questionsToAnswer}
           />
           <QuestionComponent
-            LeftFactor={currentQuestion.leftHand}
-            RightFactor={currentQuestion.rightHand}
-            Answers={currentQuestion.answerPropositions}
-            OnAnswerAcceptedNotification={onAnswerAccepted}
+            leftHand={currentQuestion.leftHand}
+            symbol='*'
+            rightHand={currentQuestion.rightHand}
+            availableAnswers={currentQuestion.answerPropositions}
+            mode={DisplayMode.Answer}
+            onAnswerAccepted={onAnswerAccepted}
           />
         </div>
       ) : null}

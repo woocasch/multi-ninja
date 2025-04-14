@@ -1,0 +1,30 @@
+.question {
+    text-align: center;
+
+    .operation {
+        font-size: 52px;
+        font-weight: bold;
+        background: hsl(145 100% 81%);
+        border-radius: 15px;
+        width: 50%;
+        margin: auto;
+    }
+
+    .answers {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px;
+        margin: 1em;
+        margin-top: 3em;
+
+        button {
+            font-size: 26px;
+            font-weight: bold;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(88, 51, 223, 0.3);
+            background: linear-gradient(135deg, #027bb8, #075994);
+            padding: 10px 30px;
+            color: white;
+        }
+    }
+}
