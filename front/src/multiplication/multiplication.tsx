@@ -6,7 +6,7 @@ import QuestionComponent from './question';
 import LifesComponent from '../controls/lifes';
 import ResultsComponent from './results';
 import RemainingQuestionsComponent from '../controls/remaining_questions';
-import FlawlessVictoryComponent from './flawless-victory';
+import FlawlessVictoryComponent from '../controls/flawless-victory';
 
 export default function MultiplicationComponent() {
   const [gameStatus, setGameStatus] = useState<Model.GameStatus>(

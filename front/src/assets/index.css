@@ -18,6 +18,8 @@
   background-color: #f8f8ff;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   position: relative;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .root_container .footer {
