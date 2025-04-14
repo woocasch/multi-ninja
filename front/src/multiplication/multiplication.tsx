@@ -200,7 +200,7 @@ export default function MultiplicationComponent() {
           />
           <QuestionComponent
             leftHand={currentQuestion.leftHand}
-            symbol='*'
+            symbol="*"
             rightHand={currentQuestion.rightHand}
             availableAnswers={currentQuestion.answerPropositions}
             mode={DisplayMode.Answer}
@@ -209,7 +209,7 @@ export default function MultiplicationComponent() {
         </div>
       ) : null}
       {isNotPerfectGameCompleted ? (
-        <ResultsComponent answeredQuestions={previousQuestions} symbol='*' />
+        <ResultsComponent answeredQuestions={previousQuestions} symbol="*" />
       ) : null}
       {isPerfectGameCompleted ? (
         <FlawlessVictoryComponent

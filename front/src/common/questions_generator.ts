@@ -1,9 +1,10 @@
-import * as QuestionsProvider from '../common/questions_provider';
-import * as Model from '../common/types';
+import * as QuestionsProvider from './questions_provider';
+import * as Model from './types';
 
 export interface GenerateQuestionsParameters {
   minResult: number;
   maxResult: number;
+  questionMapper: (q: Model.Question) => Model.Question;
 }
 
 export interface GenerateQuestionsResult {
@@ -17,7 +18,9 @@ export interface Combination {
 }
 
 export interface IQuestionsGeneratorService {
-  GenerateQuestions(params: GenerateQuestionsParameters): GenerateQuestionsResult
+  GenerateQuestions(
+    params: GenerateQuestionsParameters,
+  ): GenerateQuestionsResult;
 }
 
 export class QuestionsGeneratorService implements IQuestionsGeneratorService {
@@ -28,9 +31,8 @@ export class QuestionsGeneratorService implements IQuestionsGeneratorService {
   public GenerateQuestions(
     params: GenerateQuestionsParameters,
   ): GenerateQuestionsResult {
-    const questions: Model.Question[] = this.questionsProvider.getQuestionsInRange(
-      params.minResult,
-      params.maxResult)
+    const questions: Model.Question[] = this.questionsProvider
+      .getQuestionsInRange(params.minResult, params.maxResult)
       .map(
         (c) =>
           <Model.Question>{
@@ -38,7 +40,8 @@ export class QuestionsGeneratorService implements IQuestionsGeneratorService {
             rightHand: c.rightHand,
             answerPropositions: [],
           },
-      );
+      )
+      .map((q) => params.questionMapper(q));
     return {
       questions: questions,
     };

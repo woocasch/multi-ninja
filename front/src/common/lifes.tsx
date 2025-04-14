@@ -25,7 +25,7 @@ export default function LifesComponent(props: Properties) {
   }, [lifesRemaining]);
 
   return (
-    <div className='lifes'>
+    <div className="lifes">
       <div className={containerClass}>
         {[...Array(lifesRemaining)].map((x, i) => (
           <img key={i} src={remainingLifeImage} style={{ width: '20px' }} />

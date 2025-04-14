@@ -23,7 +23,8 @@ export default function RemainingQuestionsComponent(props: Properties) {
   }, [questionsRemaining]);
 
   return (
-    <div className='remaining-questions'>
+    <div className="remaining-questions">
       <div className={containerClass}>{questionsRemaining}</div>
-    </div>);
+    </div>
+  );
 }

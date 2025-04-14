@@ -41,7 +41,8 @@ export default function ResultsComponent(props: Properties) {
         availableAnswers={currentItem.question.answerPropositions}
         mode={DisplayMode.Review}
         providedAnswers={currentItem.providedAnswers}
-        correctAnswer={currentItem.expectedAnswer} />
+        correctAnswer={currentItem.expectedAnswer}
+      />
       <div className="browser">
         <button className="button" onClick={showPrev} disabled={!hasPrevious}>
           &lt;

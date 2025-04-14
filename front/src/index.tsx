@@ -27,7 +27,14 @@ root.render(
     </div>
     <RouterProvider router={router} />
     <div className="footer">
-      Znalazłeś błąd? Opisz go <a href="https://github.com/woocasch/multi-ninja/issues/new" target='_blank'>tutaj</a>.
+      Znalazłeś błąd? Opisz go{' '}
+      <a
+        href="https://github.com/woocasch/multi-ninja/issues/new"
+        target="_blank"
+      >
+        tutaj
+      </a>
+      .
     </div>
   </div>,
 );

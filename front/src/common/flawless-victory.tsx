@@ -10,7 +10,7 @@ export interface Properties {
 
 export default function FlawlessVictoryComponent(props: Properties) {
   return (
-    <div className='flawless-victory'>
+    <div className="flawless-victory">
       <div className="star-decoration star-1"></div>
       <div className="star-decoration star-2"></div>
       <div className="star-decoration star-3"></div>
