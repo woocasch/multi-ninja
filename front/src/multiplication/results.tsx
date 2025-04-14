@@ -1,7 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import './results.scss';
 import * as Model from './types';
-import QuestionComponent, { DisplayMode } from '../controls/question';
+import QuestionComponent, { DisplayMode } from '../common/question';
 
 export interface Properties {
   answeredQuestions: Model.AnsweredQuestion[];

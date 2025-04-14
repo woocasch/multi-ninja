@@ -3,11 +3,11 @@ import './multiplication.scss';
 import * as Model from './types';
 import * as Logic from './game_logic';
 import GameSettingsComponent from './game_settings';
-import QuestionComponent, { DisplayMode } from '../controls/question';
-import LifesComponent from '../controls/lifes';
+import QuestionComponent, { DisplayMode } from '../common/question';
+import LifesComponent from '../common/lifes';
 import ResultsComponent from './results';
-import RemainingQuestionsComponent from '../controls/remaining_questions';
-import FlawlessVictoryComponent from '../controls/flawless-victory';
+import RemainingQuestionsComponent from '../common/remaining_questions';
+import FlawlessVictoryComponent from '../common/flawless-victory';
 
 export default function MultiplicationComponent() {
   const [gameStatus, setGameStatus] = useState<Model.GameStatus>(
