@@ -193,7 +193,7 @@ export default function MultiplicationComponent() {
       ) : null}
       {isGameInProgress ? (
         <div className="game-board">
-          <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} className='lifes' />
+          <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
           <RemainingQuestionsComponent
             answeredQuestions={previousQuestions.length}
             totalQuestions={questionsToAnswer}

@@ -1,5 +1,6 @@
 import React, { MouseEvent, useMemo } from 'react';
 import './question.scss';
+import * as Model from '../multiplication/types';
 
 export enum DisplayMode {
     None = 0,
@@ -16,11 +17,12 @@ export interface Properties {
     mode: DisplayMode;
     wrongAnswers?: number[];
     correctAnswer?: number;
+    providedAnswers?: number[];
     onAnswerAccepted?: (answer: number) => void;
 }
 
 export default function QuestionComponent(props: Properties) {
-    const resultingClasses = useMemo(() =>{
+    const resultingClasses = useMemo(() => {
         if (!!props.className) {
             return `question ${props.className}`;
         }
@@ -39,6 +41,27 @@ export default function QuestionComponent(props: Properties) {
         }
     }
 
+    function responseClassNames(
+        answer: number) {
+        if (props.mode == DisplayMode.Answer) {
+            return '';
+        }
+
+        if (!props.providedAnswers) {
+            return '';
+        }
+
+        if (props.providedAnswers.indexOf(answer) != -1) {
+            if (answer == props.correctAnswer) {
+                return 'correct';
+            } else {
+                return 'invalid';
+            }
+        }
+
+        return '';
+    }
+
     return (
         <div className='question'>
             <div className='operation'>
@@ -47,7 +70,7 @@ export default function QuestionComponent(props: Properties) {
             <div className='answers'>
                 {props.availableAnswers.map((v, i) => (
                     <div key={i}>
-                        <button onClick={onAnswerSelected}>
+                        <button onClick={onAnswerSelected} className={responseClassNames(v)}>
                             {v}
                         </button>
                     </div>
