@@ -9,6 +9,8 @@ export interface Properties {
 }
 
 export default function LifesComponent(props: Properties) {
+  const [containerClass, setContainerClass] = useState<string>('lifes-display');
+
   const lifesRemaining = useMemo(() => {
     return props.lifesAvailable - props.lifesLost;
   }, [props.lifesLost, props.lifesAvailable]);
@@ -21,8 +23,6 @@ export default function LifesComponent(props: Properties) {
     setContainerClass('lifes-display lifes-switched');
     setTimeout(() => setContainerClass('lifes-display'), 1000);
   }, [lifesRemaining]);
-
-  const [containerClass, setContainerClass] = useState<string>('lifes-display');
 
   return (
     <div className={containerClass}>

@@ -3,9 +3,9 @@ import * as Model from './types';
 import * as Logic from './game_logic';
 import GameSettingsComponent from './game_settings';
 import QuestionComponent from './question';
-import LifesComponent from './lifes';
+import LifesComponent from '../controls/lifes';
 import ResultsComponent from './results';
-import RemainingQuestionsComponent from './remaining_questions';
+import RemainingQuestionsComponent from '../controls/remaining_questions';
 import FlawlessVictoryComponent from './flawless-victory';
 
 export default function MultiplicationComponent() {
