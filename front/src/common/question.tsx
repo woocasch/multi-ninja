@@ -1,6 +1,6 @@
 import React, { MouseEvent, useMemo } from 'react';
 import './question.scss';
-import * as Model from '../multiplication/types';
+import * as Model from './types';
 
 export enum DisplayMode {
     None = 0,

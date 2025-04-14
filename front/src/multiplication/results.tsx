@@ -1,6 +1,6 @@
 import React, { useMemo, useState } from 'react';
 import './results.scss';
-import * as Model from './types';
+import * as Model from '../common/types';
 import QuestionComponent, { DisplayMode } from '../common/question';
 
 export interface Properties {

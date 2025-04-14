@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import './multiplication.scss';
-import * as Model from './types';
+import * as Model from '../common/types';
 import * as Logic from './game_logic';
 import GameSettingsComponent from './game_settings';
 import QuestionComponent, { DisplayMode } from '../common/question';

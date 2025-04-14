@@ -1,4 +1,4 @@
-import * as Model from './types';
+import * as Model from '../common/types';
 
 export interface GenerateQuestionsParameters {
   minResult: number;

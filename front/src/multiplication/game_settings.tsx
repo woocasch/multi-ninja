@@ -1,7 +1,7 @@
 import React, { ChangeEvent, Dispatch, SetStateAction, useState } from 'react';
 import './game_settings.scss';
 import { DifficultyLevels } from './difficulty_levels';
-import { DifficultyLevel } from './types';
+import { DifficultyLevel } from '../common/types';
 
 interface Properties {
   difficultyLevel: DifficultyLevel;

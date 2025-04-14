@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import GameSettingsComponent from './game_settings';
-import * as Model from './types';
+import * as Model from '../common/types';
 import React from 'react';
 
 describe('GameSettingsComponent', () => {
