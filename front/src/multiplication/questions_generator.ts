@@ -1,3 +1,4 @@
+import * as QuestionsProvider from '../common/questions_provider';
 import * as Model from '../common/types';
 
 export interface GenerateQuestionsParameters {
@@ -15,28 +16,21 @@ export interface Combination {
   result: number;
 }
 
-class QuestionsGeneratorService {
-  private allQuestions: Combination[] = [];
+export interface IQuestionsGeneratorService {
+  GenerateQuestions(params: GenerateQuestionsParameters): GenerateQuestionsResult
+}
 
-  constructor() {
-    for (let i = 1; i <= 10; i++) {
-      for (let j = 1; j <= 10; j++) {
-        const combination: Combination = {
-          leftHand: i,
-          rightHand: j,
-          result: i * j,
-        };
-        this.allQuestions.push(combination);
-      }
-    }
+export class QuestionsGeneratorService implements IQuestionsGeneratorService {
+  private questionsProvider: QuestionsProvider.IQuestionsProviderService;
+  constructor(questionsProvider: QuestionsProvider.IQuestionsProviderService) {
+    this.questionsProvider = questionsProvider;
   }
   public GenerateQuestions(
     params: GenerateQuestionsParameters,
   ): GenerateQuestionsResult {
-    const questions: Model.Question[] = this.allQuestions
-      .filter(
-        (c) => c.result >= params.minResult && c.result <= params.maxResult,
-      )
+    const questions: Model.Question[] = this.questionsProvider.getQuestionsInRange(
+      params.minResult,
+      params.maxResult)
       .map(
         (c) =>
           <Model.Question>{
@@ -51,5 +45,5 @@ class QuestionsGeneratorService {
   }
 }
 
-export const QuestionsGenerator: QuestionsGeneratorService =
-  new QuestionsGeneratorService();
+export const QuestionsGenerator: IQuestionsGeneratorService =
+  new QuestionsGeneratorService(QuestionsProvider.QuestionsProvider);
