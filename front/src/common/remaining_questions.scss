@@ -1,5 +1,5 @@
-.lifes {
-  .lifes-display {
+.remaining-questions {
+  .display {
     background: linear-gradient(135deg, #c355f6, #79799b);
     color: white;
     font-size: 18px;
@@ -11,7 +11,7 @@
     align-items: center;
   }
 
-  .lifes-switched {
+  .question-switched {
     animation: pulse 0.75s 1;
   }
 

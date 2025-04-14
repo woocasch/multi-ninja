@@ -25,13 +25,15 @@ export default function LifesComponent(props: Properties) {
   }, [lifesRemaining]);
 
   return (
-    <div className={containerClass}>
-      {[...Array(lifesRemaining)].map((x, i) => (
-        <img key={i} src={remainingLifeImage} style={{ width: '20px' }} />
-      ))}
-      {[...Array(props.lifesLost)].map((x, i) => (
-        <img key={i} src={lostLifeImage} style={{ width: '20px' }} />
-      ))}
+    <div className='lifes'>
+      <div className={containerClass}>
+        {[...Array(lifesRemaining)].map((x, i) => (
+          <img key={i} src={remainingLifeImage} style={{ width: '20px' }} />
+        ))}
+        {[...Array(props.lifesLost)].map((x, i) => (
+          <img key={i} src={lostLifeImage} style={{ width: '20px' }} />
+        ))}
+      </div>
     </div>
   );
 }
