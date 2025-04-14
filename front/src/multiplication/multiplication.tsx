@@ -5,7 +5,7 @@ import * as Logic from './game_logic';
 import GameSettingsComponent from './game_settings';
 import QuestionComponent, { DisplayMode } from '../common/question';
 import LifesComponent from '../common/lifes';
-import ResultsComponent from './results';
+import ResultsComponent from '../common/results';
 import RemainingQuestionsComponent from '../common/remaining_questions';
 import FlawlessVictoryComponent from '../common/flawless-victory';
 
@@ -209,7 +209,7 @@ export default function MultiplicationComponent() {
         </div>
       ) : null}
       {isNotPerfectGameCompleted ? (
-        <ResultsComponent answeredQuestions={previousQuestions} />
+        <ResultsComponent answeredQuestions={previousQuestions} symbol='*' />
       ) : null}
       {isPerfectGameCompleted ? (
         <FlawlessVictoryComponent

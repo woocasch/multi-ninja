@@ -1,10 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import './results.scss';
-import * as Model from '../common/types';
-import QuestionComponent, { DisplayMode } from '../common/question';
+import * as Model from './types';
+import QuestionComponent, { DisplayMode } from './question';
 
 export interface Properties {
   answeredQuestions: Model.AnsweredQuestion[];
+  symbol: string;
 }
 
 export default function ResultsComponent(props: Properties) {
@@ -35,7 +36,7 @@ export default function ResultsComponent(props: Properties) {
     <div className="results">
       <QuestionComponent
         leftHand={currentItem.question.leftHand}
-        symbol='*'
+        symbol={props.symbol}
         rightHand={currentItem.question.rightHand}
         availableAnswers={currentItem.question.answerPropositions}
         mode={DisplayMode.Review}
