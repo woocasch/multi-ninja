@@ -62,6 +62,10 @@ export class CommonGameLogicService {
     this.questionMapper = questionMapper;
   }
 
+  get Symbol(): string {
+    return this.symbol;
+  }
+
   public StartGame(params: StartGameParameters): StartGameResult {
     const settings =
       DifficultyLevels.DifficultyLevels.GetDifficultyLevelSettings(
