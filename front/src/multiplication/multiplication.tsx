@@ -2,7 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import './multiplication.scss';
 import * as Model from '../common/types';
 import * as Logic from './game_logic';
-import GameSettingsComponent from './game_settings';
+import GameSettingsComponent from '../common/game_settings';
 import QuestionComponent, { DisplayMode } from '../common/question';
 import LifesComponent from '../common/lifes';
 import ResultsComponent from '../common/results';
