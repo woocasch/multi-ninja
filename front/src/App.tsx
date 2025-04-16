@@ -11,7 +11,7 @@ export default function App() {
         <NavLink to={`/multiplication`}>Ćwicz mnożenie</NavLink>
       </p>
       <p>
-        <NavLink to={`/flawless-victory`}>Test screen</NavLink>
+        <NavLink to={`/division`}>Ćwicz dzielenie</NavLink>
       </p>
       <p>
         <img

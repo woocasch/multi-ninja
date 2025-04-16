@@ -5,6 +5,7 @@ import './assets/reset.css';
 import './assets/index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router';
 import MultiplicationComponent from './multiplication/multiplication';
+import DivisionComponent from './division/division';
 
 const router = createBrowserRouter([
   {
@@ -14,6 +15,10 @@ const router = createBrowserRouter([
   {
     path: 'multiplication',
     Component: MultiplicationComponent,
+  },
+  {
+    path: 'division',
+    Component: DivisionComponent,
   },
 ]);
 

@@ -10,7 +10,7 @@ import RemainingQuestionsComponent from '../common/remaining_questions';
 import FlawlessVictoryComponent from '../common/flawless-victory';
 
 export interface Properties {
-    logic: Logic.CommonGameLogicService;
+  logic: Logic.CommonGameLogicService;
 }
 
 export default function GameScreen(props: Properties) {
@@ -124,7 +124,7 @@ export default function GameScreen(props: Properties) {
           rightHand: currentQuestion.rightHand,
           answerPropositions: currentQuestion.answerPropositions,
         },
-        expectedAnswer: currentQuestion.leftHand * currentQuestion.rightHand,
+        expectedAnswer: props.logic.Operation(currentQuestion.leftHand, currentQuestion.rightHand),
         providedAnswers: currentAnswers,
       };
       setPreviousQuestions((old) => [...old, answerToStore]);

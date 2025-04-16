@@ -53,17 +53,24 @@ export interface CalculateGameScoreResult {
 export class CommonGameLogicService {
   private symbol: string;
   private questionMapper: (source: Model.Question) => Model.Question;
+  private operation: (left: number, right: number) => number;
 
   constructor(
     symbol: string,
     questionMapper: (source: Model.Question) => Model.Question,
+    operation:  (left: number, right: number) => number
   ) {
     this.symbol = symbol;
     this.questionMapper = questionMapper;
+    this.operation = operation;
   }
 
   get Symbol(): string {
     return this.symbol;
+  }
+
+  get Operation():  (left: number, right: number) => number {
+    return this.operation;
   }
 
   public StartGame(params: StartGameParameters): StartGameResult {
@@ -119,7 +126,7 @@ export class CommonGameLogicService {
     params: ValidateAnswerParameters,
   ): ValidateAnswerResult {
     const isCorrect =
-      params.question.leftHand * params.question.rightHand ==
+      this.Operation(params.question.leftHand, params.question.rightHand) ==
       params.providedAnswer;
     return {
       isValid: isCorrect,
@@ -179,7 +186,7 @@ export class CommonGameLogicService {
   private AddAnswers(question: Model.Question) {
     const offset_length = 10;
     const max = 100;
-    const correctAnswer = question.leftHand * question.rightHand;
+    const correctAnswer = this.operation(question.leftHand, question.rightHand);
     let result = [correctAnswer];
     let offset_adjustement = 0;
     if (correctAnswer <= offset_length / 2) {
