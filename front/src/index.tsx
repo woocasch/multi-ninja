@@ -4,7 +4,8 @@ import App from './App';
 import './assets/reset.css';
 import './assets/index.css';
 import { createBrowserRouter, RouterProvider } from 'react-router';
-import PlayComponent from './play/play';
+import MultiplicationComponent from './multiplication/multiplication';
+import DivisionComponent from './division/division';
 
 const router = createBrowserRouter([
   {
@@ -12,8 +13,12 @@ const router = createBrowserRouter([
     Component: App,
   },
   {
-    path: 'play',
-    Component: PlayComponent,
+    path: 'multiplication',
+    Component: MultiplicationComponent,
+  },
+  {
+    path: 'division',
+    Component: DivisionComponent,
   },
 ]);
 
@@ -27,7 +32,14 @@ root.render(
     </div>
     <RouterProvider router={router} />
     <div className="footer">
-      Znalazłeś błąd? Opisz go <a href="https://github.com/woocasch/multi-ninja/issues/new" target='_blank'>tutaj</a>.
+      Znalazłeś błąd? Opisz go{' '}
+      <a
+        href="https://github.com/woocasch/multi-ninja/issues/new"
+        target="_blank"
+      >
+        tutaj
+      </a>
+      .
     </div>
   </div>,
 );

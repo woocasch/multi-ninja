@@ -16,8 +16,11 @@
 
 .root_container > div:nth-child(2) {
   background-color: #f8f8ff;
+  background: radial-gradient(circle, hsl(235 100% 50%), hsl(235 100% 81%));
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
   position: relative;
+  padding-top: 15px;
+  padding-bottom: 15px;
 }
 
 .root_container .footer {

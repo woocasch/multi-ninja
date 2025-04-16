@@ -1,14 +1,19 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import * as Model from './types';
-import * as Logic from './game_logic';
-import GameSettingsComponent from './game_settings';
-import QuestionComponent from './question';
-import LifesComponent from './lifes';
-import ResultsComponent from './results';
-import RemainingQuestionsComponent from './remaining_questions';
-import FlawlessVictoryComponent from './flawless-victory';
+import './game_screen.scss';
+import * as Model from '../common/types';
+import * as Logic from './common_game_logic';
+import GameSettingsComponent from '../common/game_settings';
+import QuestionComponent, { DisplayMode } from '../common/question';
+import LifesComponent from '../common/lifes';
+import ResultsComponent from '../common/results';
+import RemainingQuestionsComponent from '../common/remaining_questions';
+import FlawlessVictoryComponent from '../common/flawless-victory';
 
-export default function PlayComponent() {
+export interface Properties {
+  logic: Logic.CommonGameLogicService;
+}
+
+export default function GameScreen(props: Properties) {
   const [gameStatus, setGameStatus] = useState<Model.GameStatus>(
     Model.GameStatus.NotStarted,
   );
@@ -41,10 +46,6 @@ export default function PlayComponent() {
   const isNotPerfectGameCompleted = useMemo(() => {
     return isGameCompleted && !isPerfectGame;
   }, [isGameCompleted, isPerfectGame]);
-  // const questionsAnswered = useMemo(
-  //   () => previousQuestions.length,
-  //   [previousQuestions],
-  // );
   const checkAnswerObserver = useEffect(() => {
     if (currentAnswers.length == 0) {
       return;
@@ -55,7 +56,7 @@ export default function PlayComponent() {
       question: currentQuestion!,
       providedAnswer: currentAnswer,
     };
-    const result = Logic.GameLogic.ValidateAnswer(params);
+    const result = props.logic.ValidateAnswer(params);
     if (!result.isValid) {
       setLifesLost((prev) => prev + 1);
     } else {
@@ -88,7 +89,7 @@ export default function PlayComponent() {
       lifesLost: lifesLost,
       questionsAsked: previousQuestions.length,
     };
-    const result = Logic.GameLogic.CheckGameCompleted(params);
+    const result = props.logic.CheckGameCompleted(params);
     if (result.isCompleted) {
       const calculateScoreParams: Logic.CalculateGameScoreParameters = {
         difficultyLevel: difficultyLevel,
@@ -96,8 +97,7 @@ export default function PlayComponent() {
       };
       setGameStatus(Model.GameStatus.Completed);
       setGameResult(result.result);
-      const calculateScoreResult =
-        Logic.GameLogic.CalculateGameScore(calculateScoreParams);
+      const calculateScoreResult = props.logic.CalculateGameScore(calculateScoreParams);
       setIsPerfectGame(calculateScoreResult.isPerfect);
       setPointsScored(calculateScoreResult.points);
     }
@@ -107,7 +107,7 @@ export default function PlayComponent() {
     const startGameParameters: Logic.StartGameParameters = {
       difficultyLevel: difficultyLevel,
     };
-    const startGameResult = Logic.GameLogic.StartGame(startGameParameters);
+    const startGameResult = props.logic.StartGame(startGameParameters);
     setTotalLifes(startGameResult.totalLifes);
     setLifesLost(0);
     setQuestionsToAnswer(startGameResult.questionsToAnswer);
@@ -124,7 +124,7 @@ export default function PlayComponent() {
           rightHand: currentQuestion.rightHand,
           answerPropositions: currentQuestion.answerPropositions,
         },
-        expectedAnswer: currentQuestion.leftHand * currentQuestion.rightHand,
+        expectedAnswer: props.logic.Operation(currentQuestion.leftHand, currentQuestion.rightHand),
         providedAnswers: currentAnswers,
       };
       setPreviousQuestions((old) => [...old, answerToStore]);
@@ -133,8 +133,7 @@ export default function PlayComponent() {
       difficultyLevel: difficultyLevel,
       previousQuestions: previousQuestions,
     };
-    const selectQuestionResult =
-      Logic.GameLogic.SelectQuestion(selectQuestionParams);
+    const selectQuestionResult = props.logic.SelectQuestion(selectQuestionParams);
     setCurrentQuestion((old) => {
       old.leftHand = selectQuestionResult.nextQuestion.leftHand;
       old.rightHand = selectQuestionResult.nextQuestion.rightHand;
@@ -195,22 +194,24 @@ export default function PlayComponent() {
         />
       ) : null}
       {isGameInProgress ? (
-        <div className="game_board">
+        <div className="game-board">
           <LifesComponent lifesLost={lifesLost} lifesAvailable={totalLifes} />
           <RemainingQuestionsComponent
             answeredQuestions={previousQuestions.length}
             totalQuestions={questionsToAnswer}
           />
           <QuestionComponent
-            LeftFactor={currentQuestion.leftHand}
-            RightFactor={currentQuestion.rightHand}
-            Answers={currentQuestion.answerPropositions}
-            OnAnswerAcceptedNotification={onAnswerAccepted}
+            leftHand={currentQuestion.leftHand}
+            symbol={props.logic.Symbol}
+            rightHand={currentQuestion.rightHand}
+            availableAnswers={currentQuestion.answerPropositions}
+            mode={DisplayMode.Answer}
+            onAnswerAccepted={onAnswerAccepted}
           />
         </div>
       ) : null}
       {isNotPerfectGameCompleted ? (
-        <ResultsComponent answeredQuestions={previousQuestions} />
+        <ResultsComponent answeredQuestions={previousQuestions} symbol={props.logic.Symbol} />
       ) : null}
       {isPerfectGameCompleted ? (
         <FlawlessVictoryComponent

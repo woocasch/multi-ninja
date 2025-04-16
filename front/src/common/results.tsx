@@ -1,9 +1,11 @@
 import React, { useMemo, useState } from 'react';
-import './results.css';
+import './results.scss';
 import * as Model from './types';
+import QuestionComponent, { DisplayMode } from './question';
 
 export interface Properties {
   answeredQuestions: Model.AnsweredQuestion[];
+  symbol: string;
 }
 
 export default function ResultsComponent(props: Properties) {
@@ -22,29 +24,6 @@ export default function ResultsComponent(props: Properties) {
     [currentIndex, totalAnswers],
   );
 
-  function providedAnswerClassName(
-    expectedAnswer: number,
-    currentAnswer: number,
-  ) {
-    return expectedAnswer == currentAnswer ? 'correct' : 'invalid';
-  }
-
-  function responseClassNames(
-    answer: number,
-    question: Model.AnsweredQuestion,
-  ) {
-    let className = '';
-    if (question.providedAnswers.indexOf(answer) != -1) {
-      if (answer == question.expectedAnswer) {
-        className = 'correct';
-      } else {
-        className = 'invalid';
-      }
-    }
-
-    return className;
-  }
-
   function showNext() {
     setCurrentIndex((prev) => prev + 1);
   }
@@ -55,16 +34,15 @@ export default function ResultsComponent(props: Properties) {
 
   return (
     <div className="results">
-      <div className="question">
-        {currentItem.question.leftHand} * {currentItem.question.rightHand}
-      </div>
-      <div className="answer">
-        {currentItem.question.answerPropositions?.map((v, i) => (
-          <button key={i} className={responseClassNames(v, currentItem)}>
-            {v}
-          </button>
-        ))}
-      </div>
+      <QuestionComponent
+        leftHand={currentItem.question.leftHand}
+        symbol={props.symbol}
+        rightHand={currentItem.question.rightHand}
+        availableAnswers={currentItem.question.answerPropositions}
+        mode={DisplayMode.Review}
+        providedAnswers={currentItem.providedAnswers}
+        correctAnswer={currentItem.expectedAnswer}
+      />
       <div className="browser">
         <button className="button" onClick={showPrev} disabled={!hasPrevious}>
           &lt;

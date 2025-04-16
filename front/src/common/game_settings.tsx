@@ -19,16 +19,14 @@ export default function GameSettingsComponent(props: Properties) {
   }
 
   return (
-    <div className='game-settings'>
-      <div>
-        Wybierz poziom trudności:
-      </div>
-      <div className='difficulty-level'>
+    <div className="game-settings">
+      <div>Wybierz poziom trudności:</div>
+      <div className="difficulty-level">
         <select
           value={props.difficultyLevel}
           id="difficultyLevel"
           onChange={onSelectedLevelChange}
-          className='difficulty-level'
+          className="difficulty-level"
         >
           {DifficultyLevels.GetDifficultyLevels().map((l) => (
             <option value={l.level} key={l.level}>
@@ -37,7 +35,7 @@ export default function GameSettingsComponent(props: Properties) {
           ))}
         </select>
       </div>
-      <div className='buttons'>
+      <div className="buttons">
         <button onClick={props.onStartGameRequested}>Rozpocznij</button>
       </div>
     </div>

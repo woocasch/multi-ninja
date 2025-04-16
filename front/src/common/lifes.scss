@@ -1,0 +1,31 @@
+.lifes {
+  .lifes-display {
+    background: linear-gradient(135deg, #c355f6, #79799b);
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(237, 137, 54, 0.3);
+    display: flex;
+    align-items: center;
+  }
+
+  .lifes-switched {
+    animation: pulse 0.75s 1;
+  }
+
+  @keyframes pulse {
+    0% {
+      transform: scale(1);
+    }
+
+    50% {
+      transform: scale(1.15);
+    }
+
+    100% {
+      transform: scale(1);
+    }
+  }
+}

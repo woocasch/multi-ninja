@@ -48,7 +48,12 @@ const difficultyLevels: Dictionary<DifficultyLevel, DifficultyLevelSettings> = {
   },
 };
 
-class DifficultyLevelsService {
+export interface IDifficultyLevelsService {
+  GetDifficultyLevels(): DifficultyLevelDetails[];
+  GetDifficultyLevelSettings(level: DifficultyLevel): DifficultyLevelSettings;
+}
+
+export class DifficultyLevelsService {
   public GetDifficultyLevels(): DifficultyLevelDetails[] {
     return [
       { level: DifficultyLevel.Easy, displayName: 'Łatwy' },
@@ -68,5 +73,5 @@ class DifficultyLevelsService {
   }
 }
 
-export const DifficultyLevels: DifficultyLevelsService =
+export const DifficultyLevels: IDifficultyLevelsService =
   new DifficultyLevelsService();
