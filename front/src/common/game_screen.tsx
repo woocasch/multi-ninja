@@ -97,7 +97,8 @@ export default function GameScreen(props: Properties) {
       };
       setGameStatus(Model.GameStatus.Completed);
       setGameResult(result.result);
-      const calculateScoreResult = props.logic.CalculateGameScore(calculateScoreParams);
+      const calculateScoreResult =
+        props.logic.CalculateGameScore(calculateScoreParams);
       setIsPerfectGame(calculateScoreResult.isPerfect);
       setPointsScored(calculateScoreResult.points);
     }
@@ -124,16 +125,17 @@ export default function GameScreen(props: Properties) {
           rightHand: currentQuestion.rightHand,
           answerPropositions: currentQuestion.answerPropositions,
         },
-        expectedAnswer: props.logic.Operation(currentQuestion.leftHand, currentQuestion.rightHand),
+        expectedAnswer: props.logic.Operation(
+          currentQuestion.leftHand,
+          currentQuestion.rightHand,
+        ),
         providedAnswers: currentAnswers,
       };
       setPreviousQuestions((old) => [...old, answerToStore]);
     }
-    const selectQuestionParams: Logic.SelectQuestionParameters = {
-      difficultyLevel: difficultyLevel,
-      previousQuestions: previousQuestions,
-    };
-    const selectQuestionResult = props.logic.SelectQuestion(selectQuestionParams);
+    const selectQuestionParams: Logic.SelectQuestionParameters = {};
+    const selectQuestionResult =
+      props.logic.SelectQuestion(selectQuestionParams);
     setCurrentQuestion((old) => {
       old.leftHand = selectQuestionResult.nextQuestion.leftHand;
       old.rightHand = selectQuestionResult.nextQuestion.rightHand;
@@ -211,7 +213,10 @@ export default function GameScreen(props: Properties) {
         </div>
       ) : null}
       {isNotPerfectGameCompleted ? (
-        <ResultsComponent answeredQuestions={previousQuestions} symbol={props.logic.Symbol} />
+        <ResultsComponent
+          answeredQuestions={previousQuestions}
+          symbol={props.logic.Symbol}
+        />
       ) : null}
       {isPerfectGameCompleted ? (
         <FlawlessVictoryComponent

@@ -11,10 +11,7 @@ export interface StartGameResult {
   questionsToAnswer: number;
 }
 
-export interface SelectQuestionParameters {
-  difficultyLevel: Model.DifficultyLevel;
-  previousQuestions: Model.AnsweredQuestion[];
-}
+export interface SelectQuestionParameters {}
 
 export interface SelectQuestionResult {
   nextQuestion: Model.Question;
@@ -54,22 +51,25 @@ export class CommonGameLogicService {
   private symbol: string;
   private questionMapper: (source: Model.Question) => Model.Question;
   private operation: (left: number, right: number) => number;
+  private questionsGenerator: QuestionGeneration.IQuestionsGeneratorService;
 
   constructor(
     symbol: string,
     questionMapper: (source: Model.Question) => Model.Question,
-    operation:  (left: number, right: number) => number
+    operation: (left: number, right: number) => number,
+    questionsGenerator: QuestionGeneration.IQuestionsGeneratorService,
   ) {
     this.symbol = symbol;
     this.questionMapper = questionMapper;
     this.operation = operation;
+    this.questionsGenerator = questionsGenerator;
   }
 
   get Symbol(): string {
     return this.symbol;
   }
 
-  get Operation():  (left: number, right: number) => number {
+  get Operation(): (left: number, right: number) => number {
     return this.operation;
   }
 
@@ -78,6 +78,12 @@ export class CommonGameLogicService {
       DifficultyLevels.DifficultyLevels.GetDifficultyLevelSettings(
         params.difficultyLevel,
       );
+    const initializeParams: QuestionGeneration.InitializeParameters = {
+      minResult: settings.minResult,
+      maxResult: settings.maxResult,
+      questionMapper: this.questionMapper,
+    };
+    this.questionsGenerator.Initialize(initializeParams);
     const result: StartGameResult = {
       totalLifes: settings.totalLifes,
       questionsToAnswer: settings.questionsToAnswer,
@@ -89,33 +95,10 @@ export class CommonGameLogicService {
   public SelectQuestion(
     params: SelectQuestionParameters,
   ): SelectQuestionResult {
-    const settings =
-      DifficultyLevels.DifficultyLevels.GetDifficultyLevelSettings(
-        params.difficultyLevel,
-      );
-    const generateQuestionsParams: QuestionGeneration.GenerateQuestionsParameters =
-      {
-        minResult: settings.minResult,
-        maxResult: settings.maxResult,
-        questionMapper: this.questionMapper,
-      };
-    const questions = QuestionGeneration.QuestionsGenerator.GenerateQuestions(
-      generateQuestionsParams,
-    );
-    let index = Math.floor(Math.random() * questions.questions.length);
-    let selectedQuestion = questions.questions[index];
-    let remainingRetries = 3;
-    while (
-      this.IsQuestionRepeated(
-        selectedQuestion,
-        params.previousQuestions.map((q) => q.question),
-      ) &&
-      remainingRetries > 0
-    ) {
-      index = Math.floor(Math.random() * questions.questions.length);
-      selectedQuestion = questions.questions[index];
-    }
-
+    const getQuestionParams: QuestionGeneration.GetQuestionParameters = {};
+    const getQuestionResult =
+      this.questionsGenerator.GetQuestion(getQuestionParams);
+    const selectedQuestion = getQuestionResult.question;
     this.AddAnswers(selectedQuestion);
     return {
       nextQuestion: selectedQuestion,
@@ -222,29 +205,6 @@ export class CommonGameLogicService {
 
     result = result.sort(() => Math.random() - 0.5);
     question.answerPropositions = result;
-  }
-
-  private IsQuestionRepeated(
-    selected: Model.Question,
-    previousQuestions: Model.Question[],
-  ): boolean {
-    for (const current of previousQuestions) {
-      if (
-        current.leftHand == selected.leftHand &&
-        current.rightHand == selected.rightHand
-      ) {
-        return true;
-      }
-
-      if (
-        current.leftHand == selected.rightHand &&
-        current.rightHand == selected.leftHand
-      ) {
-        return true;
-      }
-    }
-
-    return false;
   }
 
   private CalculateQuestionScore(
