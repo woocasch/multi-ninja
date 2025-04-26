@@ -133,10 +133,7 @@ export default function GameScreen(props: Properties) {
       };
       setPreviousQuestions((old) => [...old, answerToStore]);
     }
-    const selectQuestionParams: Logic.SelectQuestionParameters = {
-      difficultyLevel: difficultyLevel,
-      previousQuestions: previousQuestions,
-    };
+    const selectQuestionParams: Logic.SelectQuestionParameters = {};
     const selectQuestionResult =
       props.logic.SelectQuestion(selectQuestionParams);
     setCurrentQuestion((old) => {

@@ -7,6 +7,7 @@ import {
   ValidateAnswerParameters,
 } from '../common/common_game_logic';
 import * as Model from '../common/types';
+import * as QuestionGenerator from '../common/questions_generator';
 
 export const GameLogic: CommonGameLogicService = new CommonGameLogicService(
   '÷',
@@ -17,6 +18,7 @@ export const GameLogic: CommonGameLogicService = new CommonGameLogicService(
     };
   },
   (l, r) => l / r,
+  QuestionGenerator.generatorFactory(),
 );
 
 export type {

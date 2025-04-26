@@ -11,10 +11,7 @@ export interface StartGameResult {
   questionsToAnswer: number;
 }
 
-export interface SelectQuestionParameters {
-  difficultyLevel: Model.DifficultyLevel;
-  previousQuestions: Model.AnsweredQuestion[];
-}
+export interface SelectQuestionParameters {}
 
 export interface SelectQuestionResult {
   nextQuestion: Model.Question;
@@ -54,15 +51,18 @@ export class CommonGameLogicService {
   private symbol: string;
   private questionMapper: (source: Model.Question) => Model.Question;
   private operation: (left: number, right: number) => number;
+  private questionsGenerator: QuestionGeneration.IQuestionsGeneratorService;
 
   constructor(
     symbol: string,
     questionMapper: (source: Model.Question) => Model.Question,
     operation: (left: number, right: number) => number,
+    questionsGenerator: QuestionGeneration.IQuestionsGeneratorService,
   ) {
     this.symbol = symbol;
     this.questionMapper = questionMapper;
     this.operation = operation;
+    this.questionsGenerator = questionsGenerator;
   }
 
   get Symbol(): string {
@@ -83,7 +83,7 @@ export class CommonGameLogicService {
       maxResult: settings.maxResult,
       questionMapper: this.questionMapper,
     };
-    QuestionGeneration.QuestionsGenerator.Initialize(initializeParams);
+    this.questionsGenerator.Initialize(initializeParams);
     const result: StartGameResult = {
       totalLifes: settings.totalLifes,
       questionsToAnswer: settings.questionsToAnswer,
@@ -95,11 +95,9 @@ export class CommonGameLogicService {
   public SelectQuestion(
     params: SelectQuestionParameters,
   ): SelectQuestionResult {
-    const getQuestionParams: QuestionGeneration.GetQuestionParameters = {
-      previousQuestions: params.previousQuestions,
-    };
+    const getQuestionParams: QuestionGeneration.GetQuestionParameters = {};
     const getQuestionResult =
-      QuestionGeneration.QuestionsGenerator.GetQuestion(getQuestionParams);
+      this.questionsGenerator.GetQuestion(getQuestionParams);
     const selectedQuestion = getQuestionResult.question;
     this.AddAnswers(selectedQuestion);
     return {

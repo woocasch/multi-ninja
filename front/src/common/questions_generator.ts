@@ -7,9 +7,7 @@ export interface InitializeParameters {
   questionMapper: (q: Model.Question) => Model.Question;
 }
 
-export interface GetQuestionParameters {
-  previousQuestions: Model.AnsweredQuestion[];
-}
+export interface GetQuestionParameters {}
 
 export interface GetQuestionResult {
   question: Model.Question;
@@ -31,6 +29,7 @@ export class QuestionsGeneratorService implements IQuestionsGeneratorService {
   private questionsProvider: QuestionsProvider.IQuestionsProviderService;
 
   private availableQuestions: Model.Question[] = [];
+  private generatedQuestions: Model.Question[] = [];
 
   constructor(questionsProvider: QuestionsProvider.IQuestionsProviderService) {
     this.questionsProvider = questionsProvider;
@@ -48,24 +47,20 @@ export class QuestionsGeneratorService implements IQuestionsGeneratorService {
           },
       )
       .map((q) => params.questionMapper(q));
+    this.generatedQuestions = [];
   }
 
   public GetQuestion(params: GetQuestionParameters): GetQuestionResult {
     let index = Math.floor(Math.random() * this.availableQuestions.length);
     let selectedQuestion = this.availableQuestions[index];
     let remainingRetries = 3;
-    while (
-      this.IsQuestionRepeated(
-        selectedQuestion,
-        params.previousQuestions.map((q) => q.question),
-      ) &&
-      remainingRetries > 0
-    ) {
+    while (this.IsQuestionRepeated(selectedQuestion) && remainingRetries > 0) {
       index = Math.floor(Math.random() * this.availableQuestions.length);
       selectedQuestion = this.availableQuestions[index];
       remainingRetries--;
     }
 
+    this.generatedQuestions.push(selectedQuestion);
     this.availableQuestions.splice(index, 1);
     const reversedIndex = this.availableQuestions.findIndex(
       (q) =>
@@ -81,15 +76,12 @@ export class QuestionsGeneratorService implements IQuestionsGeneratorService {
     };
   }
 
-  private IsQuestionRepeated(
-    selected: Model.Question,
-    previousQuestions: Model.Question[],
-  ): boolean {
+  private IsQuestionRepeated(selected: Model.Question): boolean {
     const lastQuestion =
-      previousQuestions.length > 0
-        ? previousQuestions[previousQuestions.length - 1]
+      this.generatedQuestions.length > 0
+        ? this.generatedQuestions[this.generatedQuestions.length - 1]
         : null;
-    if (!!lastQuestion) {
+    if (lastQuestion && selected) {
       if (
         lastQuestion.leftHand == selected.leftHand ||
         lastQuestion.rightHand == selected.leftHand
@@ -109,5 +101,6 @@ export class QuestionsGeneratorService implements IQuestionsGeneratorService {
   }
 }
 
-export const QuestionsGenerator: IQuestionsGeneratorService =
-  new QuestionsGeneratorService(QuestionsProvider.QuestionsProvider);
+export function generatorFactory(): IQuestionsGeneratorService {
+  return new QuestionsGeneratorService(QuestionsProvider.QuestionsProvider);
+}
