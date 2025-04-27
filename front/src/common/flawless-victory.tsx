@@ -1,5 +1,5 @@
 import React from 'react';
-import buzzlightyear from '../assets/victory-images/buzzlightyear.png';
+import { images } from './victory-images';
 import './flawless-victory.scss';
 
 export interface Properties {
@@ -9,6 +9,11 @@ export interface Properties {
 }
 
 export default function FlawlessVictoryComponent(props: Properties) {
+  function randomImage(): string {
+    const length = images.length;
+    const index = Math.floor(Math.random() * length);
+    return images[index];
+  }
   return (
     <div className="flawless-victory">
       <div className="star-decoration star-1"></div>
@@ -17,7 +22,7 @@ export default function FlawlessVictoryComponent(props: Properties) {
       <div className="star-decoration star-4"></div>
       <div className="image-container">
         <img
-          src={buzzlightyear}
+          src={randomImage()}
           alt="Nagroda"
           className="reward-image"
           id="rewardImage"
