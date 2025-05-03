@@ -58,7 +58,7 @@ export default function QuestionComponent(props: Properties) {
       }
     }
 
-    return '';
+    return 'disabled';
   }
 
   return (
