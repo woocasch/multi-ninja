@@ -5,6 +5,22 @@ on:
   push:
     branches: [master, develop]
   workflow_dispatch:
+    inputs:
+      image_tag:
+        description: Tag for created images
+        required: true
+        type: string
+
+permissions:
+  id-token: write
+  contents: write
+  checks: write
+  pages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_BASE: woocasch/multi-ninja
+  IMAGE_TAG: feature.${{ inputs.image_tag }}
 
 jobs:
   build-and-test-front:
@@ -70,3 +86,38 @@ jobs:
         with:
           name: front
           path: ./front/dist
+
+  create-front-image:
+    name: Create front-end image
+    needs: [build-and-test-front]
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Log in to container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets: GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker)
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      with:
+        images: |
+          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-front
+        tags: |
+          ${{ env.IMAGE_TAG }}
+
+    - name: Build and push docker image
+      id: push
+      uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      with:
+        context: ./front
+        file: Dockerfile
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: $${ steps.meta.output.labels }}
