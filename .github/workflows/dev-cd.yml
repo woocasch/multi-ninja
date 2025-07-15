@@ -8,8 +8,8 @@ on:
     branches: [feature/**]
 
 jobs:
-  deploy-front-to-test:
-    name: Deploy frontend to test
+  deploy-front-to-dev:
+    name: Deploy frontend to dev
     runs-on: ubuntu-latest
     environment: DEV
 
