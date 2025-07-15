@@ -1,0 +1,13 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net9.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <AssemblyName>MultiNinja.Backend.Domain</AssemblyName>
+        <RootNamespace>MultiNinja.Backend.Domain</RootNamespace>
+        <Company>MultiNinja</Company>
+        <Product>MultiNinja - backend</Product>
+    </PropertyGroup>
+
+</Project>
