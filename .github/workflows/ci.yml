@@ -124,12 +124,13 @@ jobs:
           ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-front
         tags: |
           # Feature branch image
-          type=raw,value=${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
           type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
           # Develop branch image
           type=raw,value=test,enable=${{ github.ref == 'refs/heads/develop' }}
           type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-test,enable=${{ github.ref == 'refs/heads/develop' }}
-
+          # Master branch image
+          type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }},enable=${{ github.ref == 'refs/heads/master' }}
 
     - name: Build and push docker image
       id: push
