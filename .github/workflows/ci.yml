@@ -102,6 +102,13 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
 
+    - name: Load .env
+      id: version_data
+      uses: falti/dotenv-action@v1
+      with:
+        path: .github/workflows/version
+        export-variables: true
+
     - name: Log in to container registry
       uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
       with:
@@ -116,8 +123,12 @@ jobs:
         images: |
           ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-front
         tags: |
-          type=raw,value=${{ env.IMAGE_TAG }}
+          # Feature branch image
+          type=raw,value=${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
+          # Develop branch image
           type=raw,value=test,enable=${{ github.ref == 'refs/heads/develop' }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-test,enable=${{ github.ref == 'refs/heads/develop' }}
 
 
     - name: Build and push docker image
