@@ -4,7 +4,7 @@ namespace MultiNinja.Backend.Application.Controllers;
 
 public interface IAuthenticationController
 {
-    Task<CreateAccountResponse> CreateAccount(
+    Task<OneOf<CreateAccountResponse, ErrorData>> CreateAccount(
         CreateAccountRequest request,
         CancellationToken cancellationToken);
 }

@@ -4,7 +4,7 @@ namespace MultiNinja.Backend.Application.Logic;
 
 public interface ISecurityService
 {
-    Task<CreateCredentialsResponse> CreateCredentials(
+    Task<OneOf<CreateCredentialsResponse, CreateCredentialsError>> CreateCredentials(
         CreateCredentialsRequest request,
         CancellationToken cancellationToken);
 }

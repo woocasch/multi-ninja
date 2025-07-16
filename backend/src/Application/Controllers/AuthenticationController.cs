@@ -13,22 +13,32 @@ public class AuthenticationController : IAuthenticationController
         this.securityService = securityService;
     }
 
-    public async Task<CreateAccountResponse> CreateAccount(CreateAccountRequest request, CancellationToken cancellationToken)
+    public async Task<OneOf<CreateAccountResponse, ErrorData>> CreateAccount(
+        CreateAccountRequest request,
+        CancellationToken cancellationToken)
     {
         var createCredentialsRequest = new CreateCredentialsRequest(request.Email, request.Password);
-        var createCredentialsResponse = await this.securityService.CreateCredentials(createCredentialsRequest, cancellationToken);
-        if (createCredentialsResponse.Result == CreateCredentialsResult.EmailTaken)
+        var createCredentialsResponse = await this.securityService.CreateCredentials(
+            createCredentialsRequest,
+            cancellationToken);
+        if (createCredentialsResponse is { IsT1: true, AsT1: CreateCredentialsError.EmailTaken })
         {
-            var error = new CreateAccountResponse.Error("EmailTaken", "Email already taken");
-            return CreateAccountResponse.Failed(error);
+            var error = new ErrorData.ErrorMessage("EmailTaken", "Email already taken");
+            return new ErrorData([error]);
         }
 
-        if (createCredentialsResponse.Result == CreateCredentialsResult.UnknownError)
+        if (createCredentialsResponse is { IsT1: true, AsT1: CreateCredentialsError.UnknownError })
         {
-            var error = new CreateAccountResponse.Error("UnknownError", "Unknown error");
-            return CreateAccountResponse.Failed(error);
+            var error = new ErrorData.ErrorMessage("UnknownError", "Unknown error");
+            return new ErrorData([error]);
         }
-        
-        return CreateAccountResponse.Created(createCredentialsResponse.Id);
+
+        if (createCredentialsResponse.IsT1)
+        {
+            var error = new ErrorData.ErrorMessage("UnknownError", $"Unknown error '{createCredentialsResponse.AsT1}'.");
+            return new ErrorData([error]);
+        }
+
+        return new CreateAccountResponse(createCredentialsResponse.AsT0.Id);
     }
 }

@@ -15,12 +15,8 @@ public static class Auth
     {
         var request = new CreateAccountRequest(input.Email, input.Password, input.DisplayName);
         var response = await authenticationController.CreateAccount(request, cancellationToken);
-        if (!response.Success)
-        {
-            return Results.InternalServerError();
-        }
-
-        var result = new CreateAccountOutput(response.Id);
-        return Results.Accepted($"api/auth/{result.Id}", result);
+        return response.Match(
+            r => Results.Accepted($"/api/auth/{r.Id}", new CreateAccountOutput(r.Id)),
+            _ => Results.InternalServerError());
     }
 }
