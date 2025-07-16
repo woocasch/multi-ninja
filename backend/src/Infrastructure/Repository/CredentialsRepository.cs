@@ -7,7 +7,7 @@ namespace MultiNinja.Backend.Infrastructure.Repository;
 public class CredentialsRepository : ICredentials
 {
     private readonly Collection<CredentialsDataRecord> credentials = new();
-    
+
     public async Task<bool> Create(CreateCredentialsParameters parameters, CancellationToken cancellationToken)
     {
         await Task.Yield();
@@ -17,12 +17,34 @@ public class CredentialsRepository : ICredentials
             Email = parameters.Email,
             Password = parameters.Password,
         };
-        
+
         this.credentials.Add(dataRecord);
         return true;
     }
 
-    public async Task<CredentialsRecord?> SearchByEmail(SearchByEmailParameters parameters, CancellationToken cancellationToken)
+    public async Task<CredentialsRecord?> CheckCredentials(CheckCredentialsParameters parameters,
+        CancellationToken cancellationToken)
+    {
+        await Task.Yield();
+        var found = this.credentials
+            .Where(c => c.Email == parameters.Email && c.Password == parameters.Password)
+            .ToList();
+        if (found.Count == 0)
+        {
+            return null;
+        }
+
+        if (found.Count == 1)
+        {
+            var item = found[0];
+            return new(item.Id, item.Email);
+        }
+
+        throw new InvalidOperationException();
+    }
+
+    public async Task<CredentialsRecord?> SearchByEmail(SearchByEmailParameters parameters,
+        CancellationToken cancellationToken)
     {
         await Task.Yield();
         var found = this.credentials.Where(c => c.Email == parameters.Email).ToList();
@@ -36,7 +58,7 @@ public class CredentialsRepository : ICredentials
             var item = found[0];
             return new(item.Id, item.Email);
         }
-        
+
         throw new InvalidOperationException();
     }
 }

@@ -23,17 +23,78 @@ public class AuthTests : IClassFixture<WebApiFactory>
     public async Task WhenUserIsCreatedThenCorrectResponseIsReturned()
     {
         var createAccountInput = AuthFakes.GetCreateAccountInput();
-        var requestMessage = new HttpRequestMessage(HttpMethod.Post, "api/auth");
+        var createAccountRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth");
         var createAccountPayloadSerialized = SerializationProvider.Serialize(createAccountInput);
-        requestMessage.Content = new StringContent(createAccountPayloadSerialized, Encoding.UTF8, "application/json");
-        var responseMessage = await this.client.Value.SendAsync(requestMessage);
-        responseMessage.ShouldNotBeNull();
-        responseMessage.StatusCode.ShouldBe(HttpStatusCode.Accepted);
-        var responseContent = await responseMessage.Content.ReadAsStringAsync();
-        responseContent.ShouldNotBeNull();
-        var createAccountOutput = SerializationProvider.Deserialize<CreateAccountOutput>(responseContent);
+        createAccountRequest.Content = new StringContent(createAccountPayloadSerialized, Encoding.UTF8, "application/json");
+        var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
+        createAccountResponse.ShouldNotBeNull();
+        createAccountResponse.StatusCode.ShouldBe(HttpStatusCode.Accepted);
+        var createAccountResponseContent = await createAccountResponse.Content.ReadAsStringAsync();
+        createAccountResponseContent.ShouldNotBeNull();
+        var createAccountOutput = SerializationProvider.Deserialize<CreateAccountOutput>(createAccountResponseContent);
         createAccountOutput.ShouldNotBeNull();
         createAccountOutput.Id.ShouldNotBe(Guid.Empty);
+    }
+
+    [Fact]
+    public async Task WhenUserIsCreatedThenUserTokenCanBeGenerated()
+    {
+        var createAccountInput = AuthFakes.GetCreateAccountInput();
+        var createAccountRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth");
+        var createAccountPayloadSerialized = SerializationProvider.Serialize(createAccountInput);
+        createAccountRequest.Content = new StringContent(createAccountPayloadSerialized, Encoding.UTF8, "application/json");
+        var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
+        createAccountResponse.ShouldNotBeNull();
+        
+        var createTokenInput = new CreateTokenInput(createAccountInput.Email, createAccountInput.Password);
+        var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
+        var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
+        createTokenRequest.Content = new StringContent(createTokenPayload, Encoding.UTF8, "application/json");
+        var createTokenResponse = await this.client.Value.SendAsync(createTokenRequest);
+        createTokenResponse.ShouldNotBeNull();
+        createTokenResponse.StatusCode.ShouldBe(HttpStatusCode.OK);
+        var createTokenResponseContent = await createTokenResponse.Content.ReadAsStringAsync();
+        var createTokenOutput = SerializationProvider.Deserialize<CreateTokenOutput>(createTokenResponseContent);
+        createTokenOutput.ShouldNotBeNull();
+        createTokenOutput.Token.ShouldNotBeNullOrEmpty();
+    }
+
+    [Fact]
+    public async Task WhenInvalidEmailIsProvidedThenUserTokenCanBeGenerated()
+    {
+        var createAccountInput = AuthFakes.GetCreateAccountInput();
+        var createAccountRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth");
+        var createAccountPayloadSerialized = SerializationProvider.Serialize(createAccountInput);
+        createAccountRequest.Content = new StringContent(createAccountPayloadSerialized, Encoding.UTF8, "application/json");
+        var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
+        createAccountResponse.ShouldNotBeNull();
+        
+        var createTokenInput = new CreateTokenInput($"A{createAccountInput.Email}", createAccountInput.Password);
+        var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
+        var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
+        createTokenRequest.Content = new StringContent(createTokenPayload, Encoding.UTF8, "application/json");
+        var createTokenResponse = await this.client.Value.SendAsync(createTokenRequest);
+        createTokenResponse.ShouldNotBeNull();
+        createTokenResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
+    }
+
+    [Fact]
+    public async Task WhenInvalidPasswordIsProvidedThenUserTokenCanBeGenerated()
+    {
+        var createAccountInput = AuthFakes.GetCreateAccountInput();
+        var createAccountRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth");
+        var createAccountPayloadSerialized = SerializationProvider.Serialize(createAccountInput);
+        createAccountRequest.Content = new StringContent(createAccountPayloadSerialized, Encoding.UTF8, "application/json");
+        var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
+        createAccountResponse.ShouldNotBeNull();
+        
+        var createTokenInput = new CreateTokenInput($"A{createAccountInput.Email}", createAccountInput.Password);
+        var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
+        var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
+        createTokenRequest.Content = new StringContent(createTokenPayload, Encoding.UTF8, "application/json");
+        var createTokenResponse = await this.client.Value.SendAsync(createTokenRequest);
+        createTokenResponse.ShouldNotBeNull();
+        createTokenResponse.StatusCode.ShouldBe(HttpStatusCode.BadRequest);
     }
 
     private HttpClient CreateClient()

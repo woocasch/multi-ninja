@@ -41,4 +41,16 @@ public class AuthenticationController : IAuthenticationController
 
         return new CreateAccountResponse(createCredentialsResponse.AsT0.Id);
     }
+
+    public async Task<CreateTokenRespose?> CreateToken(CreateTokenRequest request, CancellationToken cancellationToken)
+    {
+        var verifyCredentialsRequest = new VerifyCredentialsRequest(request.Email, request.Password);
+        var verifyCredentialsResponse = await this.securityService.VerifyCredentials(verifyCredentialsRequest, cancellationToken);
+        if (verifyCredentialsResponse is null)
+        {
+            return null;
+        }
+
+        return new("gpdsamgodsapmsogps");
+    }
 }

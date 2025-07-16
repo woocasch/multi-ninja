@@ -31,4 +31,16 @@ public class SecurityService : ISecurityService
         var result = await this.credentials.Create(parameters, cancellationToken);
         return !result ? CreateCredentialsError.UnknownError : new CreateCredentialsResponse(id);
     }
+
+    public async Task<VerifyCredentialsResponse?> VerifyCredentials(VerifyCredentialsRequest request, CancellationToken cancellationToken)
+    {
+        var checkCredentialsParameters = new CheckCredentialsParameters(request.Email, request.Password);
+        var checkCredentialsResult = await this.credentials.CheckCredentials(checkCredentialsParameters, cancellationToken);
+        if (checkCredentialsResult is null)
+        {
+            return null;
+        }
+
+        return new VerifyCredentialsResponse(checkCredentialsResult.Id);
+    }
 }
