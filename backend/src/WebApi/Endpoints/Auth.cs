@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using MultiNinja.Backend.Application;
-using MultiNinja.Backend.Application.Security;
+using MultiNinja.Backend.Application.Controllers;
+using MultiNinja.Backend.Application.Controllers.Authentication;
+using MultiNinja.Backend.Application.Logic.Security;
 using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 
 namespace MultiNinja.Backend.WebApi.Endpoints;
@@ -9,12 +10,12 @@ public static class Auth
 {
     public static async Task<IResult> CreateAccount(
         [FromBody]CreateAccountInput input,
-        ISecurityService securityService,
+        IAuthenticationController authenticationController,
         CancellationToken cancellationToken)
     {
-        var request = new CreateCredentialsRequest(input.Email, input.Password);
-        var response = await securityService.CreateCredentials(request, cancellationToken);
-        if (response.Result != CreateCredentialsResult.Created)
+        var request = new CreateAccountRequest(input.Email, input.Password, input.DisplayName);
+        var response = await authenticationController.CreateAccount(request, cancellationToken);
+        if (!response.Success)
         {
             return Results.InternalServerError();
         }

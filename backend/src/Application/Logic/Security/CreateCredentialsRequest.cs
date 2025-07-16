@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Application.Security;
+namespace MultiNinja.Backend.Application.Logic.Security;
 
 public class CreateCredentialsRequest
 {

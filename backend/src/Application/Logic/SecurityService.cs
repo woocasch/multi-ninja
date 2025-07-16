@@ -1,8 +1,8 @@
+using MultiNinja.Backend.Application.Logic.Security;
 using MultiNinja.Backend.Application.Repository;
 using MultiNinja.Backend.Application.Repository.Credentials;
-using MultiNinja.Backend.Application.Security;
 
-namespace MultiNinja.Backend.Application;
+namespace MultiNinja.Backend.Application.Logic;
 
 public class SecurityService : ISecurityService
 {

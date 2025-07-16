@@ -1,6 +1,6 @@
-using MultiNinja.Backend.Application.Security;
+using MultiNinja.Backend.Application.Logic.Security;
 
-namespace MultiNinja.Backend.Application;
+namespace MultiNinja.Backend.Application.Logic;
 
 public interface ISecurityService
 {

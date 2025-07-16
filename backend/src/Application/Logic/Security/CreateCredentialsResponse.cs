@@ -1,6 +1,4 @@
-using System.Runtime.CompilerServices;
-
-namespace MultiNinja.Backend.Application.Security;
+namespace MultiNinja.Backend.Application.Logic.Security;
 
 public class CreateCredentialsResponse
 {
