@@ -2,6 +2,7 @@ using System.Net;
 using System.Text;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
+using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 using Shouldly;
 
 namespace MultiNinja.Backend.WebApi.IntegrationTests.Scenarios;
@@ -21,16 +22,18 @@ public class AuthTests : IClassFixture<WebApiFactory>
     [Fact]
     public async Task WhenUserIsCreatedThenCorrectResponseIsReturned()
     {
-        var createAccountPayload = AuthFakes.GetCreateAccountInput();
+        var createAccountInput = AuthFakes.GetCreateAccountInput();
         var requestMessage = new HttpRequestMessage(HttpMethod.Post, "api/auth");
-        var createAccountPayloadSerialized = JsonSerializer.Serialize(createAccountPayload);
+        var createAccountPayloadSerialized = SerializationProvider.Serialize(createAccountInput);
         requestMessage.Content = new StringContent(createAccountPayloadSerialized, Encoding.UTF8, "application/json");
         var responseMessage = await this.client.Value.SendAsync(requestMessage);
         responseMessage.ShouldNotBeNull();
-        responseMessage.StatusCode.ShouldBe(HttpStatusCode.OK);
+        responseMessage.StatusCode.ShouldBe(HttpStatusCode.Accepted);
         var responseContent = await responseMessage.Content.ReadAsStringAsync();
         responseContent.ShouldNotBeNull();
-        responseContent.ShouldBe($"\"Created '{createAccountPayload.DisplayName}'\"");
+        var createAccountOutput = SerializationProvider.Deserialize<CreateAccountOutput>(responseContent);
+        createAccountOutput.ShouldNotBeNull();
+        createAccountOutput.Id.ShouldNotBe(Guid.Empty);
     }
 
     private HttpClient CreateClient()
