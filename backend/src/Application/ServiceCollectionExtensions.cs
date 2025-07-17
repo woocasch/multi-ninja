@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using MultiNinja.Backend.Application.Controllers;
+using MultiNinja.Backend.Application.Orchestration;
 using MultiNinja.Backend.Application.Logic;
 
 namespace MultiNinja.Backend.Application;
@@ -10,7 +10,7 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services)
     {
         services
-            .AddControllers()
+            .AddOrchestration()
             .AddLogic();
         return services;
     }

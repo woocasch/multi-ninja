@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Application.Controllers.Authentication;
+namespace MultiNinja.Backend.Application.Orchestration.Accounts;
 
 public class CreateAccountResponse
 {

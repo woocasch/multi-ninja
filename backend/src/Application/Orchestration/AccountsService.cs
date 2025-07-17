@@ -1,14 +1,14 @@
-using MultiNinja.Backend.Application.Controllers.Authentication;
+using MultiNinja.Backend.Application.Orchestration.Accounts;
 using MultiNinja.Backend.Application.Logic;
 using MultiNinja.Backend.Application.Logic.Security;
 
-namespace MultiNinja.Backend.Application.Controllers;
+namespace MultiNinja.Backend.Application.Orchestration;
 
-public class AuthenticationController : IAuthenticationController
+public class AccountsService : IAccountsService
 {
     private readonly ISecurityService securityService;
 
-    public AuthenticationController(ISecurityService securityService)
+    public AccountsService(ISecurityService securityService)
     {
         this.securityService = securityService;
     }
@@ -42,7 +42,7 @@ public class AuthenticationController : IAuthenticationController
         return new CreateAccountResponse(createCredentialsResponse.AsT0.Id);
     }
 
-    public async Task<CreateTokenRespose?> CreateToken(CreateTokenRequest request, CancellationToken cancellationToken)
+    public async Task<CreateTokenResponse?> CreateToken(CreateTokenRequest request, CancellationToken cancellationToken)
     {
         var verifyCredentialsRequest = new VerifyCredentialsRequest(request.Email, request.Password);
         var verifyCredentialsResponse = await this.securityService.VerifyCredentials(verifyCredentialsRequest, cancellationToken);
@@ -53,4 +53,5 @@ public class AuthenticationController : IAuthenticationController
 
         return new("gpdsamgodsapmsogps");
     }
+
 }

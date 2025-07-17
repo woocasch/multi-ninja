@@ -1,14 +1,14 @@
-using MultiNinja.Backend.Application.Controllers.Authentication;
+using MultiNinja.Backend.Application.Orchestration.Accounts;
 
-namespace MultiNinja.Backend.Application.Controllers;
+namespace MultiNinja.Backend.Application.Orchestration;
 
-public interface IAuthenticationController
+public interface IAccountsService
 {
     Task<OneOf<CreateAccountResponse, ErrorData>> CreateAccount(
         CreateAccountRequest request,
         CancellationToken cancellationToken);
     
-    Task<CreateTokenRespose?> CreateToken(
+    Task<CreateTokenResponse?> CreateToken(
         CreateTokenRequest request,
         CancellationToken cancellationToken);
 }

@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using MultiNinja.Backend.Application.Controllers;
-using MultiNinja.Backend.Application.Controllers.Authentication;
-using MultiNinja.Backend.Application.Logic.Security;
+using MultiNinja.Backend.Application.Orchestration;
+using MultiNinja.Backend.Application.Orchestration.Accounts;
 using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 
 namespace MultiNinja.Backend.WebApi.Endpoints;
@@ -10,7 +9,7 @@ public static class Auth
 {
     public static async Task<IResult> CreateAccount(
         [FromBody]CreateAccountInput input,
-        IAuthenticationController authenticationController,
+        IAccountsService authenticationController,
         CancellationToken cancellationToken)
     {
         var request = new CreateAccountRequest(input.Email, input.Password, input.DisplayName);
@@ -22,7 +21,7 @@ public static class Auth
 
     public static async Task<IResult> CreateToken(
         [FromBody] CreateTokenInput input,
-        IAuthenticationController authenticationController,
+        IAccountsService authenticationController,
         CancellationToken cancellationToken)
     {
         var request = new CreateTokenRequest(input.Email, input.Password);
