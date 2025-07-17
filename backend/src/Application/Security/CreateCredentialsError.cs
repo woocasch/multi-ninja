@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Application.Logic.Security;
+namespace MultiNinja.Backend.Application.Security;
 
 public static class CreateCredentialsError
 {

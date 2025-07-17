@@ -1,19 +1,14 @@
 using MultiNinja.Backend.Application.Orchestration.Accounts;
-using MultiNinja.Backend.Application.Logic;
-using MultiNinja.Backend.Application.Logic.Security;
 using MultiNinja.Backend.Application.Security;
 
 namespace MultiNinja.Backend.Application.Orchestration;
 
 public class AccountsService : IAccountsService
 {
-    private readonly ISecurityService securityService;
-    
     private readonly IMediator mediator;
 
-    public AccountsService(ISecurityService securityService, IMediator mediator)
+    public AccountsService(IMediator mediator)
     {
-        this.securityService = securityService;
         this.mediator = mediator;
     }
 
@@ -44,14 +39,13 @@ public class AccountsService : IAccountsService
 
     public async Task<CreateTokenResponse?> CreateToken(CreateTokenRequest request, CancellationToken cancellationToken)
     {
-        var verifyCredentialsRequest = new VerifyCredentialsRequest(request.Email, request.Password);
-        var verifyCredentialsResponse = await this.securityService.VerifyCredentials(verifyCredentialsRequest, cancellationToken);
-        if (verifyCredentialsResponse is null)
+        var query = new VerifyCredentialsQuery(request.Email, request.Password);
+        var result = await this.mediator.Fetch(query, cancellationToken);
+        if (result.Id is null)
         {
             return null;
         }
 
         return new("gpdsamgodsapmsogps");
     }
-
 }

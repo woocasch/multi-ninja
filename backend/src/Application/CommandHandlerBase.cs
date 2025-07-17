@@ -8,7 +8,7 @@ public abstract class CommandHandlerBase<TCommand> : ICommandHandler
         if (command is not TCommand cast)
         {
             throw new InvalidOperationException(
-                $"Can only handle instances of '{nameof(TCommand)}'.");
+                $"Can only handle instances of '{typeof(TCommand).FullName}'.");
         }
         
         return await this.Execute(cast, cancellationToken);

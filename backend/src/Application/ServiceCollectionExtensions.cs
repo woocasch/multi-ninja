@@ -1,6 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
 using MultiNinja.Backend.Application.Orchestration;
-using MultiNinja.Backend.Application.Logic;
 
 namespace MultiNinja.Backend.Application;
 
@@ -11,9 +10,9 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddOrchestration()
-            .AddLogic()
             .AddSingleton<IMediator, Mediator>()
-            .AddKeyedTransient<ICommandHandler, Security.CreateCredentialsCommandHandler>(typeof(Security.CreateCredentialsCommand).AssemblyQualifiedName);
+            .AddKeyedTransient<ICommandHandler, Security.CreateCredentialsCommandHandler>(typeof(Security.CreateCredentialsCommand).AssemblyQualifiedName)
+            .AddKeyedTransient<IQueryHandler<Security.VerifyCredentialsResult>, Security.VerifyCredentialsQueryHandler>(typeof(Security.VerifyCredentialsQuery).AssemblyQualifiedName);
         return services;
     }
 }

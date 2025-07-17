@@ -1,4 +1,3 @@
-using MultiNinja.Backend.Application.Logic.Security;
 using MultiNinja.Backend.Application.Repository;
 using MultiNinja.Backend.Application.Repository.Credentials;
 
