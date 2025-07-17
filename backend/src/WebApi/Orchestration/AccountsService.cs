@@ -1,7 +1,8 @@
-using MultiNinja.Backend.Application.Orchestration.Accounts;
+using MultiNinja.Backend.Application;
 using MultiNinja.Backend.Application.Security;
+using MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
-namespace MultiNinja.Backend.Application.Orchestration;
+namespace MultiNinja.Backend.WebApi.Orchestration;
 
 public class AccountsService : IAccountsService
 {

@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Application.Orchestration.Accounts;
+namespace MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
 public class CreateTokenRequest
 {

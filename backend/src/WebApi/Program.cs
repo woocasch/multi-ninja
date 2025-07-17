@@ -1,9 +1,12 @@
 using MultiNinja.Backend.Infrastructure;
 using MultiNinja.Backend.WebApi.Endpoints;
+using MultiNinja.Backend.WebApi.Orchestration;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddInfrastructure();
+builder.Services
+    .AddInfrastructure()
+    .AddOrchestration();
 
 var app = builder.Build();
 

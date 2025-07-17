@@ -1,6 +1,6 @@
 using System.Collections.ObjectModel;
 
-namespace MultiNinja.Backend.Application.Orchestration;
+namespace MultiNinja.Backend.WebApi.Orchestration;
 
 public class ErrorData
 {

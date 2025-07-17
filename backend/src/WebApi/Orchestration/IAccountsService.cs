@@ -1,6 +1,6 @@
-using MultiNinja.Backend.Application.Orchestration.Accounts;
+using MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
-namespace MultiNinja.Backend.Application.Orchestration;
+namespace MultiNinja.Backend.WebApi.Orchestration;
 
 public interface IAccountsService
 {

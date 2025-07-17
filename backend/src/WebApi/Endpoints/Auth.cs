@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
-using MultiNinja.Backend.Application.Orchestration;
-using MultiNinja.Backend.Application.Orchestration.Accounts;
 using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
+using MultiNinja.Backend.WebApi.Orchestration;
+using MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
 namespace MultiNinja.Backend.WebApi.Endpoints;
 

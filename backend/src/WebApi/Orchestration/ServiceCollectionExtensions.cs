@@ -1,6 +1,4 @@
-using Microsoft.Extensions.DependencyInjection;
-
-namespace MultiNinja.Backend.Application.Orchestration;
+namespace MultiNinja.Backend.WebApi.Orchestration;
 
 public static class ServiceCollectionExtensions
 {

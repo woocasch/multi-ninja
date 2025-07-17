@@ -15,5 +15,13 @@
       <ProjectReference Include="..\Domain\Domain.csproj" />
       <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
     </ItemGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="OneOf" Version="3.0.271" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Using Include="OneOf" />
+    </ItemGroup>
 
 </Project>
