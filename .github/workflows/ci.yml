@@ -33,7 +33,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./front
+        working-directory: ./frontend
 
     steps:
       - name: Checkout code
@@ -64,7 +64,7 @@ jobs:
 
     defaults:
       run:
-        working-directory: ./front
+        working-directory: ./frontend
 
     steps:
       - name: Checkout code
