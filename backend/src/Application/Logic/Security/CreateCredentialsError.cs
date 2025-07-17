@@ -1,8 +1,8 @@
 namespace MultiNinja.Backend.Application.Logic.Security;
 
-public enum CreateCredentialsError
+public static class CreateCredentialsError
 {
-    EmailTaken = 1,
-    
-    UnknownError = 99,
+    public const string EmailTaken = nameof(EmailTaken);
+
+    public const string UnknownError = nameof(UnknownError);
 }

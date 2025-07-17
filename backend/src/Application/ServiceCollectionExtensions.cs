@@ -11,7 +11,9 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddOrchestration()
-            .AddLogic();
+            .AddLogic()
+            .AddSingleton<IMediator, Mediator>()
+            .AddKeyedTransient<ICommandHandler, Security.CreateCredentialsCommandHandler>(typeof(Security.CreateCredentialsCommand).AssemblyQualifiedName);
         return services;
     }
 }
