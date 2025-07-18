@@ -84,8 +84,8 @@ jobs:
       - name: Publish artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: front
-          path: ./front/dist
+          name: frontend
+          path: ./frontend/dist
 
   create-front-image:
     name: Create front-end image
