@@ -28,5 +28,5 @@ jobs:
           server: ${{ secrets.SERVER_ADDRESS }}
           username: ${{ secrets.USER_NAME }}
           password: ${{ secrets.PASSWORD }}
-          local-dir: ./artifacts/front/
+          local-dir: ./artifacts/frontend/
           server-dir: ${{ secrets.DEPLOYMENT_PATH }}
