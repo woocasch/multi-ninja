@@ -85,7 +85,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: front
-          path: ./front/dist
+          path: ./frontend/dist
 
   create-front-image:
     name: Create front-end image
