@@ -19,4 +19,19 @@
       <PackageReference Include="OneOf" Version="3.0.271" />
     </ItemGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="ReadModelProcessing\EventHandlerBaseResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>EventHandlerBaseResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="ReadModelProcessing\EventHandlerBaseResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>EventHandlerBaseResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

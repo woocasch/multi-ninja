@@ -8,8 +8,6 @@ public class UserCreatedTests
 {
     private Guid streamId;
 
-    private EntityType entityType = null!;
-
     private Guid userId;
 
     private DateTime storageDate;
@@ -24,13 +22,12 @@ public class UserCreatedTests
         var idOfStream = Guid.NewGuid();
         var idOfUser = Guid.NewGuid();
         this.Given(t => t.StreamIdIs(idOfStream))
-            .And(t => t.EntityTypeIs(new EntityType(4132, "dsginsdogis")))
             .And(t => t.UserIdIs(idOfUser))
             .And(t => t.StorageDateIs(new DateTime(2000, 1, 1)))
             .And(t => t.DisplayNameIs("aofpsamofpa"))
             .When(t => t.InstanceIsCreated())
             .Then(t => t.StreamIdValueIs(idOfStream))
-            .And(t => t.EntityTypeValueIs(new EntityType(4132, "dsginsdogis")))
+            .And(t => t.EntityTypeValueIs(EntityType.User))
             .And(t => t.UserIdValueIs(idOfUser))
             .And(t => t.StorageDateValueIs(new DateTime(2000, 1, 1)))
             .And(t => t.DisplayNameValueIs("aofpsamofpa"))
@@ -38,8 +35,6 @@ public class UserCreatedTests
     }
     
     private void StreamIdIs(Guid value) => this.streamId = value;
-    
-    private void EntityTypeIs(EntityType value) => this.entityType = value;
     
     private void UserIdIs(Guid value) => this.userId = value;
     
@@ -51,7 +46,6 @@ public class UserCreatedTests
     {
         this.instance = UserCreated.Create(
             this.streamId,
-            this.entityType,
             this.userId,
             this.storageDate,
             this.displayName);

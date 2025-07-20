@@ -5,11 +5,13 @@ using MultiNinja.Backend.Domain;
 
 namespace MultiNinja.Backend.Infrastructure.Repository;
 
-public class StreamsRepository : IStreams
+public sealed class StreamsRepository : IStreams
 {
     private readonly Collection<StreamRecord> streams = [];
 
     private readonly Collection<EventRecord> events = [];
+
+    private readonly Dictionary<string, int> processorPositions = [];
 
     public async Task CreateStream(CreateStreamParameters parameters, CancellationToken cancellationToken)
     {
@@ -29,6 +31,7 @@ public class StreamsRepository : IStreams
         var record = new EventRecord(
             parameters.StreamId,
             parameters.EntityType,
+            parameters.StorageDate,
             parameters.EventData,
             parameters.EntityVersion);
         var stream = this.streams
@@ -59,7 +62,38 @@ public class StreamsRepository : IStreams
         return record.Version;
     }
 
+    public async Task<EntityEvent?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken)
+    {
+        await Task.Yield();
+        if (!this.processorPositions.TryGetValue(processorName, out var position))
+        {
+            this.processorPositions.Add(processorName, -1);
+            return null;
+        }
+        
+        var result = this.events
+            .Index()
+            .Where(e => e.Index > position)
+            .OrderBy(e => e.Index)
+            .Select(e => e.Item)
+            .FirstOrDefault();
+        return result?.EventData;
+    }
+
+    public async Task MarkEventAsProcessed(EntityEvent entityEvent, string processorName, CancellationToken cancellationToken)
+    {
+        await Task.Yield();
+        var record = this.events
+            .Single(e => e.EventData == entityEvent);
+        var index = this.events
+            .IndexOf(record);
+        if (!this.processorPositions.TryAdd(processorName, index))
+        {
+            this.processorPositions[processorName] = index;
+        }
+    }
+
     private record StreamRecord(Guid StreamId, EntityType EntityType, Guid EntityId, ulong Version);
 
-    private record EventRecord(Guid StreamId, EntityType EntityType, EntityEvent EventData, ulong Version);
+    private record EventRecord(Guid StreamId, EntityType EntityType, DateTime StorageDate, EntityEvent EventData, ulong Version);
 }

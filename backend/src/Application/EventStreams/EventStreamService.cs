@@ -26,6 +26,7 @@ public sealed class EventStreamService : IEventStreamsService
         {
             var addEventParameters = new AddEventParameters(
                 uncommitedEvent,
+                uncommitedEvent.StorageDate,
                 currentVersion);
             currentVersion = await this.streams.AddEvent(addEventParameters, cancellationToken);
         }
@@ -39,6 +40,7 @@ public sealed class EventStreamService : IEventStreamsService
         {
             var addEventParameters = new AddEventParameters(
                 uncommitedEvent,
+                uncommitedEvent.StorageDate,
                 currentVersion);
             currentVersion = await this.streams.AddEvent(addEventParameters, cancellationToken);
         }

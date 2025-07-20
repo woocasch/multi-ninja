@@ -6,7 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services
     .AddInfrastructure()
-    .AddOrchestration();
+    .AddOrchestration()
+    .AddHostedService<MultiNinja.Backend.WebApi.WriteModelProcessing.WriteModelProcessor>();
 
 var app = builder.Build();
 

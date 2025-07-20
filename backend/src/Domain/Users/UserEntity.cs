@@ -6,8 +6,8 @@ public sealed class UserEntity : Entity
 
     public string DisplayName { get; private set; } = string.Empty;
 
-    private UserEntity(Guid streamId, EntityType entityType, Guid entityId)
-        : base(streamId, entityType, entityId)
+    private UserEntity(Guid streamId, Guid entityId)
+        : base(streamId, EntityType.User, entityId)
     {
     }
 
@@ -17,11 +17,9 @@ public sealed class UserEntity : Entity
     {
         var result = new UserEntity(
             Guid.NewGuid(),
-            EntityType.User,
             userId);
         var userCreatedEvent = UserCreated.Create(
             result.StreamId,
-            result.EntityType,
             userId,
             DateTime.UtcNow,
             displayName);
@@ -36,6 +34,9 @@ public sealed class UserEntity : Entity
             case UserCreated userCreated:
                 this.When(userCreated);
                 break;
+            default:
+                throw new InvalidOperationException(
+                    $"Missing handler for '{entityEvent.GetType().FullName}'.");
         }
     }
 
