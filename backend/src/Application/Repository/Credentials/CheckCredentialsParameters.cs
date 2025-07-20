@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.Repository.Credentials;
 
-public class CheckCredentialsParameters
+public sealed class CheckCredentialsParameters
 {
     public CheckCredentialsParameters(string email, string password)
     {

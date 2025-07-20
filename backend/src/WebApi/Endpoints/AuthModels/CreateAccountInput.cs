@@ -1,3 +1,3 @@
 namespace MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 
-public record CreateAccountInput(string Email, string Password, string DisplayName);
+public sealed record CreateAccountInput(string Email, string Password, string DisplayName);

@@ -2,7 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace MultiNinja.Backend.Application;
 
-public class Mediator : IMediator
+public sealed class Mediator : IMediator
 {
     private readonly IServiceProvider serviceProvider;
 

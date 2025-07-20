@@ -12,7 +12,8 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddApplication()
-            .AddSingleton<ICredentials, CredentialsRepository>();
+            .AddSingleton<ICredentials, CredentialsRepository>()
+            .AddSingleton<IStreams, StreamsRepository>();
         return services;
     }
 }

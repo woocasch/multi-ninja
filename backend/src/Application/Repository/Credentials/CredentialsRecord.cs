@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.Repository.Credentials;
 
-public class CredentialsRecord
+public sealed class CredentialsRecord
 {
     public CredentialsRecord(Guid id, string email)
     {

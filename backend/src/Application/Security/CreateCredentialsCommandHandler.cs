@@ -3,7 +3,7 @@ using MultiNinja.Backend.Application.Repository.Credentials;
 
 namespace MultiNinja.Backend.Application.Security;
 
-public class CreateCredentialsCommandHandler : CommandHandlerBase<CreateCredentialsCommand>
+public sealed class CreateCredentialsCommandHandler : CommandHandlerBase<CreateCredentialsCommand>
 {
     private readonly ICredentials credentials;
 

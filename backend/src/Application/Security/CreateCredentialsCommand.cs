@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.Security;
 
-public class CreateCredentialsCommand : ICommand
+public sealed class CreateCredentialsCommand : ICommand
 {
     public CreateCredentialsCommand(
         Guid id,

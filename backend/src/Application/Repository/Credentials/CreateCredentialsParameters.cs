@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.Repository.Credentials;
 
-public class CreateCredentialsParameters
+public sealed class CreateCredentialsParameters
 {
     public CreateCredentialsParameters(Guid id, string email, string password)
     {

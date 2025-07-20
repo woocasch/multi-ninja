@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.Security;
 
-public class VerifyCredentialsQuery : IQuery<VerifyCredentialsResult>
+public sealed class VerifyCredentialsQuery : IQuery<VerifyCredentialsResult>
 {
     public VerifyCredentialsQuery(string email, string password)
     {

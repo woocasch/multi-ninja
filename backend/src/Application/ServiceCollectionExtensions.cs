@@ -1,5 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
+using MultiNinja.Backend.Application.EventStreams;
 using MultiNinja.Backend.Application.Security;
+using MultiNinja.Backend.Application.Users;
 
 namespace MultiNinja.Backend.Application;
 
@@ -10,6 +12,8 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddSecurity()
+            .AddUsers() 
+            .AddEventStreams()
             .AddSingleton<IMediator, Mediator>();
         return services;
     }

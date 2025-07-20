@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
-public class CreateTokenResponse
+public sealed class CreateTokenResponse
 {
     public CreateTokenResponse(string token)
     {

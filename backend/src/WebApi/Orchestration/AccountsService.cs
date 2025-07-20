@@ -1,10 +1,11 @@
 using MultiNinja.Backend.Application;
 using MultiNinja.Backend.Application.Security;
+using MultiNinja.Backend.Application.Users;
 using MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
 namespace MultiNinja.Backend.WebApi.Orchestration;
 
-public class AccountsService : IAccountsService
+public sealed class AccountsService : IAccountsService
 {
     private readonly IMediator mediator;
 
@@ -17,8 +18,16 @@ public class AccountsService : IAccountsService
         CreateAccountRequest request,
         CancellationToken cancellationToken)
     {
-        var id = Guid.NewGuid();
-        var createCredentialsCommand = new CreateCredentialsCommand(id, request.Email, request.Password);
+        var userId = Guid.NewGuid();
+        var createUserCommand = new CreateUserCommand(userId, request.DisplayName);
+        var createUserResult = await this.mediator.Execute(createUserCommand, cancellationToken);
+        if (!createUserResult.Success)
+        {
+            return new ErrorData([new ErrorData.ErrorMessage("UserCreationError", "User creation error")]);
+        }
+
+        var credentialsId = Guid.NewGuid();
+        var createCredentialsCommand = new CreateCredentialsCommand(credentialsId, request.Email, request.Password);
         var result = await this.mediator.Execute(createCredentialsCommand, cancellationToken);
         if (!result.Success)
         {
@@ -35,7 +44,7 @@ public class AccountsService : IAccountsService
             }
         }
 
-        return new CreateAccountResponse(id);
+        return new CreateAccountResponse(credentialsId);
     }
 
     public async Task<CreateTokenResponse?> CreateToken(CreateTokenRequest request, CancellationToken cancellationToken)
