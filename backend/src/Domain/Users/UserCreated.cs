@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace MultiNinja.Backend.Domain.Users;
 
 public sealed class UserCreated : EntityEvent
 {
+    [JsonConstructor]
     private UserCreated(
         Guid streamId,
         Guid userId,
@@ -44,7 +47,7 @@ public sealed class UserCreated : EntityEvent
                 UserCreatedResources.DisplayName_Required,
                 nameof(displayName));
         }
-        
+
         return new UserCreated(
             streamId,
             userId,

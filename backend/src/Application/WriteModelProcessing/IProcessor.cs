@@ -6,8 +6,9 @@ public interface IProcessor
     
     public enum Result
     {
-        EventProcessed,
-        ProcessingError,
-        NothingToProcess,
+        None = 0,
+        EventProcessed = 1,
+        ProcessingError = 2,
+        NothingToProcess = 3,
     }
 }

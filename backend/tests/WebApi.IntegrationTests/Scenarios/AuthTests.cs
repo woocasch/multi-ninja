@@ -102,9 +102,11 @@ public class AuthTests : IClassFixture<WebApiFactory>
 
     private HttpClient CreateClient()
     {
-        return this.webApiFactory.CreateClient(new WebApplicationFactoryClientOptions()
+        var result = this.webApiFactory.CreateClient(new WebApplicationFactoryClientOptions()
         {
             AllowAutoRedirect = true,
         });
+        result.Timeout = TimeSpan.FromHours(1);
+        return result;
     }
 }

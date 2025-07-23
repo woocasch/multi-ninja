@@ -1,7 +1,10 @@
+using System.Text.Json.Serialization;
+
 namespace MultiNinja.Backend.Domain.Credentials;
 
 public sealed class CredentialsCreated : EntityEvent
-{
+{   
+    [JsonConstructor]
     private CredentialsCreated(
         Guid streamId,
         Guid credentialsId,

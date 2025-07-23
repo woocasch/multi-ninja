@@ -4,21 +4,29 @@ namespace MultiNinja.Backend.WebApi.WriteModelProcessing;
 
 public class WriteModelProcessor : BackgroundService
 {
-    private readonly IProcessor processor;
+    private readonly IServiceScopeFactory serviceScopeFactory;
 
-    public WriteModelProcessor(IProcessor processor)
+    public WriteModelProcessor(IServiceScopeFactory serviceScopeFactory)
     {
-        this.processor = processor;
+        this.serviceScopeFactory = serviceScopeFactory;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
+        var processor = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IProcessor>();
         while (!stoppingToken.IsCancellationRequested)
         {
-            IProcessor.Result result;
+            IProcessor.Result result = IProcessor.Result.None;
             do
             {
-                result = await this.processor.ProcessNextEvent(stoppingToken);
+                try
+                {
+                    result = await processor.ProcessNextEvent(stoppingToken);
+                }
+                catch (Exception ex)
+                {
+                    Console.WriteLine(ex.Message);
+                }
             } while (result == IProcessor.Result.EventProcessed);
             await Task.Delay(1000, stoppingToken);
         }

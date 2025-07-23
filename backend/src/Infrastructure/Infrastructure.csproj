@@ -9,6 +9,11 @@
         <Company>MultiNinja</Company>
         <Product>MultiNinja - backend</Product>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="9.0.3" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="9.0.7" />
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Application\Application.csproj" />

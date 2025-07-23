@@ -1,0 +1,34 @@
+name: local_multininja_backend
+
+services:
+  multi-ninja.backend.writemodel.local:
+    container_name: multi-ninja.backend.writemodel.local
+    hostname: multi-ninja.backend.writemodel.local
+    image: mysql:8.0
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=secret-password
+      - MYSQL_DATABASE=write_model
+      - MYSQL_USER=multi-ninja-writes
+      - MYSQL_PASSWORD=multi-ninja-writes-password
+    volumes:
+      - type: volume
+        source: writemodel-data
+        target: /var/lib/mysql
+    ports:
+      - 10001:3306
+
+  multi-ninja.backend.writemodeladmin.local:
+    container_name: multi-ninja.backend.writemodeladmin.local
+    hostname: multi-ninja.backend.writemodeladmin.local
+    image: phpmyadmin:5.2.2
+    restart: always
+    environment:
+      - PMA_HOST=multi-ninja.backend.writemodel.local
+    ports:
+      - 10002:80
+    depends_on:
+      - multi-ninja.backend.writemodel.local
+
+volumes:
+  writemodel-data:

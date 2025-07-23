@@ -13,7 +13,7 @@ public static class ServiceCollectionExtensions
         services
             .AddApplication()
             .AddSingleton<ICredentials, CredentialsRepository>()
-            .AddSingleton<IStreams, StreamsRepository>()
+            .AddScoped<IStreams, Repository.EfCore.StreamsRepository>()
             .AddSingleton<IUsers, UsersRepository>();
         return services;
     }
