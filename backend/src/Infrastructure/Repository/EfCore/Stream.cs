@@ -2,7 +2,7 @@ namespace MultiNinja.Backend.Infrastructure.Repository.EfCore;
 
 public class Stream
 {
-    public ulong Id { get; set; }
+    // public ulong Id { get; set; }
     
     public Guid StreamId { get; set; }
 

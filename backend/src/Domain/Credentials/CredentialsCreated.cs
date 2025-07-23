@@ -11,9 +11,8 @@ public sealed class CredentialsCreated : EntityEvent
         Guid userId,
         string email,
         string passwordHash,
-        DateTime storageDate,
-        ulong version)
-        : base(streamId, EntityType.Credentials, storageDate, version)
+        DateTime storageDate)
+        : base(streamId, EntityType.Credentials, storageDate)
     {
         this.CredentialsId = credentialsId;
         this.UserId = userId;
@@ -77,7 +76,6 @@ public sealed class CredentialsCreated : EntityEvent
             userId,
             email,
             passwordHash,
-            DateTime.UtcNow,
-            0);
+            DateTime.UtcNow);
     }
 }

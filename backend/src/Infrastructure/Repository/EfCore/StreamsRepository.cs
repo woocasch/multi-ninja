@@ -35,7 +35,7 @@ public class StreamsRepository : IStreams
 
     public async Task<ulong> AddEvent(AddEventParameters parameters, CancellationToken cancellationToken)
     {
-        var streams = await this.context.Streams
+        var streams = await this.context.Streams.Include(s => s.Events)
             .Where(s => s.StreamId == parameters.StreamId)
             .Where(s => s.EntityType == parameters.EntityType.Name)
             .ToListAsync(cancellationToken);
@@ -46,6 +46,12 @@ public class StreamsRepository : IStreams
         
         var stream = streams[0];
         var eventData = Serialize(parameters.EventData);
+        ulong eventVersion = 1;
+        if (stream.Events.Count > 0)
+        {
+            eventVersion = stream.Events.Max(e => e.Version) + 1;
+        }
+
         var payload = new Event()
         {
             Stream = stream,
@@ -53,14 +59,14 @@ public class StreamsRepository : IStreams
             EventTime = parameters.StorageDate,
             TypeName = eventData.TypeName,
             SerializedEvent = eventData.SerializedEvent,
-            Version = parameters.EntityVersion,
+            Version = eventVersion,
         };
         stream.Events.Add(payload);
         await this.context.SaveChangesAsync(cancellationToken);
-        return parameters.EntityVersion;
+        return eventVersion;
     }
 
-    public async Task<EntityEvent?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken)
+    public async Task<EntityEventEnvelope?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken)
     {
         await Task.Yield();
         var processor = this.context.ProcessorProgresses
@@ -68,29 +74,35 @@ public class StreamsRepository : IStreams
         ulong lastProcessedId = 0;
         if (processor is not null)
         {
-            lastProcessedId = processor.LastProcessedEventId;
+            lastProcessedId = processor.LastProcessedPosition;
         }
 
-        var @event = this.context.Events
-            .Where(e => e.Id > lastProcessedId)
-            .OrderBy(e => e.Id)
-            .FirstOrDefault();
+        var @event = await this.context.Events
+            .Where(e => e.Position > lastProcessedId)
+            .OrderBy(e => e.Position)
+            .FirstOrDefaultAsync(cancellationToken);
         if (@event is null)
         {
             return null;
         }
 
-        return Deserialize(@event.TypeName, @event.SerializedEvent);
+        var eventData = Deserialize(@event.TypeName, @event.SerializedEvent);
+        return new(
+            @event.StreamId,
+            EntityType.FromName(@event.EntityType) ?? new EntityType(-1, "--"),
+            @event.EventTime,
+            eventData,
+            @event.Version);
     }
 
-    public async Task MarkEventAsProcessed(EntityEvent entityEvent, string processorName, CancellationToken cancellationToken)
+    public async Task MarkEventAsProcessed(EntityEventEnvelope entityEvent, string processorName, CancellationToken cancellationToken)
     {
         await Task.Yield();
         var @event = this.context.Events
-            .Where(e => e.Stream.StreamId == entityEvent.StreamId)
+            .Where(e => e.StreamId == entityEvent.StreamId)
             .Where(e => e.EntityType == entityEvent.EntityType.Name)
             .Where(e => e.Version == entityEvent.Version)
-            .OrderBy(e => e.Id)
+            .OrderBy(e => e.Position)
             .FirstOrDefault();
         if (@event is null)
         {
@@ -104,14 +116,14 @@ public class StreamsRepository : IStreams
             processor = new ProcessorsProgress()
             {
                 ProcessorName = processorName,
-                LastProcessedEventId = @event.Id,
+                LastProcessedPosition = @event.Position,
             };
             await this.context.ProcessorProgresses.AddAsync(processor, cancellationToken);
             await this.context.SaveChangesAsync(cancellationToken);
         }
         else
         {
-            processor.LastProcessedEventId = @event.Id;
+            processor.LastProcessedPosition = @event.Position;
             await this.context.SaveChangesAsync(cancellationToken);
         }
     }

@@ -1,10 +1,14 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace MultiNinja.Backend.Infrastructure.Repository.EfCore;
 
 public class Event
 {
-    public ulong Id { get; set; }
+    // public ulong Id { get; set; }
 
-    public ulong StreamId { get; set; }
+    public Guid EventId { get; set; }
+
+    public Guid StreamId { get; set; }
 
     public Stream Stream { get; set; } = null!;
 
@@ -17,4 +21,6 @@ public class Event
     public string SerializedEvent { get; set; } = string.Empty;
     
     public ulong Version { get; set; }
+
+    public ulong Position { get; set; }
 }

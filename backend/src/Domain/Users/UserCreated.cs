@@ -9,9 +9,8 @@ public sealed class UserCreated : EntityEvent
         Guid streamId,
         Guid userId,
         DateTime storageDate,
-        string displayName,
-        ulong version)
-        : base(streamId, EntityType.User, storageDate, version)
+        string displayName)
+        : base(streamId, EntityType.User, storageDate)
     {
         this.UserId = userId;
         this.DisplayName = displayName;
@@ -52,7 +51,6 @@ public sealed class UserCreated : EntityEvent
             streamId,
             userId,
             storageDate,
-            displayName,
-            0);
+            displayName);
     }
 }

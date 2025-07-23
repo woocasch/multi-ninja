@@ -20,10 +20,11 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                 columns: table => new
                 {
                     ProcessorName = table.Column<string>(type: "varchar(255)", nullable: false),
-                    LastProcessedEventId = table.Column<ulong>(type: "bigint unsigned", nullable: false)
+                    LastProcessedPosition = table.Column<ulong>(type: "bigint unsigned", nullable: false)
                 },
                 constraints: table =>
                 {
+                    table.PrimaryKey("PK_ProcessorProgresses", x => x.ProcessorName);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -31,15 +32,13 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                 name: "Streams",
                 columns: table => new
                 {
-                    Id = table.Column<ulong>(type: "bigint unsigned", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
                     StreamId = table.Column<Guid>(type: "char(36)", nullable: false),
                     EntityType = table.Column<string>(type: "longtext", nullable: false),
                     EntityId = table.Column<Guid>(type: "char(36)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Streams", x => x.Id);
+                    table.PrimaryKey("PK_Streams", x => x.StreamId);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -47,23 +46,25 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    Id = table.Column<ulong>(type: "bigint unsigned", nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    StreamId = table.Column<ulong>(type: "bigint unsigned", nullable: false),
+                    EventId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    StreamId = table.Column<Guid>(type: "char(36)", nullable: false),
                     EntityType = table.Column<string>(type: "longtext", nullable: false),
                     EventTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     TypeName = table.Column<string>(type: "longtext", nullable: false),
                     SerializedEvent = table.Column<string>(type: "longtext", nullable: false),
-                    Version = table.Column<ulong>(type: "bigint unsigned", nullable: false)
+                    Version = table.Column<ulong>(type: "bigint unsigned", nullable: false),
+                    Position = table.Column<ulong>(type: "bigint unsigned", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.PrimaryKey("PK_Events", x => x.EventId);
+                    table.UniqueConstraint("AK_Events_Position", x => x.Position);
                     table.ForeignKey(
                         name: "FK_Events_Streams_StreamId",
                         column: x => x.StreamId,
                         principalTable: "Streams",
-                        principalColumn: "Id",
+                        principalColumn: "StreamId",
                         onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
@@ -72,11 +73,6 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                 name: "IX_Events_StreamId",
                 table: "Events",
                 column: "StreamId");
-
-            migrationBuilder.CreateIndex(
-                name: "Processors_ProcessorName",
-                table: "ProcessorProgresses",
-                column: "ProcessorName");
         }
 
         /// <inheritdoc />

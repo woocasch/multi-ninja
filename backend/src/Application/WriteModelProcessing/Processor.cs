@@ -23,13 +23,14 @@ public class Processor : IProcessor
             return IProcessor.Result.NothingToProcess;
         }
         
-        var handler = this.serviceProvider.GetKeyedService<IEventHandler>(eventToProcess.GetType().AssemblyQualifiedName!);
+        var handler = this.serviceProvider.GetKeyedService<IEventHandler>(eventToProcess.EventData.GetType().AssemblyQualifiedName!);
         if (handler is null)
         {
             return IProcessor.Result.ProcessingError;
         }
 
-        await handler.Handle(eventToProcess, cancellationToken);
+        eventToProcess.EventData.Version = eventToProcess.Version;
+        await handler.Handle(eventToProcess.EventData, cancellationToken);
         await this.streams.MarkEventAsProcessed(eventToProcess, this.GetType().AssemblyQualifiedName!, cancellationToken);
         return IProcessor.Result.EventProcessed;
     }

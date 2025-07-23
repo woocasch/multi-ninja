@@ -4,5 +4,5 @@ public class ProcessorsProgress
 {
     public string ProcessorName { get; set; } = string.Empty;
     
-    public ulong LastProcessedEventId { get; set; }
+    public ulong LastProcessedPosition { get; set; }
 }

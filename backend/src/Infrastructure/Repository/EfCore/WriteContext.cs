@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MySql.EntityFrameworkCore.Extensions;
 
 namespace MultiNinja.Backend.Infrastructure.Repository.EfCore;
 
@@ -20,7 +21,7 @@ public class WriteContext : DbContext
         base.OnModelCreating(modelBuilder);
         modelBuilder.Entity<Stream>(entity =>
         {
-            entity.HasKey(e => e.Id);
+            entity.HasKey(e => e.StreamId);
             entity.Property(e => e.StreamId).IsRequired();
             entity.Property(e => e.EntityType).IsRequired();
             entity.Property(e => e.EntityId).IsRequired();
@@ -31,15 +32,21 @@ public class WriteContext : DbContext
 
         modelBuilder.Entity<Event>(entity =>
         {
-            entity.HasKey(e => e.Id);
+            entity.HasKey(e => e.EventId);
             entity.Property(e => e.StreamId).IsRequired();
             entity.Property(e => e.EntityType).IsRequired();
             entity.Property(e => e.EventTime).IsRequired();
             entity.Property(e => e.Version).IsRequired();
+            entity.Property(e => e.Position).IsRequired()
+                .ValueGeneratedOnAdd()
+                .UseMySQLAutoIncrementColumn("bigint unsigned");
+            entity
+                .HasAlternateKey(e => e.Position);
         });
 
-        modelBuilder.Entity<ProcessorsProgress>()
-            .HasNoKey()
-            .HasIndex(e => new { e.ProcessorName }, "Processors_ProcessorName");
+        modelBuilder.Entity<ProcessorsProgress>(entity =>
+        {
+            entity.HasKey(e => e.ProcessorName);
+        });
     }
 }

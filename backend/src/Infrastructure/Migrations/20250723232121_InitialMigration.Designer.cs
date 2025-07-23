@@ -11,7 +11,7 @@ using MultiNinja.Backend.Infrastructure.Repository.EfCore;
 namespace MultiNinja.Backend.Infrastructure.Migrations
 {
     [DbContext(typeof(WriteContext))]
-    [Migration("20250723211455_InitialMigration")]
+    [Migration("20250723232121_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,9 +24,9 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("MultiNinja.Backend.Infrastructure.Repository.EfCore.Event", b =>
                 {
-                    b.Property<ulong>("Id")
+                    b.Property<Guid>("EventId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("EntityType")
                         .IsRequired()
@@ -35,12 +35,16 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                     b.Property<DateTime>("EventTime")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<ulong>("Position")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bigint unsigned");
+
                     b.Property<string>("SerializedEvent")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<ulong>("StreamId")
-                        .HasColumnType("bigint unsigned");
+                    b.Property<Guid>("StreamId")
+                        .HasColumnType("char(36)");
 
                     b.Property<string>("TypeName")
                         .IsRequired()
@@ -49,7 +53,9 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                     b.Property<ulong>("Version")
                         .HasColumnType("bigint unsigned");
 
-                    b.HasKey("Id");
+                    b.HasKey("EventId");
+
+                    b.HasAlternateKey("Position");
 
                     b.HasIndex("StreamId");
 
@@ -58,23 +64,22 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
 
             modelBuilder.Entity("MultiNinja.Backend.Infrastructure.Repository.EfCore.ProcessorsProgress", b =>
                 {
-                    b.Property<ulong>("LastProcessedEventId")
-                        .HasColumnType("bigint unsigned");
-
                     b.Property<string>("ProcessorName")
-                        .IsRequired()
                         .HasColumnType("varchar(255)");
 
-                    b.HasIndex(new[] { "ProcessorName" }, "Processors_ProcessorName");
+                    b.Property<ulong>("LastProcessedPosition")
+                        .HasColumnType("bigint unsigned");
+
+                    b.HasKey("ProcessorName");
 
                     b.ToTable("ProcessorProgresses");
                 });
 
             modelBuilder.Entity("MultiNinja.Backend.Infrastructure.Repository.EfCore.Stream", b =>
                 {
-                    b.Property<ulong>("Id")
+                    b.Property<Guid>("StreamId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint unsigned");
+                        .HasColumnType("char(36)");
 
                     b.Property<Guid>("EntityId")
                         .HasColumnType("char(36)");
@@ -83,10 +88,7 @@ namespace MultiNinja.Backend.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("StreamId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
+                    b.HasKey("StreamId");
 
                     b.ToTable("Streams");
                 });

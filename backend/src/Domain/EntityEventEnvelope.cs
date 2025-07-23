@@ -1,15 +1,19 @@
 namespace MultiNinja.Backend.Domain;
 
-public abstract class EntityEvent
+public sealed class EntityEventEnvelope
 {
-    protected EntityEvent(
+    public EntityEventEnvelope(
         Guid streamId,
         EntityType entityType,
-        DateTime storageDate)
+        DateTime storageDate,
+        EntityEvent eventData,
+        ulong version)
     {
         this.StreamId = streamId;
         this.EntityType = entityType;
         this.StorageDate = storageDate;
+        this.EventData = eventData;
+        this.Version = version;
     }
 
     public Guid StreamId { get; }
@@ -18,5 +22,7 @@ public abstract class EntityEvent
     
     public DateTime StorageDate { get; }
 
-    internal ulong Version { get; set; }
+    public EntityEvent EventData { get; }
+
+    public ulong Version { get; }
 }

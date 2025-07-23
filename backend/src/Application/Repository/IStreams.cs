@@ -9,7 +9,7 @@ public interface IStreams
     
     Task<ulong> AddEvent(AddEventParameters parameters, CancellationToken cancellationToken);
     
-    Task<EntityEvent?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken);
+    Task<EntityEventEnvelope?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken);
     
-    Task MarkEventAsProcessed(EntityEvent entityEvent, string processorName, CancellationToken cancellationToken);
+    Task MarkEventAsProcessed(EntityEventEnvelope entityEvent, string processorName, CancellationToken cancellationToken);
 }

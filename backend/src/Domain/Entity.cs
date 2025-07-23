@@ -21,7 +21,7 @@ public abstract class Entity
 
     public Guid EntityId { get; protected set; }
 
-    public ulong Version => this.version ?? 0;
+    public ulong Version => this.Events.Count > 0 ? this.Events.Max(e => e.Version) : 0;
 
     public ReadOnlyCollection<EntityEvent> Events => new(this.events);
 
