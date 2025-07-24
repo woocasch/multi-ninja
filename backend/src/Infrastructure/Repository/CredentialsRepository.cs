@@ -4,7 +4,7 @@ using MultiNinja.Backend.Application.Repository.Credentials;
 
 namespace MultiNinja.Backend.Infrastructure.Repository;
 
-public class CredentialsRepository : ICredentials
+public sealed class CredentialsRepository : ICredentials
 {
     private readonly Collection<CredentialsDataRecord> credentials = new();
 

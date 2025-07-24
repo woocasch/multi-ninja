@@ -1,3 +1,3 @@
 namespace MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 
-public record CreateAccountOutput(Guid Id);
+public sealed record CreateAccountOutput(Guid Id);

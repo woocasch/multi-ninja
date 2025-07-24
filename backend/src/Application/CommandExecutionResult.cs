@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace MultiNinja.Backend.Application;
 
-public class CommandExecutionResult
+public sealed class CommandExecutionResult
 {
     private CommandExecutionResult(
         bool success,

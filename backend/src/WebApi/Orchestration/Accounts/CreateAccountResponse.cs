@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
-public class CreateAccountResponse
+public sealed class CreateAccountResponse
 {
     public CreateAccountResponse(Guid id)
     {

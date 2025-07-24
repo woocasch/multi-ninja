@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Infrastructure.Repository;
 
-public class CredentialsDataRecord
+public sealed class CredentialsDataRecord
 {
     public Guid Id { get; set; }
 

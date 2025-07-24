@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.Security;
 
-public class VerifyCredentialsResult
+public sealed class VerifyCredentialsResult
 {
     public VerifyCredentialsResult(Guid? id)
     {

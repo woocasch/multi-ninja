@@ -10,4 +10,28 @@
         <Product>MultiNinja - backend</Product>
     </PropertyGroup>
 
+    <ItemGroup>
+      <EmbeddedResource Update="Users\UserCreatedResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>UserCreatedResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+      <EmbeddedResource Update="Credentials\CredentialsCreatedResources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>CredentialsCreatedResources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Users\UserCreatedResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>UserCreatedResources.resx</DependentUpon>
+      </Compile>
+      <Compile Update="Credentials\CredentialsCreatedResources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>CredentialsCreatedResources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
 </Project>

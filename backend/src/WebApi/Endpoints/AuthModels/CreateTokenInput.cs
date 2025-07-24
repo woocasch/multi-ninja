@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 
-public class CreateTokenInput
+public sealed class CreateTokenInput
 {
     public CreateTokenInput(string email, string password)
     {

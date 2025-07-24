@@ -2,7 +2,7 @@ using System.Collections.ObjectModel;
 
 namespace MultiNinja.Backend.WebApi.Orchestration;
 
-public class ErrorData
+public sealed class ErrorData
 {
     public ErrorData(IEnumerable<ErrorMessage> errors)
     {
@@ -11,7 +11,7 @@ public class ErrorData
     
     public ReadOnlyCollection<ErrorMessage> Errors { get; }
 
-    public class ErrorMessage
+    public sealed class ErrorMessage
     {
         public ErrorMessage(string code, string message)
         {

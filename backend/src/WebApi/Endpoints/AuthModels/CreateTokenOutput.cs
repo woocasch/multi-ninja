@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 
-public class CreateTokenOutput
+public sealed class CreateTokenOutput
 {
     public CreateTokenOutput(string token)
     {

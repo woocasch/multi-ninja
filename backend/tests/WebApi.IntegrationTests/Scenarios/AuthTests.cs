@@ -46,6 +46,7 @@ public class AuthTests : IClassFixture<WebApiFactory>
         var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
         createAccountResponse.ShouldNotBeNull();
         
+        await Task.Delay(2000);
         var createTokenInput = new CreateTokenInput(createAccountInput.Email, createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
@@ -69,6 +70,7 @@ public class AuthTests : IClassFixture<WebApiFactory>
         var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
         createAccountResponse.ShouldNotBeNull();
         
+        await Task.Delay(2000);
         var createTokenInput = new CreateTokenInput($"A{createAccountInput.Email}", createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
@@ -88,6 +90,7 @@ public class AuthTests : IClassFixture<WebApiFactory>
         var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
         createAccountResponse.ShouldNotBeNull();
         
+        await Task.Delay(2000);
         var createTokenInput = new CreateTokenInput($"A{createAccountInput.Email}", createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
@@ -99,9 +102,11 @@ public class AuthTests : IClassFixture<WebApiFactory>
 
     private HttpClient CreateClient()
     {
-        return this.webApiFactory.CreateClient(new WebApplicationFactoryClientOptions()
+        var result = this.webApiFactory.CreateClient(new WebApplicationFactoryClientOptions()
         {
             AllowAutoRedirect = true,
         });
+        result.Timeout = TimeSpan.FromHours(1);
+        return result;
     }
 }

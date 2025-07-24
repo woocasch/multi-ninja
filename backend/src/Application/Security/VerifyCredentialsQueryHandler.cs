@@ -3,7 +3,7 @@ using MultiNinja.Backend.Application.Repository.Credentials;
 
 namespace MultiNinja.Backend.Application.Security;
 
-public class VerifyCredentialsQueryHandler : QueryHandlerBase<VerifyCredentialsQuery, VerifyCredentialsResult>
+public sealed class VerifyCredentialsQueryHandler : QueryHandlerBase<VerifyCredentialsQuery, VerifyCredentialsResult>
 {
     private readonly ICredentials credentials;
 

@@ -1,0 +1,1 @@
+dotnet ef database update -p .\src\Infrastructure\Infrastructure.csproj -s .\src\WebApi\WebApi.csproj

@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
-public class CreateTokenRequest
+public sealed class CreateTokenRequest
 {
     public CreateTokenRequest(string email, string password)
     {

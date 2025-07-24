@@ -1,22 +1,29 @@
+using MultiNinja.Backend.Application.EventStreams;
 using MultiNinja.Backend.Application.Repository;
 using MultiNinja.Backend.Application.Repository.Credentials;
+using MultiNinja.Backend.Domain.Credentials;
 
 namespace MultiNinja.Backend.Application.Security;
 
-public class CreateCredentialsCommandHandler : CommandHandlerBase<CreateCredentialsCommand>
+public sealed class CreateCredentialsCommandHandler : CommandHandlerBase<CreateCredentialsCommand>
 {
-    private readonly ICredentials credentials;
+    private readonly ICredentials credentialsRepository;
 
-    public CreateCredentialsCommandHandler(ICredentials credentials)
+    private readonly IEventStreamsService eventStreams;
+
+    public CreateCredentialsCommandHandler(
+        ICredentials credentialsRepository,
+        IEventStreamsService eventStreams)
     {
-        this.credentials = credentials;
+        this.credentialsRepository = credentialsRepository;
+        this.eventStreams = eventStreams;
     }
 
     protected override async Task<CommandExecutionResult> Execute(
         CreateCredentialsCommand command,
         CancellationToken cancellationToken)
     {
-        var existingCredentials = await this.credentials.SearchByEmail(
+        var existingCredentials = await this.credentialsRepository.SearchByEmail(
             new(command.Email),
             cancellationToken);
         if (existingCredentials is not null)
@@ -24,11 +31,12 @@ public class CreateCredentialsCommandHandler : CommandHandlerBase<CreateCredenti
             return CommandExecutionResult.Failed(CreateCredentialsError.EmailTaken);
         }
         
-        var parameters = new CreateCredentialsParameters(
+        var credentials = CredentialsEntity.Create(
             command.Id,
+            command.UserId,
             command.Email,
             command.Password);
-        var result = await this.credentials.Create(parameters, cancellationToken);
-        return !result ? CommandExecutionResult.Failed(CreateCredentialsError.UnknownError) : CommandExecutionResult.Succeeded();
+        await this.eventStreams.Create(credentials,  cancellationToken);
+        return CommandExecutionResult.Succeeded();
     }
 }

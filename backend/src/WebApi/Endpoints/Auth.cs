@@ -21,11 +21,11 @@ public static class Auth
 
     public static async Task<IResult> CreateToken(
         [FromBody] CreateTokenInput input,
-        IAccountsService authenticationController,
+        IAccountsService accountsService,
         CancellationToken cancellationToken)
     {
         var request = new CreateTokenRequest(input.Email, input.Password);
-        var response = await authenticationController.CreateToken(request, cancellationToken);
+        var response = await accountsService.CreateToken(request, cancellationToken);
         if (response is null)
         {
             return Results.BadRequest();
