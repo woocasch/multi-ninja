@@ -5,6 +5,7 @@ using MultiNinja.Backend.WebApi.Endpoints;
 using MultiNinja.Backend.WebApi.Orchestration;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services
     .AddInfrastructure()
@@ -31,6 +32,9 @@ static void ApplyWriteContextMigrations(WebApplication app)
 {
     using var scope = app.Services.CreateScope();
     var dbContext = scope.ServiceProvider.GetRequiredService<WriteContext>();
+    Console.WriteLine("==============================================");
+    Console.WriteLine(dbContext.Database.GetDbConnection().ConnectionString);
+    Console.WriteLine("==============================================");
 
     // Check and apply pending migrations
     var pendingMigrations = dbContext.Database.GetPendingMigrations();

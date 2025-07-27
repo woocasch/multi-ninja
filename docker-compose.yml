@@ -18,6 +18,28 @@ services:
     ports:
       - 10001:3306
 
+  multi-ninja.backend.local:
+    container_name: multi-ninja.backend.local
+    hostname: multi-ninja.backend.local
+    image: multi-ninja-backend:local
+    restart: always
+    environment:
+      - ConnectionStrings__WriteDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
+    ports:
+      - 10003:80
+    depends_on:
+      - multi-ninja.backend.writemodel.local
+
+  multi-ninja.frontend.local:
+    container_name: multi-ninja.frontend.local
+    hostname: multi-ninja.frontend.local
+    image: multi-ninja-frontend:local
+    restart: always
+    ports:
+      - 10004:80
+    depends_on:
+      - multi-ninja.backend.local
+
   multi-ninja.backend.writemodeladmin.local:
     container_name: multi-ninja.backend.writemodeladmin.local
     hostname: multi-ninja.backend.writemodeladmin.local

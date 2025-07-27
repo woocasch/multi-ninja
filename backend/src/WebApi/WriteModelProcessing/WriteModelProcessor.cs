@@ -28,7 +28,7 @@ public class WriteModelProcessor : BackgroundService
                     Console.WriteLine(ex.Message);
                 }
             } while (result == IProcessor.Result.EventProcessed);
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(5000, stoppingToken);
         }
     }
 }
