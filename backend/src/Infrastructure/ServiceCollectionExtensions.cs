@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using MultiNinja.Backend.Application;
 using MultiNinja.Backend.Application.Repository;
 using MultiNinja.Backend.Infrastructure.Repository;
+using MultiNinja.Backend.Infrastructure.Repository.EfCore;
 
 namespace MultiNinja.Backend.Infrastructure;
 

@@ -24,11 +24,19 @@ public sealed class EventStreamService : IEventStreamsService
         var currentVersion = newEntity.Version;
         foreach (var uncommitedEvent in uncommitedEvents)
         {
-            var addEventParameters = new AddEventParameters(
-                uncommitedEvent,
-                uncommitedEvent.StorageDate,
-                currentVersion);
-            currentVersion = await this.streams.AddEvent(addEventParameters, cancellationToken);
+            try
+            {
+                var addEventParameters = new AddEventParameters(
+                    uncommitedEvent,
+                    uncommitedEvent.StorageDate,
+                    currentVersion);
+                currentVersion = await this.streams.AddEvent(addEventParameters, cancellationToken);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
         }
     }
 

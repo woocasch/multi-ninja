@@ -14,11 +14,11 @@ public class StreamsRepository : IStreams
         PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
     };
 
-    private readonly WriteContext context;
+    private readonly IDbContextFactory<WriteContext> dbContextFactory;
 
-    public StreamsRepository(WriteContext context)
+    public StreamsRepository(IDbContextFactory<WriteContext> dbContextFactory)
     {
-        this.context = context;
+        this.dbContextFactory = dbContextFactory;
     }
 
     public async Task CreateStream(CreateStreamParameters parameters, CancellationToken cancellationToken)
@@ -29,13 +29,16 @@ public class StreamsRepository : IStreams
             EntityType = parameters.EntityType.Name,
             EntityId = parameters.EntityId,
         };
-        await this.context.Streams.AddAsync(payload, cancellationToken);
-        await this.context.SaveChangesAsync(cancellationToken);
+
+        await using var context = await this.CreateDbContext(cancellationToken);
+        await context.Streams.AddAsync(payload, cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     public async Task<ulong> AddEvent(AddEventParameters parameters, CancellationToken cancellationToken)
     {
-        var streams = await this.context.Streams.Include(s => s.Events)
+        await using var context = await this.CreateDbContext(cancellationToken);
+        var streams = await context.Streams.Include(s => s.Events)
             .Where(s => s.StreamId == parameters.StreamId)
             .Where(s => s.EntityType == parameters.EntityType.Name)
             .ToListAsync(cancellationToken);
@@ -43,7 +46,7 @@ public class StreamsRepository : IStreams
         {
             return 0;
         }
-        
+
         var stream = streams[0];
         var eventData = Serialize(parameters.EventData);
         ulong eventVersion = 1;
@@ -62,14 +65,15 @@ public class StreamsRepository : IStreams
             Version = eventVersion,
         };
         stream.Events.Add(payload);
-        await this.context.SaveChangesAsync(cancellationToken);
+        await context.SaveChangesAsync(cancellationToken);
         return eventVersion;
     }
 
-    public async Task<EntityEventEnvelope?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken)
+    public async Task<EntityEventEnvelope?> GetNextUnprocessedEvent(string processorName,
+        CancellationToken cancellationToken)
     {
-        await Task.Yield();
-        var processor = this.context.ProcessorProgresses
+        await using var context = await this.CreateDbContext(cancellationToken);
+        var processor = context.ProcessorProgresses
             .FirstOrDefault(p => p.ProcessorName == processorName);
         ulong lastProcessedId = 0;
         if (processor is not null)
@@ -77,7 +81,7 @@ public class StreamsRepository : IStreams
             lastProcessedId = processor.LastProcessedPosition;
         }
 
-        var @event = await this.context.Events
+        var @event = await context.Events
             .Where(e => e.Position > lastProcessedId)
             .OrderBy(e => e.Position)
             .FirstOrDefaultAsync(cancellationToken);
@@ -95,10 +99,11 @@ public class StreamsRepository : IStreams
             @event.Version);
     }
 
-    public async Task MarkEventAsProcessed(EntityEventEnvelope entityEvent, string processorName, CancellationToken cancellationToken)
+    public async Task MarkEventAsProcessed(EntityEventEnvelope entityEvent, string processorName,
+        CancellationToken cancellationToken)
     {
-        await Task.Yield();
-        var @event = this.context.Events
+        await using var context = await this.CreateDbContext(cancellationToken);
+        var @event = context.Events
             .Where(e => e.StreamId == entityEvent.StreamId)
             .Where(e => e.EntityType == entityEvent.EntityType.Name)
             .Where(e => e.Version == entityEvent.Version)
@@ -109,7 +114,7 @@ public class StreamsRepository : IStreams
             return;
         }
 
-        var processor = this.context.ProcessorProgresses
+        var processor = context.ProcessorProgresses
             .FirstOrDefault(p => p.ProcessorName == processorName);
         if (processor is null)
         {
@@ -118,14 +123,14 @@ public class StreamsRepository : IStreams
                 ProcessorName = processorName,
                 LastProcessedPosition = @event.Position,
             };
-            await this.context.ProcessorProgresses.AddAsync(processor, cancellationToken);
-            await this.context.SaveChangesAsync(cancellationToken);
+            await context.ProcessorProgresses.AddAsync(processor, cancellationToken);
         }
         else
         {
             processor.LastProcessedPosition = @event.Position;
-            await this.context.SaveChangesAsync(cancellationToken);
         }
+
+        await context.SaveChangesAsync(cancellationToken);
     }
 
     private static (string TypeName, string SerializedEvent) Serialize(EntityEvent entityEvent)
@@ -145,5 +150,10 @@ public class StreamsRepository : IStreams
         }
 
         return cast;
+    }
+
+    private async Task<WriteContext> CreateDbContext(CancellationToken cancellationToken)
+    {
+        return await this.dbContextFactory.CreateDbContextAsync(cancellationToken);
     }
 }
