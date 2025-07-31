@@ -35,16 +35,23 @@ public class StreamsRepository : IStreams
 
     public async Task<ulong> AddEvent(AddEventParameters parameters, CancellationToken cancellationToken)
     {
-        var streams = await this.writeContext.Streams.Include(s => s.Events)
+        var stream = await this.writeContext.Streams.Include(s => s.Events)
             .Where(s => s.StreamId == parameters.StreamId)
             .Where(s => s.EntityType == parameters.EntityType.Name)
-            .ToListAsync(cancellationToken);
-        if (streams.Count == 0)
+            .FirstOrDefaultAsync(cancellationToken);
+        if (stream is null)
         {
-            return 0;
+            stream = this.writeContext.ChangeTracker
+                .Entries<Stream>()
+                .Where(s => s.Entity.StreamId == parameters.StreamId)
+                .Select(s => s.Entity)
+                .FirstOrDefault();
+            if (stream is null)
+            {
+                return 0;
+            }
         }
 
-        var stream = streams[0];
         var eventData = Serialize(parameters.EventData);
         ulong eventVersion = 1;
         if (stream.Events.Count > 0)
@@ -62,6 +69,7 @@ public class StreamsRepository : IStreams
             Version = eventVersion,
         };
         stream.Events.Add(payload);
+        await this.writeContext.Events.AddAsync(payload, cancellationToken);
         return eventVersion;
     }
 

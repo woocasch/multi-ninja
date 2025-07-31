@@ -26,7 +26,7 @@ services:
     environment:
       - ConnectionStrings__WriteDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
     ports:
-      - 10003:80
+      - 10003:8080
     depends_on:
       - multi-ninja.backend.writemodel.local
 
