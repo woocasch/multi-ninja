@@ -43,7 +43,6 @@ public sealed class Mediator : IMediator
 
     private THandler? GetHandler<THandler>(object nameSource)
     {
-        using var scope = this.serviceProvider.CreateScope();
-        return scope.ServiceProvider.GetKeyedService<THandler>(nameSource.GetType().AssemblyQualifiedName);
+        return this.serviceProvider.GetKeyedService<THandler>(nameSource.GetType().AssemblyQualifiedName);
     }
 }

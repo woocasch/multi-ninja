@@ -13,9 +13,10 @@ public class WriteModelProcessor : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        var processor = this.serviceScopeFactory.CreateScope().ServiceProvider.GetRequiredService<IProcessor>();
         while (!stoppingToken.IsCancellationRequested)
         {
+            using var scope = this.serviceScopeFactory.CreateScope();
+            var processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
             IProcessor.Result result = IProcessor.Result.None;
             do
             {

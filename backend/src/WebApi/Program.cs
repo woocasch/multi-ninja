@@ -20,7 +20,7 @@ builder.Services
     {
         options.UseMySQL(builder.Configuration.GetConnectionString("WriteDatabase")!);
     })
-    .AddDbContextFactory<WriteContext>();
+    .AddDbContextFactory<WriteContext>(_ => { }, ServiceLifetime.Scoped);
 
 builder.Services.AddOpenApi();
 
