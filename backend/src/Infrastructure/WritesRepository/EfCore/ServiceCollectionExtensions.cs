@@ -1,7 +1,7 @@
 using Microsoft.Extensions.DependencyInjection;
-using MultiNinja.Backend.Application.Repository;
+using MultiNinja.Backend.Application.WritesRepository;
 
-namespace MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
+namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
 public static class ServiceCollectionExtensions
 {

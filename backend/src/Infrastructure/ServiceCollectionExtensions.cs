@@ -1,8 +1,8 @@
 using Microsoft.Extensions.DependencyInjection;
 using MultiNinja.Backend.Application;
-using MultiNinja.Backend.Application.Repository;
+using MultiNinja.Backend.Application.ReadsRepository;
 using MultiNinja.Backend.Infrastructure.Repository;
-using MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
+using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
 namespace MultiNinja.Backend.Infrastructure;
 

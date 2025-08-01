@@ -1,5 +1,5 @@
-using MultiNinja.Backend.Application.Repository;
-using MultiNinja.Backend.Application.Repository.Streams;
+using MultiNinja.Backend.Application.WritesRepository;
+using MultiNinja.Backend.Application.WritesRepository.Streams;
 using MultiNinja.Backend.Domain;
 
 namespace MultiNinja.Backend.Application.EventStreams;

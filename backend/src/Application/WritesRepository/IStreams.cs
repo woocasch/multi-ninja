@@ -1,7 +1,7 @@
-using MultiNinja.Backend.Application.Repository.Streams;
+using MultiNinja.Backend.Application.WritesRepository.Streams;
 using MultiNinja.Backend.Domain;
 
-namespace MultiNinja.Backend.Application.Repository;
+namespace MultiNinja.Backend.Application.WritesRepository;
 
 public interface IStreams
 {

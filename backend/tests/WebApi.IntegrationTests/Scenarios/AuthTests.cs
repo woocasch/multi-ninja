@@ -1,6 +1,5 @@
 using System.Net;
 using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 using Shouldly;

@@ -1,6 +1,6 @@
-using MultiNinja.Backend.Application.Repository.Credentials;
+using MultiNinja.Backend.Application.ReadsRepository.Credentials;
 
-namespace MultiNinja.Backend.Application.Repository;
+namespace MultiNinja.Backend.Application.ReadsRepository;
 
 public interface ICredentials
 {

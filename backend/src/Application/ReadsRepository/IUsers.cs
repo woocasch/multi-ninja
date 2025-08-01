@@ -1,6 +1,6 @@
-using MultiNinja.Backend.Application.Repository.Users;
+using MultiNinja.Backend.Application.ReadsRepository.Users;
 
-namespace MultiNinja.Backend.Application.Repository;
+namespace MultiNinja.Backend.Application.ReadsRepository;
 
 public interface IUsers
 {

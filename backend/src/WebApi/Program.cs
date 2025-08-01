@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MultiNinja.Backend.Infrastructure;
-using MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
+using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 using MultiNinja.Backend.WebApi.Endpoints;
 using MultiNinja.Backend.WebApi.Orchestration;
 using Scalar.AspNetCore;

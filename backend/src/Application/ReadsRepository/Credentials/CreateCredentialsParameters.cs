@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Application.Repository.Credentials;
+namespace MultiNinja.Backend.Application.ReadsRepository.Credentials;
 
 public sealed class CreateCredentialsParameters
 {

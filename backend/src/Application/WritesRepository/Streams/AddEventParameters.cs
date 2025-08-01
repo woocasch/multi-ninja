@@ -1,6 +1,6 @@
 using MultiNinja.Backend.Domain;
 
-namespace MultiNinja.Backend.Application.Repository.Streams;
+namespace MultiNinja.Backend.Application.WritesRepository.Streams;
 
 public sealed class AddEventParameters
 {

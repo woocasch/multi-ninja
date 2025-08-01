@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
+namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
 public class Event
 {

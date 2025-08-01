@@ -1,5 +1,3 @@
-using System.Collections.ObjectModel;
-
 namespace MultiNinja.Backend.Application;
 
 public sealed class CommandExecutionResult

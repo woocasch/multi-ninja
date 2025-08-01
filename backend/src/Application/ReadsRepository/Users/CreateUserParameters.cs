@@ -1,4 +1,4 @@
-namespace MultiNinja.Backend.Application.Repository.Users;
+namespace MultiNinja.Backend.Application.ReadsRepository.Users;
 
 public class CreateUserParameters
 {
