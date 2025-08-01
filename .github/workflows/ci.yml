@@ -97,7 +97,6 @@ jobs:
       contents: read
       attestations: write
       id-token: write
-      checks: write
 
     steps:
     - name: Checkout
