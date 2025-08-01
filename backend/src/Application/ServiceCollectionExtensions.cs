@@ -16,7 +16,7 @@ public static class ServiceCollectionExtensions
             .AddUsers() 
             .AddEventStreams()
             .AddWriteModelProcessing()
-            .AddSingleton<IMediator, Mediator>();
+            .AddScoped<IMediator, Mediator>();
         return services;
     }
 

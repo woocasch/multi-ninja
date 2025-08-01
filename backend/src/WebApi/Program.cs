@@ -3,8 +3,10 @@ using MultiNinja.Backend.Infrastructure;
 using MultiNinja.Backend.Infrastructure.Repository.EfCore;
 using MultiNinja.Backend.WebApi.Endpoints;
 using MultiNinja.Backend.WebApi.Orchestration;
+using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Configuration.AddEnvironmentVariables();
 
 builder.Services
     .AddInfrastructure()
@@ -13,18 +15,25 @@ builder.Services
 
 builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
 
-builder.Services.AddDbContext<WriteContext>(options =>
-{
-    options.UseMySQL(builder.Configuration.GetConnectionString("WriteDatabase")!);
-});
+builder.Services
+    .AddDbContext<WriteContext>(options =>
+    {
+        options.UseMySQL(builder.Configuration.GetConnectionString("WriteDatabase")!);
+    })
+    .AddDbContextFactory<WriteContext>(_ => { }, ServiceLifetime.Scoped);
+
+builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
 ApplyWriteContextMigrations(app);
 
 app
-    .MapAuth();
-    
+    .MapAuth()
+    .MapOpenApi();
+app
+    .MapScalarApiReference();
+
 app.Run();
 
 static void ApplyWriteContextMigrations(WebApplication app)

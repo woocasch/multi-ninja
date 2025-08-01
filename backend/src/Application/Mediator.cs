@@ -17,7 +17,7 @@ public sealed class Mediator : IMediator
         where TCommand : ICommand
     {
         var handler =
-            this.serviceProvider.GetKeyedService<ICommandHandler>(typeof(TCommand).AssemblyQualifiedName);
+            this.GetHandler<ICommandHandler>(command);
         if (handler is null)
         {
             throw new InvalidOperationException(
@@ -31,7 +31,7 @@ public sealed class Mediator : IMediator
         where TResult : class
     {
         var handler =
-            this.serviceProvider.GetKeyedService<IQueryHandler<TResult>>(query.GetType().AssemblyQualifiedName);
+            this.GetHandler<IQueryHandler<TResult>>(query);
         if (handler is null)
         {
             throw new InvalidOperationException(
@@ -39,5 +39,10 @@ public sealed class Mediator : IMediator
         }
 
         return await handler.Fetch(query, cancellationToken);
+    }
+
+    private THandler? GetHandler<THandler>(object nameSource)
+    {
+        return this.serviceProvider.GetKeyedService<THandler>(nameSource.GetType().AssemblyQualifiedName);
     }
 }

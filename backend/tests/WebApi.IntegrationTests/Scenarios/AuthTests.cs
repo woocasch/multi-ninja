@@ -46,7 +46,7 @@ public class AuthTests : IClassFixture<WebApiFactory>
         var createAccountResponse = await this.client.Value.SendAsync(createAccountRequest);
         createAccountResponse.ShouldNotBeNull();
         
-        await Task.Delay(2000);
+        await Task.Delay(6000);
         var createTokenInput = new CreateTokenInput(createAccountInput.Email, createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);

@@ -1,6 +1,8 @@
+using Microsoft.EntityFrameworkCore;
 using MultiNinja.Backend.Application;
 using MultiNinja.Backend.Application.Security;
 using MultiNinja.Backend.Application.Users;
+using MultiNinja.Backend.Infrastructure.Repository.EfCore;
 using MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
 namespace MultiNinja.Backend.WebApi.Orchestration;
@@ -9,9 +11,14 @@ public sealed class AccountsService : IAccountsService
 {
     private readonly IMediator mediator;
 
-    public AccountsService(IMediator mediator)
+    private readonly WriteContext writeContext;
+
+    public AccountsService(
+        IMediator mediator,
+        WriteContext writeContext)
     {
         this.mediator = mediator;
+        this.writeContext = writeContext;
     }
 
     public async Task<OneOf<CreateAccountResponse, ErrorData>> CreateAccount(
@@ -27,7 +34,8 @@ public sealed class AccountsService : IAccountsService
         }
 
         var credentialsId = Guid.NewGuid();
-        var createCredentialsCommand = new CreateCredentialsCommand(credentialsId, userId, request.Email, request.Password);
+        var createCredentialsCommand =
+            new CreateCredentialsCommand(credentialsId, userId, request.Email, request.Password);
         var result = await this.mediator.Execute(createCredentialsCommand, cancellationToken);
         if (!result.Success)
         {
@@ -44,6 +52,7 @@ public sealed class AccountsService : IAccountsService
             }
         }
 
+        await this.writeContext.SaveChangesAsync(cancellationToken);
         return new CreateAccountResponse(credentialsId);
     }
 

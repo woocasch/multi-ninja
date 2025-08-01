@@ -11,7 +11,7 @@ public static class ServiceCollectionExtensions
         services
             .AddEventHandler<Domain.Users.UserCreated, User.UserCreatedHandler>()
             .AddEventHandler<Domain.Credentials.CredentialsCreated, Credentials.CredentialsCreatedHandler>()
-            .AddTransient<IProcessor, Processor>();
+            .AddScoped<IProcessor, Processor>();
         return services;
     }
 
