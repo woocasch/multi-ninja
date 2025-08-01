@@ -1,4 +1,5 @@
 using MultiNinja.Backend.Application.WriteModelProcessing;
+using MultiNinja.Backend.Infrastructure.Repository.EfCore;
 
 namespace MultiNinja.Backend.WebApi.WriteModelProcessing;
 
@@ -15,20 +16,16 @@ public class WriteModelProcessor : BackgroundService
     {
         while (!stoppingToken.IsCancellationRequested)
         {
-            using var scope = this.serviceScopeFactory.CreateScope();
-            var processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
             IProcessor.Result result = IProcessor.Result.None;
             do
             {
-                try
-                {
-                    result = await processor.ProcessNextEvent(stoppingToken);
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
+                using var scope = this.serviceScopeFactory.CreateScope();
+                var processor = scope.ServiceProvider.GetRequiredService<IProcessor>();
+                result = await processor.ProcessNextEvent(stoppingToken);
+                var writeContext = scope.ServiceProvider.GetRequiredService<WriteContext>();
+                await writeContext.SaveChangesAsync(stoppingToken);
             } while (result == IProcessor.Result.EventProcessed);
+
             await Task.Delay(5000, stoppingToken);
         }
     }

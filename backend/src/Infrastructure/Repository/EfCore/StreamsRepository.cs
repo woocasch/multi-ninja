@@ -130,6 +130,7 @@ public class StreamsRepository : IStreams
         else
         {
             processor.LastProcessedPosition = @event.Position;
+            this.writeContext.ProcessorProgresses.Update(processor);
         }
     }
 
