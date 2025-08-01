@@ -121,7 +121,7 @@ jobs:
       uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
       with:
         images: |
-          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-front
+          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-frontend
         tags: |
           # Feature branch image
           type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
@@ -176,7 +176,7 @@ jobs:
       uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
       with:
         images: |
-          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-front
+          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-backend
         tags: |
           # Feature branch image
           type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
