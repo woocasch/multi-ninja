@@ -1,7 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using MySql.EntityFrameworkCore.Extensions;
 
-namespace MultiNinja.Backend.Infrastructure.Repository.EfCore;
+namespace MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
 
 public class WriteContext : DbContext
 {

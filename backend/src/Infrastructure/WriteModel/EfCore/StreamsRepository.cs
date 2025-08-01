@@ -4,7 +4,7 @@ using MultiNinja.Backend.Application.Repository;
 using MultiNinja.Backend.Application.Repository.Streams;
 using MultiNinja.Backend.Domain;
 
-namespace MultiNinja.Backend.Infrastructure.Repository.EfCore;
+namespace MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
 
 public class StreamsRepository : IStreams
 {

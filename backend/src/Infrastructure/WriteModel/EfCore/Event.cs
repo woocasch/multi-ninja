@@ -1,6 +1,4 @@
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace MultiNinja.Backend.Infrastructure.Repository.EfCore;
+namespace MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
 
 public class Event
 {

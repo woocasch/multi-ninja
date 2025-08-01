@@ -3,7 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
-using MultiNinja.Backend.Infrastructure.Repository.EfCore;
+using MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
 
 #nullable disable
 

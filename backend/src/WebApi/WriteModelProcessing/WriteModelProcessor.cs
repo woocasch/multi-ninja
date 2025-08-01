@@ -1,5 +1,5 @@
 using MultiNinja.Backend.Application.WriteModelProcessing;
-using MultiNinja.Backend.Infrastructure.Repository.EfCore;
+using MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
 
 namespace MultiNinja.Backend.WebApi.WriteModelProcessing;
 

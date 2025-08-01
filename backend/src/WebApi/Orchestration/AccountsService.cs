@@ -2,7 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using MultiNinja.Backend.Application;
 using MultiNinja.Backend.Application.Security;
 using MultiNinja.Backend.Application.Users;
-using MultiNinja.Backend.Infrastructure.Repository.EfCore;
+using MultiNinja.Backend.Infrastructure.WriteModel.EfCore;
 using MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
 namespace MultiNinja.Backend.WebApi.Orchestration;
