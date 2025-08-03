@@ -26,8 +26,6 @@ builder.Services.AddOpenApi();
 
 var app = builder.Build();
 
-ApplyWriteContextMigrations(app);
-
 app
     .MapAuth()
     .MapOpenApi();
@@ -35,25 +33,6 @@ app
     .MapScalarApiReference();
 
 app.Run();
-
-static void ApplyWriteContextMigrations(WebApplication app)
-{
-    using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<WriteContext>();
-
-    // Check and apply pending migrations
-    var pendingMigrations = dbContext.Database.GetPendingMigrations();
-    if (pendingMigrations.Any())
-    {
-        Console.WriteLine("Applying pending migrations...");
-        dbContext.Database.Migrate();
-        Console.WriteLine("Migrations applied successfully.");
-    }
-    else
-    {
-        Console.WriteLine("No pending migrations found.");
-    }
-}
 
 namespace MultiNinja.Backend.WebApi
 {
