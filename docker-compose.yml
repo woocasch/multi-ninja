@@ -59,29 +59,19 @@ services:
     # depends_on:
       # - multi-ninja.backend.local
 
-  multi-ninja.backend.writemodeladmin.local:
-    container_name: multi-ninja.backend.writemodeladmin.local
-    hostname: multi-ninja.backend.writemodeladmin.local
+  multi-ninja.backend.dbadmin.local:
+    container_name: multi-ninja.backend.dbadmin.local
+    hostname: multi-ninja.backend.dbadmin.local
     image: phpmyadmin:5.2.2
     restart: always
-    environment:
-      - PMA_HOST=multi-ninja.backend.writemodel.local
     ports:
       - 10005:80
+    volumes:
+      - type: bind
+        source: .\docker_files\dbadmin\config.user.inc.php
+        target: /etc/phpmyadmin/config.user.inc.php
     depends_on:
       - multi-ninja.backend.writemodel.local
-
-  multi-ninja.backend.readmodeladmin.local:
-    container_name: multi-ninja.backend.readmodeladmin.local
-    hostname: multi-ninja.backend.readmodeladmin.local
-    image: phpmyadmin:5.2.2
-    restart: always
-    environment:
-      - PMA_HOST=multi-ninja.backend.readmodel.local
-    ports:
-      - 10006:80
-    depends_on:
-      - multi-ninja.backend.readmodel.local
 
 volumes:
   writemodel-data:
