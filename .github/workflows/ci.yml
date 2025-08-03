@@ -253,7 +253,7 @@ jobs:
         labels: $${ steps.meta.output.labels }}
 
   create-readsdbmigrator-image:
-    name: Create reads DB image
+    name: Create reads DB migrator image
     needs: [build-and-test-front]
     runs-on: ubuntu-latest
 
