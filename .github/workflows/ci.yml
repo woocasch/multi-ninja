@@ -196,3 +196,113 @@ jobs:
         push: true
         tags: ${{ steps.meta.outputs.tags }}
         labels: $${ steps.meta.output.labels }}
+
+  create-writesdbmigrator-image:
+    name: Create writes DB migrator image
+    needs: [build-and-test-front]
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Load .env
+      id: version_data
+      uses: falti/dotenv-action@v1
+      with:
+        path: .github/workflows/version
+        export-variables: true
+
+    - name: Log in to container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker)
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      with:
+        images: |
+          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-writesmodelmigrator
+        tags: |
+          # Feature branch image
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
+          # Develop branch image
+          type=raw,value=test,enable=${{ github.ref == 'refs/heads/develop' }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-test,enable=${{ github.ref == 'refs/heads/develop' }}
+          # Master branch image
+          type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }},enable=${{ github.ref == 'refs/heads/master' }}
+
+    - name: Build and push docker image
+      id: push
+      uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile-WritesDb
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: $${ steps.meta.output.labels }}
+
+  create-readsdbmigrator-image:
+    name: Create reads DB image
+    needs: [build-and-test-front]
+    runs-on: ubuntu-latest
+
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Load .env
+      id: version_data
+      uses: falti/dotenv-action@v1
+      with:
+        path: .github/workflows/version
+        export-variables: true
+
+    - name: Log in to container registry
+      uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Extract metadata (tags, labels) for Docker)
+      id: meta
+      uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+      with:
+        images: |
+          ${{ env.REGISTRY }}/${{ env.IMAGE_BASE}}-readsmodelmigrator
+        tags: |
+          # Feature branch image
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-${{ env.IMAGE_TAG }},enable=${{ startsWith(github.ref, 'refs/heads/feature') }}
+          # Develop branch image
+          type=raw,value=test,enable=${{ github.ref == 'refs/heads/develop' }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }}-test,enable=${{ github.ref == 'refs/heads/develop' }}
+          # Master branch image
+          type=raw,value=latest,enable=${{ github.ref == 'refs/heads/master' }}
+          type=raw,value=${{ steps.version_data.outputs.APPLICATION_VERSION }},enable=${{ github.ref == 'refs/heads/master' }}
+
+    - name: Build and push docker image
+      id: push
+      uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
+      with:
+        context: ./backend
+        file: ./backend/Dockerfile-ReadsDb
+        push: true
+        tags: ${{ steps.meta.outputs.tags }}
+        labels: $${ steps.meta.output.labels }}
