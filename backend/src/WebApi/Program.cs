@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MultiNinja.Backend.Infrastructure;
+using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 using MultiNinja.Backend.WebApi.Endpoints;
 using MultiNinja.Backend.WebApi.Orchestration;
@@ -13,14 +14,19 @@ builder.Services
     .AddOrchestration()
     .AddHostedService<MultiNinja.Backend.WebApi.WriteModelProcessing.WriteModelProcessor>();
 
-builder.Services.Configure<ConnectionStrings>(builder.Configuration.GetSection("ConnectionStrings"));
-
 builder.Services
     .AddDbContext<WriteContext>(options =>
     {
-        options.UseMySQL(builder.Configuration.GetConnectionString("WriteDatabase")!);
-    })
-    .AddDbContextFactory<WriteContext>(_ => { }, ServiceLifetime.Scoped);
+        options.UseMySQL(
+            builder.Configuration.GetConnectionString("WriteDatabase")!);
+    });
+
+builder.Services
+    .AddDbContext<ReadsContext>(options =>
+    {
+        options.UseMySQL(
+            builder.Configuration.GetConnectionString("ReadsDatabase")!);
+    });
 
 builder.Services.AddOpenApi();
 

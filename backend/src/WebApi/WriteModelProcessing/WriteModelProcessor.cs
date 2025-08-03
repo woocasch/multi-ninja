@@ -1,4 +1,5 @@
 using MultiNinja.Backend.Application.WriteModelProcessing;
+using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
 namespace MultiNinja.Backend.WebApi.WriteModelProcessing;
@@ -24,6 +25,8 @@ public class WriteModelProcessor : BackgroundService
                 result = await processor.ProcessNextEvent(stoppingToken);
                 var writeContext = scope.ServiceProvider.GetRequiredService<WriteContext>();
                 await writeContext.SaveChangesAsync(stoppingToken);
+                var readContext = scope.ServiceProvider.GetRequiredService<ReadsContext>();
+                await readContext.SaveChangesAsync(stoppingToken);
             } while (result == IProcessor.Result.EventProcessed);
 
             await Task.Delay(5000, stoppingToken);

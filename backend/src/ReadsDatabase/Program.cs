@@ -2,7 +2,7 @@
 using MultiNinja.Backend.Infrastructure;
 using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
-using MultiNinja.Backend.WritesDatabase;
+using MultiNinja.Backend.ReadsDatabase;
 
 var builder = Host.CreateApplicationBuilder();
 
@@ -15,25 +15,25 @@ builder.Services
     .AddDbContext<WriteContext>(options =>
     {
         options.UseMySQL(
-            builder.Configuration.GetConnectionString("WriteDatabase")!,
-            x => x.MigrationsAssembly(typeof(WritesDatabaseProgram).Assembly));
+            builder.Configuration.GetConnectionString("WriteDatabase")!);
     });
 
 builder.Services
     .AddDbContext<ReadsContext>(options =>
     {
         options.UseMySQL(
-            builder.Configuration.GetConnectionString("ReadsDatabase")!);
+            builder.Configuration.GetConnectionString("ReadsDatabase")!,
+            x => x.MigrationsAssembly(typeof(ReadsDatabaseProgram).Assembly));
     });
 
 var app = builder.Build();
-ApplyWriteContextMigrations(app);
+ApplyReadContextMigrations(app);
 
 
-static void ApplyWriteContextMigrations(IHost app)
+static void ApplyReadContextMigrations(IHost app)
 {
     using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<WriteContext>();
+    var dbContext = scope.ServiceProvider.GetRequiredService<ReadsContext>();
 
     // Check and apply pending migrations
     var pendingMigrations = dbContext.Database.GetPendingMigrations();
@@ -49,9 +49,9 @@ static void ApplyWriteContextMigrations(IHost app)
     }
 }
 
-namespace MultiNinja.Backend.WritesDatabase
+namespace MultiNinja.Backend.ReadsDatabase
 {
-    public sealed partial class WritesDatabaseProgram
+    public sealed partial class ReadsDatabaseProgram
     {
     }
 }
