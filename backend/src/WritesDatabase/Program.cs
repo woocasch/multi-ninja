@@ -15,7 +15,7 @@ builder.Services
     .AddDbContext<WriteContext>(options =>
     {
         options.UseMySQL(
-            builder.Configuration.GetConnectionString("WriteDatabase")!,
+            builder.Configuration.GetConnectionString("WritesDatabase")!,
             x => x.MigrationsAssembly(typeof(WritesDatabaseProgram).Assembly));
     });
 

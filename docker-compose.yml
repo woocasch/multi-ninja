@@ -45,7 +45,7 @@ services:
     # image: multi-ninja-backend:local
     # restart: always
     # environment:
-      # - ConnectionStrings__WriteDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
+      # - ConnectionStrings__WritesDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
       # - ConnectionStrings__ReadDatabase=Server=multi-ninja.backend.readmodel.local;Port=3306;Database=read_model;Uid=multi-ninja-reads;Pwd=multi-ninja-reads-password;
     # ports:
       # - 10003:8080

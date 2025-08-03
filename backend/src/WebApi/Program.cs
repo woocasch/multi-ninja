@@ -18,7 +18,7 @@ builder.Services
     .AddDbContext<WriteContext>(options =>
     {
         options.UseMySQL(
-            builder.Configuration.GetConnectionString("WriteDatabase")!);
+            builder.Configuration.GetConnectionString("WritesDatabase")!);
     });
 
 builder.Services
