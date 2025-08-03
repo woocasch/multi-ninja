@@ -1,0 +1,1 @@
+docker run -e ConnectionStrings__ReadsDatabase='Server=multi-ninja.backend.readmodel.local;Port=3306;Database=read_model;Uid=root;Pwd=secret-password;' --network local.multi-ninja.databases multi-ninja-readsmodelmigrator:local

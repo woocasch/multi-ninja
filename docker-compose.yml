@@ -15,6 +15,8 @@ services:
       - type: volume
         source: writemodel-data
         target: /var/lib/mysql
+    networks:
+      - local.multi-ninja.databases
     ports:
       - 10001:3306
 
@@ -32,6 +34,8 @@ services:
       - type: volume
         source: readmodel-data
         target: /var/lib/mysql
+    networks:
+      - local.multi-ninja.databases
     ports:
       - 10002:3306
 
@@ -45,6 +49,8 @@ services:
       # - ConnectionStrings__ReadDatabase=Server=multi-ninja.backend.readmodel.local;Port=3306;Database=read_model;Uid=multi-ninja-reads;Pwd=multi-ninja-reads-password;
     # ports:
       # - 10003:8080
+    # networks:
+      # - local.multi-ninja.databases
     # depends_on:
       # - multi-ninja.backend.writemodel.local
       # - multi-ninja.backend.readmodel.local
@@ -70,8 +76,15 @@ services:
       - type: bind
         source: .\docker_files\dbadmin\config.user.inc.php
         target: /etc/phpmyadmin/config.user.inc.php
+    networks:
+      - local.multi-ninja.databases
     depends_on:
       - multi-ninja.backend.writemodel.local
+
+networks:
+  local.multi-ninja.databases:
+    driver: bridge
+    external: true
 
 volumes:
   writemodel-data:

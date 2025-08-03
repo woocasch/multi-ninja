@@ -18,10 +18,9 @@ COPY . .
 
 FROM build AS publish
 WORKDIR /source
-RUN dotnet publish "./src/WebApi/WebApi.csproj" -c Release -o /app/publish --no-restore
+RUN dotnet publish "./src/WritesDatabase/WritesDatabase.csproj" -c Release -o /app/publish --no-restore
 
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
 WORKDIR /app
-EXPOSE 80
 COPY --from=publish /app/publish .
-ENTRYPOINT ["dotnet", "MultiNinja.Backend.WebApi.dll"]
+ENTRYPOINT ["dotnet", "WritesDatabaseMigration.dll"]
