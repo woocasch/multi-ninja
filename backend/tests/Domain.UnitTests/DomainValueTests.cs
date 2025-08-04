@@ -3,7 +3,7 @@ using TestStack.BDDfy;
 
 namespace MultiNinja.Backend.Domain.UnitTests;
 
-public class DomainValueTests
+public sealed class DomainValueTests
 {
     private DomainValue value1 = null!;
     
@@ -92,14 +92,14 @@ public class DomainValueTests
         }
     }
 
-    private class DomainValue1_1 : DomainValue1
+    private sealed class DomainValue1_1 : DomainValue1
     {
         public DomainValue1_1(int id, string name) : base(id, name)
         {
         }
     }
 
-    private class DomainValue2 : DomainValue
+    private sealed class DomainValue2 : DomainValue
     {
         public DomainValue2(int id, string name) : base(id, name)
         {

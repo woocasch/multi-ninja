@@ -15,42 +15,77 @@ services:
       - type: volume
         source: writemodel-data
         target: /var/lib/mysql
+    networks:
+      - local.multi-ninja.databases
     ports:
       - 10001:3306
 
-  multi-ninja.backend.local:
-    container_name: multi-ninja.backend.local
-    hostname: multi-ninja.backend.local
-    image: multi-ninja-backend:local
+  multi-ninja.backend.readmodel.local:
+    container_name: multi-ninja.backend.readmodel.local
+    hostname: multi-ninja.backend.readmodel.local
+    image: mysql:8.0
     restart: always
     environment:
-      - ConnectionStrings__WriteDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
+      - MYSQL_ROOT_PASSWORD=secret-password
+      - MYSQL_DATABASE=read_model
+      - MYSQL_USER=multi-ninja-reads
+      - MYSQL_PASSWORD=multi-ninja-reads-password
+    volumes:
+      - type: volume
+        source: readmodel-data
+        target: /var/lib/mysql
+    networks:
+      - local.multi-ninja.databases
     ports:
-      - 10003:8080
-    depends_on:
-      - multi-ninja.backend.writemodel.local
+      - 10002:3306
 
-  multi-ninja.frontend.local:
-    container_name: multi-ninja.frontend.local
-    hostname: multi-ninja.frontend.local
-    image: multi-ninja-frontend:local
-    restart: always
-    ports:
-      - 10004:80
-    depends_on:
-      - multi-ninja.backend.local
+  # multi-ninja.backend.local:
+    # container_name: multi-ninja.backend.local
+    # hostname: multi-ninja.backend.local
+    # image: multi-ninja-backend:local
+    # restart: always
+    # environment:
+      # - ConnectionStrings__WritesDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
+      # - ConnectionStrings__ReadDatabase=Server=multi-ninja.backend.readmodel.local;Port=3306;Database=read_model;Uid=multi-ninja-reads;Pwd=multi-ninja-reads-password;
+    # ports:
+      # - 10003:8080
+    # networks:
+      # - local.multi-ninja.databases
+    # depends_on:
+      # - multi-ninja.backend.writemodel.local
+      # - multi-ninja.backend.readmodel.local
 
-  multi-ninja.backend.writemodeladmin.local:
-    container_name: multi-ninja.backend.writemodeladmin.local
-    hostname: multi-ninja.backend.writemodeladmin.local
+  # multi-ninja.frontend.local:
+    # container_name: multi-ninja.frontend.local
+    # hostname: multi-ninja.frontend.local
+    # image: multi-ninja-frontend:local
+    # restart: always
+    # ports:
+      # - 10004:80
+    # depends_on:
+      # - multi-ninja.backend.local
+
+  multi-ninja.backend.dbadmin.local:
+    container_name: multi-ninja.backend.dbadmin.local
+    hostname: multi-ninja.backend.dbadmin.local
     image: phpmyadmin:5.2.2
     restart: always
-    environment:
-      - PMA_HOST=multi-ninja.backend.writemodel.local
     ports:
-      - 10002:80
+      - 10005:80
+    volumes:
+      - type: bind
+        source: .\docker_files\dbadmin\config.user.inc.php
+        target: /etc/phpmyadmin/config.user.inc.php
+    networks:
+      - local.multi-ninja.databases
     depends_on:
       - multi-ninja.backend.writemodel.local
+
+networks:
+  local.multi-ninja.databases:
+    driver: bridge
+    external: true
 
 volumes:
   writemodel-data:
+  readmodel-data:

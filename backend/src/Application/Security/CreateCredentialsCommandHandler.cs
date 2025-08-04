@@ -1,6 +1,5 @@
 using MultiNinja.Backend.Application.EventStreams;
-using MultiNinja.Backend.Application.Repository;
-using MultiNinja.Backend.Application.Repository.Credentials;
+using MultiNinja.Backend.Application.ReadsRepository;
 using MultiNinja.Backend.Domain.Credentials;
 
 namespace MultiNinja.Backend.Application.Security;

@@ -1,0 +1,1 @@
+docker run --rm -e ConnectionStrings__WritesDatabase='Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=root;Pwd=secret-password;' --network local.multi-ninja.databases multi-ninja-writesmodelmigrator:local

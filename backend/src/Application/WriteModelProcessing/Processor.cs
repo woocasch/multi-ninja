@@ -1,9 +1,9 @@
 using Microsoft.Extensions.DependencyInjection;
-using MultiNinja.Backend.Application.Repository;
+using MultiNinja.Backend.Application.WritesRepository;
 
 namespace MultiNinja.Backend.Application.WriteModelProcessing;
 
-public class Processor : IProcessor
+public sealed class Processor : IProcessor
 {
     private readonly IStreams streams;
     

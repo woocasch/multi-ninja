@@ -1,10 +1,10 @@
-using MultiNinja.Backend.Application.Repository;
-using MultiNinja.Backend.Application.Repository.Credentials;
+using MultiNinja.Backend.Application.ReadsRepository;
+using MultiNinja.Backend.Application.ReadsRepository.Credentials;
 using MultiNinja.Backend.Domain.Credentials;
 
 namespace MultiNinja.Backend.Application.WriteModelProcessing.Credentials;
 
-public class CredentialsCreatedHandler : EventHandlerBase<CredentialsCreated>
+public sealed class CredentialsCreatedHandler : EventHandlerBase<CredentialsCreated>
 {
     private readonly ICredentials credentials;
 

@@ -1,0 +1,26 @@
+FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
+WORKDIR /source
+COPY ["src/Application/Application.csproj", "./src/Application/"]
+COPY ["src/Domain/Domain.csproj", "./src/Domain/"]
+COPY ["src/Infrastructure/Infrastructure.csproj", "./src/Infrastructure/"]
+COPY ["src/ReadsDatabase/ReadsDatabase.csproj", "./src/ReadsDatabase/"]
+COPY ["src/WebApi/WebApi.csproj", "./src/WebApi/"]
+COPY ["src/WritesDatabase/WritesDatabase.csproj", "./src/WritesDatabase/"]
+COPY ["tests/Application.UnitTests/Application.UnitTests.csproj", "./tests/Application.UnitTests/"]
+COPY ["tests/Domain.UnitTests/Domain.UnitTests.csproj", "./tests/Domain.UnitTests/"]
+COPY ["tests/Infrastructure.UnitTests/Infrastructure.UnitTests.csproj", "./tests/Infrastructure.UnitTests/"]
+COPY ["tests/WebApi.IntegrationTests/WebApi.IntegrationTests.csproj", "./tests/WebApi.IntegrationTests/"]
+COPY ["Backend.sln", "./"]
+
+RUN dotnet restore "./Backend.sln"
+
+COPY . .
+
+FROM build AS publish
+WORKDIR /source
+RUN dotnet publish "./src/ReadsDatabase/ReadsDatabase.csproj" -c Release -o /app/publish --no-restore
+
+FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "ReadsDatabaseMigration.dll"]

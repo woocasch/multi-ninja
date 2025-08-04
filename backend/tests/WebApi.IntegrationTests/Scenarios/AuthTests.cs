@@ -1,13 +1,12 @@
 using System.Net;
 using System.Text;
-using System.Text.Json;
 using Microsoft.AspNetCore.Mvc.Testing;
 using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 using Shouldly;
 
 namespace MultiNinja.Backend.WebApi.IntegrationTests.Scenarios;
 
-public class AuthTests : IClassFixture<WebApiFactory>
+public sealed class AuthTests : IClassFixture<WebApiFactory>
 {
     private readonly WebApiFactory webApiFactory;
 

@@ -1,0 +1,14 @@
+namespace MultiNinja.Backend.Application.ReadsRepository.Users;
+
+public sealed class CreateUserParameters
+{
+    public CreateUserParameters(Guid userId, string displayName)
+    {
+        this.UserId = userId;
+        this.DisplayName = displayName;
+    }
+
+    public Guid UserId { get; }
+
+    public string DisplayName { get; }
+}
