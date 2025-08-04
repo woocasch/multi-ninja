@@ -20,7 +20,7 @@ public sealed class CredentialsRepository : ICredentials
             Id = parameters.Id,
             UserId = parameters.UserId,
             Password = parameters.Password,
-            UserName = parameters.Email,
+            UserName = parameters.UserName,
         };
 
         await this.readsContext.Credentials.AddAsync(payload, cancellationToken);
@@ -47,10 +47,10 @@ public sealed class CredentialsRepository : ICredentials
         return result;
     }
 
-    public async Task<CredentialsRecord?> SearchByEmail(SearchByEmailParameters parameters, CancellationToken cancellationToken)
+    public async Task<CredentialsRecord?> SearchByUserName(SearchByEmailParameters parameters, CancellationToken cancellationToken)
     {
         var found = await this.readsContext.Credentials
-            .Where(c => c.UserName == parameters.Email)
+            .Where(c => c.UserName == parameters.UserName)
             .ToListAsync(cancellationToken);
         if (found.Count == 0)
         {

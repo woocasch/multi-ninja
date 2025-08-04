@@ -9,20 +9,20 @@ public sealed class CredentialsCreated : EntityEvent
         Guid streamId,
         Guid credentialsId,
         Guid userId,
-        string email,
+        string userName,
         string passwordHash,
         DateTime storageDate)
         : base(streamId, EntityType.Credentials, storageDate)
     {
         this.CredentialsId = credentialsId;
         this.UserId = userId;
-        this.Email = email;
+        this.UserName = userName;
         this.PasswordHash = passwordHash;
     }
 
     public Guid CredentialsId { get; }
 
-    public string Email { get; }
+    public string UserName { get; }
     
     public string PasswordHash { get; }
     
@@ -32,7 +32,7 @@ public sealed class CredentialsCreated : EntityEvent
         Guid streamId,
         Guid credentialsId,
         Guid userId,
-        string email,
+        string userName,
         string passwordHash)
     {
         if (streamId == Guid.Empty)
@@ -56,11 +56,11 @@ public sealed class CredentialsCreated : EntityEvent
                 nameof(userId));
         }
 
-        if (string.IsNullOrWhiteSpace(email))
+        if (string.IsNullOrWhiteSpace(userName))
         {
             throw new ArgumentException(
-                CredentialsCreatedResources.Email_Required,
-                nameof(email));
+                CredentialsCreatedResources.UserName_Required,
+                nameof(userName));
         }
 
         if (string.IsNullOrWhiteSpace(passwordHash))
@@ -74,7 +74,7 @@ public sealed class CredentialsCreated : EntityEvent
             streamId,
             credentialsId,
             userId,
-            email,
+            userName,
             passwordHash,
             DateTime.UtcNow);
     }

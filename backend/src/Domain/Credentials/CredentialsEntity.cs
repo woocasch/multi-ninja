@@ -11,14 +11,14 @@ public sealed class CredentialsEntity : Entity
 
     public Guid UserId { get; private set; }
 
-    public string Email { get; private set; } = string.Empty;
+    public string UserName { get; private set; } = string.Empty;
 
     public string HashedPassword { get; private set; } = string.Empty;
 
     public static CredentialsEntity Create(
         Guid credentialsId,
         Guid userId,
-        string email,
+        string userName,
         string passwordHash)
     {
         var result = new CredentialsEntity(
@@ -28,7 +28,7 @@ public sealed class CredentialsEntity : Entity
             result.StreamId,
             credentialsId,
             userId,
-            email,
+            userName,
             passwordHash);
         result.Apply(userCreatedEvent);
         return result;
@@ -51,7 +51,7 @@ public sealed class CredentialsEntity : Entity
     {
         this.EntityId = credentialsCreated.CredentialsId;
         this.UserId = credentialsCreated.UserId;
-        this.Email = credentialsCreated.Email;
+        this.UserName = credentialsCreated.UserName;
         this.HashedPassword = credentialsCreated.PasswordHash;
     }
 }

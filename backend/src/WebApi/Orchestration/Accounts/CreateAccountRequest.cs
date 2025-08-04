@@ -2,14 +2,14 @@ namespace MultiNinja.Backend.WebApi.Orchestration.Accounts;
 
 public sealed class CreateAccountRequest
 {
-    public CreateAccountRequest(string email, string password, string displayName)
+    public CreateAccountRequest(string userName, string password, string displayName)
     {
-        this.Email = email;
+        this.UserName = userName;
         this.Password = password;
         this.DisplayName = displayName;
     }
 
-    public string Email { get; }
+    public string UserName { get; }
 
     public string Password { get; }
 

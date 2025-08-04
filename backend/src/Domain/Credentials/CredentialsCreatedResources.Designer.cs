@@ -69,15 +69,6 @@ namespace MultiNinja.Backend.Domain.Credentials {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Email is required..
-        /// </summary>
-        internal static string Email_Required {
-            get {
-                return ResourceManager.GetString("Email_Required", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to PasswordHash is required..
         /// </summary>
         internal static string PasswordHash_Required {
@@ -101,6 +92,15 @@ namespace MultiNinja.Backend.Domain.Credentials {
         internal static string UserId_Required {
             get {
                 return ResourceManager.GetString("UserId_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to UserName is required..
+        /// </summary>
+        internal static string UserName_Required {
+            get {
+                return ResourceManager.GetString("UserName_Required", resourceCulture);
             }
         }
     }

@@ -12,7 +12,7 @@ public static class Auth
         IAccountsService authenticationController,
         CancellationToken cancellationToken)
     {
-        var request = new CreateAccountRequest(input.Email, input.Password, input.DisplayName);
+        var request = new CreateAccountRequest(input.UserName, input.Password, input.DisplayName);
         var response = await authenticationController.CreateAccount(request, cancellationToken);
         return response.Match(
             r => Results.Accepted($"/api/auth/{r.Id}", new CreateAccountOutput(r.Id)),

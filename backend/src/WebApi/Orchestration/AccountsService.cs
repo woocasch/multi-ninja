@@ -34,7 +34,7 @@ public sealed class AccountsService : IAccountsService
 
         var credentialsId = Guid.NewGuid();
         var createCredentialsCommand =
-            new CreateCredentialsCommand(credentialsId, userId, request.Email, request.Password);
+            new CreateCredentialsCommand(credentialsId, userId, request.UserName, request.Password);
         var result = await this.mediator.Execute(createCredentialsCommand, cancellationToken);
         if (!result.Success)
         {

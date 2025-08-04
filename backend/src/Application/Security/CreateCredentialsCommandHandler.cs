@@ -22,8 +22,8 @@ public sealed class CreateCredentialsCommandHandler : CommandHandlerBase<CreateC
         CreateCredentialsCommand command,
         CancellationToken cancellationToken)
     {
-        var existingCredentials = await this.credentialsRepository.SearchByEmail(
-            new(command.Email),
+        var existingCredentials = await this.credentialsRepository.SearchByUserName(
+            new(command.UserName),
             cancellationToken);
         if (existingCredentials is not null)
         {
@@ -33,7 +33,7 @@ public sealed class CreateCredentialsCommandHandler : CommandHandlerBase<CreateC
         var credentials = CredentialsEntity.Create(
             command.Id,
             command.UserId,
-            command.Email,
+            command.UserName,
             command.Password);
         await this.eventStreams.Create(credentials,  cancellationToken);
         return CommandExecutionResult.Succeeded();

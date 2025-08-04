@@ -5,12 +5,12 @@ public sealed class CreateCredentialsCommand : ICommand
     public CreateCredentialsCommand(
         Guid id,
         Guid userId,
-        string email,
+        string userName,
         string password)
     {
         this.Id = id;
         this.UserId = userId;
-        this.Email = email;
+        this.UserName = userName;
         this.Password = password;
     }
     
@@ -18,7 +18,7 @@ public sealed class CreateCredentialsCommand : ICommand
 
     public Guid UserId { get; }
 
-    public string Email { get; }
+    public string UserName { get; }
 
     public string Password { get; }
 }

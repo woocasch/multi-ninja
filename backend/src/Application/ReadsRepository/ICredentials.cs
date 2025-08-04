@@ -8,5 +8,5 @@ public interface ICredentials
     
     Task<CredentialsRecord?>CheckCredentials(CheckCredentialsParameters parameters, CancellationToken cancellationToken);
     
-    Task<CredentialsRecord?> SearchByEmail(SearchByEmailParameters parameters, CancellationToken cancellationToken);
+    Task<CredentialsRecord?> SearchByUserName(SearchByEmailParameters parameters, CancellationToken cancellationToken);
 }

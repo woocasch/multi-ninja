@@ -2,10 +2,10 @@ namespace MultiNinja.Backend.Application.ReadsRepository.Credentials;
 
 public sealed class SearchByEmailParameters
 {
-    public SearchByEmailParameters(string email)
+    public SearchByEmailParameters(string userName)
     {
-        this.Email = email;
+        this.UserName = userName;
     } 
 
-    public string Email { get; }
+    public string UserName { get; }
 }

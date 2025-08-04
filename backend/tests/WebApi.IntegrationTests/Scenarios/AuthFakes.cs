@@ -18,7 +18,7 @@ public static class AuthFakes
         var result = new Faker<CreateAccountInput>()
             .CustomInstantiator(f =>
                 new CreateAccountInput(
-                    f.Person.Email,
+                    f.Internet.UserName(),
                     f.Internet.Password(),
                     f.Person.FullName));
         return result;

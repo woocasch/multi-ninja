@@ -46,7 +46,7 @@ public sealed class AuthTests : IClassFixture<WebApiFactory>
         createAccountResponse.ShouldNotBeNull();
         
         await Task.Delay(6000);
-        var createTokenInput = new CreateTokenInput(createAccountInput.Email, createAccountInput.Password);
+        var createTokenInput = new CreateTokenInput(createAccountInput.UserName, createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
         createTokenRequest.Content = new StringContent(createTokenPayload, Encoding.UTF8, "application/json");
@@ -70,7 +70,7 @@ public sealed class AuthTests : IClassFixture<WebApiFactory>
         createAccountResponse.ShouldNotBeNull();
         
         await Task.Delay(2000);
-        var createTokenInput = new CreateTokenInput($"A{createAccountInput.Email}", createAccountInput.Password);
+        var createTokenInput = new CreateTokenInput($"A{createAccountInput.UserName}", createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
         createTokenRequest.Content = new StringContent(createTokenPayload, Encoding.UTF8, "application/json");
@@ -90,7 +90,7 @@ public sealed class AuthTests : IClassFixture<WebApiFactory>
         createAccountResponse.ShouldNotBeNull();
         
         await Task.Delay(2000);
-        var createTokenInput = new CreateTokenInput($"A{createAccountInput.Email}", createAccountInput.Password);
+        var createTokenInput = new CreateTokenInput($"A{createAccountInput.UserName}", createAccountInput.Password);
         var createTokenRequest = new HttpRequestMessage(HttpMethod.Post, "api/auth/createToken");
         var createTokenPayload = SerializationProvider.Serialize(createTokenInput);
         createTokenRequest.Content = new StringContent(createTokenPayload, Encoding.UTF8, "application/json");
