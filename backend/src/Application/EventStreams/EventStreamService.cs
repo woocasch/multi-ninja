@@ -54,14 +54,16 @@ public sealed class EventStreamService : IEventStreamsService
         }
     }
 
-    public Task<TEntity> Get<TEntity>(Guid id, CancellationToken cancellationToken) where TEntity : Entity
+    public async Task<TEntity?> Get<TEntity>(Guid id, CancellationToken cancellationToken) where TEntity : Entity
     {
-        throw new NotImplementedException();
+        await Task.Yield();
+        return null;
     }
 
-    public Task<TEntity> Get<TEntity>(EntityType entityType, Guid entityId, CancellationToken cancellationToken)
+    public async Task<TEntity?> Get<TEntity>(EntityType entityType, Guid entityId, CancellationToken cancellationToken)
         where TEntity : Entity
     {
-        throw new NotImplementedException();
+        await Task.Yield();
+        return null;
     }
 }

@@ -10,9 +10,9 @@ public interface IEventStreamsService
     Task Update<TEntity>(TEntity entity, CancellationToken cancellationToken)
         where TEntity : Entity;
 
-    Task<TEntity> Get<TEntity>(Guid id, CancellationToken cancellationToken)
+    Task<TEntity?> Get<TEntity>(Guid id, CancellationToken cancellationToken)
         where TEntity : Entity;
 
-    Task<TEntity> Get<TEntity>(EntityType entityType, Guid entityId, CancellationToken cancellationToken)
+    Task<TEntity?> Get<TEntity>(EntityType entityType, Guid entityId, CancellationToken cancellationToken)
         where TEntity : Entity;
 }

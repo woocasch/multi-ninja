@@ -78,6 +78,15 @@ namespace MultiNinja.Backend.Domain.Credentials {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to PasswordSalt is required..
+        /// </summary>
+        internal static string PasswordSalt_Required {
+            get {
+                return ResourceManager.GetString("PasswordSalt_Required", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to StreamId is required..
         /// </summary>
         internal static string StreamId_Required {

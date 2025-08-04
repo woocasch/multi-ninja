@@ -18,8 +18,7 @@ public sealed class CredentialsCreatedHandler : EventHandlerBase<CredentialsCrea
         var parameters = new CreateCredentialsParameters(
             entityEvent.CredentialsId,
             entityEvent.UserId,
-            entityEvent.UserName,
-            entityEvent.PasswordHash);
+            entityEvent.UserName);
         await this.credentials.Create(parameters, cancellationToken);
     }
 }
