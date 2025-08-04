@@ -1,24 +1,24 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Storage;
-using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
+using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 using Testcontainers.MySql;
 
 namespace MultiNinja.Backend.WebApi.IntegrationTests;
 
-public sealed class WriteDatabaseFixture : IAsyncLifetime
+public sealed class ReadsDatabaseFixture : IAsyncLifetime
 {
-    private static readonly Lazy<WriteDatabaseFixture> LazyInstance = new(() => new WriteDatabaseFixture());
+    private static readonly Lazy<ReadsDatabaseFixture> LazyInstance = new(() => new ReadsDatabaseFixture());
 
     private readonly MySqlContainer container = new MySqlBuilder()
         .WithImage("mysql:8.0")
         .Build();
 
-    private WriteDatabaseFixture()
+    private ReadsDatabaseFixture()
     {
     }
 
-    public static WriteDatabaseFixture Instance => LazyInstance.Value;
+    public static ReadsDatabaseFixture Instance => LazyInstance.Value;
 
     public string ConnectionString => container.GetConnectionString();
 
@@ -27,10 +27,10 @@ public sealed class WriteDatabaseFixture : IAsyncLifetime
     public async Task InitializeAsync()
     {
         await this.container.StartAsync();
-        var optionsBuilder = new DbContextOptionsBuilder<WriteContext>();
+        var optionsBuilder = new DbContextOptionsBuilder<ReadsContext>();
         optionsBuilder.UseMySQL(this.ConnectionString);
         var options = optionsBuilder.Options;
-        await using var dbContext = new WriteContext(options);
+        await using var dbContext = new ReadsContext(options);
         var databaseCreator = dbContext.Database.GetService<IRelationalDatabaseCreator>();
         // needed for idempotency if retrying this method due to transient errors
         await databaseCreator.EnsureDeletedAsync();
