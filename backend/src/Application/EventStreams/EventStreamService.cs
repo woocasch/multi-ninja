@@ -54,16 +54,29 @@ public sealed class EventStreamService : IEventStreamsService
         }
     }
 
-    public async Task<TEntity?> Get<TEntity>(Guid id, CancellationToken cancellationToken) where TEntity : Entity
+    public async Task<TEntity?> Get<TEntity>(Guid id, CancellationToken cancellationToken)
+        where TEntity : Entity, new()
     {
         await Task.Yield();
         return null;
     }
 
     public async Task<TEntity?> Get<TEntity>(EntityType entityType, Guid entityId, CancellationToken cancellationToken)
-        where TEntity : Entity
+        where TEntity : Entity, new()
     {
-        await Task.Yield();
-        return null;
+        var stream = await this.streams.GetEntityStream(new(entityId, entityType), cancellationToken);
+        if (stream is null)
+        {
+            return null;
+        }
+
+        var events = await this.streams.FetchStreamEvents(stream.StreamId, cancellationToken);
+        var result = new TEntity();
+        foreach (var @event in events)
+        {
+            result.Apply(@event.EnvelopedEvent.EventData);
+        }
+
+        return result;
     }
 }

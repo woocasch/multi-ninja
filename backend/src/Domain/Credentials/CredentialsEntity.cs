@@ -2,6 +2,11 @@ namespace MultiNinja.Backend.Domain.Credentials;
 
 public sealed class CredentialsEntity : Entity
 {
+    public CredentialsEntity()
+        : base(Guid.Empty, Domain.EntityType.Credentials, Guid.Empty)
+    {
+    }
+    
     private CredentialsEntity(Guid streamId, Guid entityId)
         : base(streamId, EntityType.Credentials, entityId)
     {

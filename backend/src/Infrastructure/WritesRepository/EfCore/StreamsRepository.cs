@@ -33,6 +33,24 @@ public sealed class StreamsRepository : IStreams
         await this.writeContext.Streams.AddAsync(payload, cancellationToken);
     }
 
+    public async Task<StreamDto?> GetEntityStream(GetEntityStreamParameters parameters, CancellationToken cancellationToken)
+    {
+        var result = await this.writeContext.Streams
+            .Where(s => s.EntityType == parameters.EntityType.Name)
+            .Where(s => s.EntityId == parameters.EntityId)
+            .SingleOrDefaultAsync(cancellationToken);
+        if (result is null)
+        {
+            return null;
+        }
+
+        var entityType = EntityType.FromName(result.EntityType)!;
+        return new(
+            result.StreamId,
+            result.EntityId,
+            entityType);
+    }
+
     public async Task<ulong> AddEvent(AddEventParameters parameters, CancellationToken cancellationToken)
     {
         var stream = await this.writeContext.Streams.Include(s => s.Events)
@@ -71,6 +89,27 @@ public sealed class StreamsRepository : IStreams
         stream.Events.Add(payload);
         await this.writeContext.Events.AddAsync(payload, cancellationToken);
         return eventVersion;
+    }
+
+    public async Task<IReadOnlyCollection<EventDto>> FetchStreamEvents(Guid streamId, CancellationToken cancellationToken)
+    {
+        var events = await this.writeContext.Events
+            .Where(e => e.StreamId == streamId)
+            .ToListAsync(cancellationToken);
+        var result = new List<EventDto>(events.Count);
+        foreach (var @event in events)
+        {
+            var eventData = Deserialize(@event.TypeName, @event.SerializedEvent);
+            var eventEnvelope = new EntityEventEnvelope(
+                @event.StreamId,
+                EntityType.FromName(@event.EntityType) ?? new EntityType(-1, "--"),
+                @event.EventTime,
+                eventData,
+                @event.Version);
+            result.Add(new(eventEnvelope));
+        }
+
+        return result;
     }
 
     public async Task<EntityEventEnvelope?> GetNextUnprocessedEvent(string processorName,

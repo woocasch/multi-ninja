@@ -7,7 +7,11 @@ public interface IStreams
 {
     Task CreateStream(CreateStreamParameters parameters, CancellationToken cancellationToken);
     
+    Task<StreamDto?> GetEntityStream(GetEntityStreamParameters parameters, CancellationToken cancellationToken);
+    
     Task<ulong> AddEvent(AddEventParameters parameters, CancellationToken cancellationToken);
+    
+    Task<IReadOnlyCollection<EventDto>> FetchStreamEvents(Guid streamId, CancellationToken cancellationToken);
     
     Task<EntityEventEnvelope?> GetNextUnprocessedEvent(string processorName, CancellationToken cancellationToken);
     

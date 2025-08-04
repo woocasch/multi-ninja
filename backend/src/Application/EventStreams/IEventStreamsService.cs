@@ -11,8 +11,8 @@ public interface IEventStreamsService
         where TEntity : Entity;
 
     Task<TEntity?> Get<TEntity>(Guid id, CancellationToken cancellationToken)
-        where TEntity : Entity;
+        where TEntity : Entity, new();
 
     Task<TEntity?> Get<TEntity>(EntityType entityType, Guid entityId, CancellationToken cancellationToken)
-        where TEntity : Entity;
+        where TEntity : Entity, new();
 }

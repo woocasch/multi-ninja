@@ -11,7 +11,7 @@ using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 namespace MultiNinja.Backend.ReadsDatabase.Migrations
 {
     [DbContext(typeof(ReadsContext))]
-    [Migration("20250804181538_InitialMigration")]
+    [Migration("20250804203902_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -27,10 +27,6 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");

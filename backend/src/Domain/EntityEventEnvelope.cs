@@ -5,7 +5,7 @@ public sealed class EntityEventEnvelope
     public EntityEventEnvelope(
         Guid streamId,
         EntityType entityType,
-        DateTime storageDate,
+        DateTimeOffset storageDate,
         EntityEvent eventData,
         ulong version)
     {
@@ -20,7 +20,7 @@ public sealed class EntityEventEnvelope
 
     public EntityType EntityType { get; }
     
-    public DateTime StorageDate { get; }
+    public DateTimeOffset StorageDate { get; }
 
     public EntityEvent EventData { get; }
 

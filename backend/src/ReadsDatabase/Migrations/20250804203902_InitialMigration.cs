@@ -20,8 +20,7 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                 {
                     Id = table.Column<Guid>(type: "char(36)", nullable: false),
                     UserId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    UserName = table.Column<string>(type: "longtext", nullable: false),
-                    Password = table.Column<string>(type: "longtext", nullable: false)
+                    UserName = table.Column<string>(type: "longtext", nullable: false)
                 },
                 constraints: table =>
                 {

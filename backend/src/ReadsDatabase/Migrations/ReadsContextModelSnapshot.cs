@@ -25,10 +25,6 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
                     b.Property<Guid>("UserId")
                         .HasColumnType("char(36)");
 
