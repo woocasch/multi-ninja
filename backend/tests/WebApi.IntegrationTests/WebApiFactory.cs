@@ -32,7 +32,7 @@ public sealed class WebApiFactory : WebApplicationFactory<WebApiProgram>, IAsync
         {
             var configuration = new Dictionary<string, string?>()
             {
-                ["ConnectionStrings:WriteDatabase"] = this.writeDatabase.ConnectionString,
+                ["ConnectionStrings:WritesDatabase"] = this.writeDatabase.ConnectionString,
             };
             bld.AddInMemoryCollection(configuration);
         });
