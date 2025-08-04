@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
-public class ProcessorsProgress
+public sealed class ProcessorsProgress
 {
     public string ProcessorName { get; set; } = string.Empty;
     

@@ -3,7 +3,7 @@ using MySql.EntityFrameworkCore.Extensions;
 
 namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
-public class WriteContext : DbContext
+public sealed class WriteContext : DbContext
 {
     public DbSet<Stream> Streams { get; set; }
 

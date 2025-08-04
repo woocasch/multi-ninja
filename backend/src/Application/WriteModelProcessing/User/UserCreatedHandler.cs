@@ -4,7 +4,7 @@ using MultiNinja.Backend.Domain.Users;
 
 namespace MultiNinja.Backend.Application.WriteModelProcessing.User;
 
-public class UserCreatedHandler : EventHandlerBase<UserCreated>
+public sealed class UserCreatedHandler : EventHandlerBase<UserCreated>
 {
     private readonly IUsers users;
 

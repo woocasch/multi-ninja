@@ -4,7 +4,7 @@ using MultiNinja.Backend.Application.ReadsRepository.Credentials;
 
 namespace MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 
-public class CredentialsRepository : ICredentials
+public sealed class CredentialsRepository : ICredentials
 {
     private readonly ReadsContext readsContext;
 

@@ -2,7 +2,7 @@ using Testcontainers.MySql;
 
 namespace MultiNinja.Backend.WebApi.IntegrationTests;
 
-public class WriteDatabaseFixture: IAsyncLifetime
+public sealed class WriteDatabaseFixture: IAsyncLifetime
 {
     private static readonly Lazy<WriteDatabaseFixture> LazyInstance = new(() => new WriteDatabaseFixture());
 

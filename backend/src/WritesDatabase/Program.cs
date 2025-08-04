@@ -1,4 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using MultiNinja.Backend.Infrastructure;
 using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
@@ -6,6 +9,7 @@ using MultiNinja.Backend.WritesDatabase;
 
 var builder = Host.CreateApplicationBuilder();
 
+builder.Configuration.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
 builder.Configuration.AddEnvironmentVariables();
 
 builder.Services

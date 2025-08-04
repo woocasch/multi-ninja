@@ -11,7 +11,7 @@ using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 namespace MultiNinja.Backend.ReadsDatabase.Migrations
 {
     [DbContext(typeof(ReadsContext))]
-    [Migration("20250803214851_InitialMigration")]
+    [Migration("20250804181538_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -42,6 +42,21 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Credentials");
+                });
+
+            modelBuilder.Entity("MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore.User", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
                 });
 #pragma warning restore 612, 618
         }

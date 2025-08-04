@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Application.ReadsRepository.Users;
 
-public class CreateUserParameters
+public sealed class CreateUserParameters
 {
     public CreateUserParameters(Guid userId, string displayName)
     {

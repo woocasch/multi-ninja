@@ -40,6 +40,21 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
 
                     b.ToTable("Credentials");
                 });
+
+            modelBuilder.Entity("MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore.User", b =>
+                {
+                    b.Property<Guid>("UserId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("char(36)");
+
+                    b.Property<string>("DisplayName")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.HasKey("UserId");
+
+                    b.ToTable("Users");
+                });
 #pragma warning restore 612, 618
         }
     }

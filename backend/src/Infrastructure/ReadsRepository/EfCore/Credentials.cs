@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
 
-public class Credentials
+public sealed class Credentials
 {
     public required Guid Id { get; set; }
     

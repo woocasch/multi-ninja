@@ -6,7 +6,7 @@ using MultiNinja.Backend.Domain;
 
 namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
-public class StreamsRepository : IStreams
+public sealed class StreamsRepository : IStreams
 {
     private static readonly JsonSerializerOptions SerializationOptions = new()
     {

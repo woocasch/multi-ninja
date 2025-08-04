@@ -9,7 +9,8 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services)
     {
         services
-            .AddScoped<ICredentials, CredentialsRepository>();
+            .AddScoped<ICredentials, CredentialsRepository>()
+            .AddScoped<IUsers, UsersRepository>();
         return services;
     }
 }

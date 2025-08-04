@@ -4,7 +4,7 @@ using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
 namespace MultiNinja.Backend.WebApi.WriteModelProcessing;
 
-public class WriteModelProcessor : BackgroundService
+public sealed class WriteModelProcessor : BackgroundService
 {
     private readonly IServiceScopeFactory serviceScopeFactory;
 

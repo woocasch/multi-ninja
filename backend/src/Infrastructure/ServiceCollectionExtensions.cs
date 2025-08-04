@@ -2,7 +2,6 @@ using Microsoft.Extensions.DependencyInjection;
 using MultiNinja.Backend.Application;
 using MultiNinja.Backend.Application.ReadsRepository;
 using MultiNinja.Backend.Infrastructure.ReadsRepository.EfCore;
-using MultiNinja.Backend.Infrastructure.Repository;
 using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
 namespace MultiNinja.Backend.Infrastructure;
@@ -14,7 +13,6 @@ public static class ServiceCollectionExtensions
     {
         services
             .AddApplication()
-            .AddSingleton<IUsers, UsersRepository>()
             .AddEfCoreWriteModel()
             .AddEfCoreReadModel();
         return services;

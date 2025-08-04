@@ -6,7 +6,7 @@ using Shouldly;
 
 namespace MultiNinja.Backend.WebApi.IntegrationTests.Scenarios;
 
-public class AuthTests : IClassFixture<WebApiFactory>
+public sealed class AuthTests : IClassFixture<WebApiFactory>
 {
     private readonly WebApiFactory webApiFactory;
 

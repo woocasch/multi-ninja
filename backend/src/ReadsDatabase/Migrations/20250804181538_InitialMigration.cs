@@ -28,6 +28,19 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                     table.PrimaryKey("PK_Credentials", x => x.Id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                columns: table => new
+                {
+                    UserId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    DisplayName = table.Column<string>(type: "longtext", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.UserId);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
         }
 
         /// <inheritdoc />
@@ -35,6 +48,9 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Credentials");
+
+            migrationBuilder.DropTable(
+                name: "Users");
         }
     }
 }

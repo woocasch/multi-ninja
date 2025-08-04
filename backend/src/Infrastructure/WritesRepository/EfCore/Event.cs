@@ -1,6 +1,6 @@
 namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
-public class Event
+public sealed class Event
 {
     // public ulong Id { get; set; }
 

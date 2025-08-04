@@ -4,7 +4,7 @@ using TestStack.BDDfy;
 
 namespace MultiNinja.Backend.Domain.UnitTests.Users;
 
-public class UserCreatedTests
+public sealed class UserCreatedTests
 {
     private Guid streamId;
 

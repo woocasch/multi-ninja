@@ -4,7 +4,7 @@ using TestStack.BDDfy;
 
 namespace MultiNinja.Backend.Domain.UnitTests.Users;
 
-public class UserEntityTests
+public sealed class UserEntityTests
 {
     private Guid userId;
 
