@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using MySql.EntityFrameworkCore.Extensions;
 
 namespace MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 
@@ -38,10 +37,7 @@ public sealed class WriteContext : DbContext
             entity.Property(e => e.EventTime).IsRequired();
             entity.Property(e => e.Version).IsRequired();
             entity.Property(e => e.Position).IsRequired()
-                .ValueGeneratedOnAdd()
-                .UseMySQLAutoIncrementColumn("bigint unsigned");
-            entity
-                .HasAlternateKey(e => e.Position);
+                .ValueGeneratedOnAdd();
         });
 
         modelBuilder.Entity<ProcessorsProgress>(entity =>

@@ -59,7 +59,6 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.EventId);
-                    table.UniqueConstraint("AK_Events_Position", x => x.Position);
                     table.ForeignKey(
                         name: "FK_Events_Streams_StreamId",
                         column: x => x.StreamId,

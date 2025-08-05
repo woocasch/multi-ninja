@@ -11,7 +11,7 @@ using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 namespace MultiNinja.Backend.WritesDatabase.Migrations
 {
     [DbContext(typeof(WriteContext))]
-    [Migration("20250803211423_InitialMigration")]
+    [Migration("20250805210838_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -54,8 +54,6 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                         .HasColumnType("bigint unsigned");
 
                     b.HasKey("EventId");
-
-                    b.HasAlternateKey("Position");
 
                     b.HasIndex("StreamId");
 

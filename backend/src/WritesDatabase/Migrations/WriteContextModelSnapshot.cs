@@ -52,8 +52,6 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
 
                     b.HasKey("EventId");
 
-                    b.HasAlternateKey("Position");
-
                     b.HasIndex("StreamId");
 
                     b.ToTable("Events");
