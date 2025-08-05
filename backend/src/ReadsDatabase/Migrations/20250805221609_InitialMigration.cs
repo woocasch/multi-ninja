@@ -1,5 +1,4 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -18,9 +17,9 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                 name: "Credentials",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "char(36)", nullable: false),
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    UserName = table.Column<string>(type: "longtext", nullable: false)
+                    Id = table.Column<byte[]>(type: "binary(16)", nullable: false),
+                    UserId = table.Column<byte[]>(type: "binary(16)", nullable: false),
+                    UserName = table.Column<string>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -32,8 +31,8 @@ namespace MultiNinja.Backend.ReadsDatabase.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    UserId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    DisplayName = table.Column<string>(type: "longtext", nullable: false)
+                    UserId = table.Column<byte[]>(type: "binary(16)", nullable: false),
+                    DisplayName = table.Column<string>(type: "varchar(50)", nullable: false)
                 },
                 constraints: table =>
                 {
