@@ -1,3 +1,4 @@
+using System.Text;
 using MultiNinja.Backend.Application.Cryptography;
 using MultiNinja.Backend.Application.EventStreams;
 using MultiNinja.Backend.Application.ReadsRepository;
@@ -56,7 +57,8 @@ public sealed class VerifyCredentialsQueryHandler : QueryHandlerBase<VerifyCrede
             return null;
         }
 
-        var calculatedHash = await this.HashPassword(password, entity.PasswordSalt, cancellationToken);
+        var saltBytes = Convert.FromBase64String(entity.PasswordSalt);
+        var calculatedHash = await this.HashPassword(password, saltBytes, cancellationToken);
         if (calculatedHash != entity.PasswordHash)
         {
             return null;
@@ -65,9 +67,9 @@ public sealed class VerifyCredentialsQueryHandler : QueryHandlerBase<VerifyCrede
         return entity;
     }
 
-    private async Task<string> HashPassword(string password, string salt, CancellationToken cancellationToken)
+    private async Task<string> HashPassword(string password, byte[] salt, CancellationToken cancellationToken)
     {
-        var hash = await this.passwordsCryptography.GeneratePasswordHash(password, salt, cancellationToken);
-        return hash;
+        var hashBytes = await this.passwordsCryptography.GeneratePasswordHash(password, salt, cancellationToken);
+        return Convert.ToBase64String(hashBytes);
     }
 }

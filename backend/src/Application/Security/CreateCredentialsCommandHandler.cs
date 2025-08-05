@@ -48,8 +48,10 @@ public sealed class CreateCredentialsCommandHandler : CommandHandlerBase<CreateC
 
     private async Task<(string Salt, string Hash)> PreparePassword(string password, CancellationToken cancellationToken)
     {
-        var salt = await this.passwordsCryptography.GeneratePasswordSalt(cancellationToken);
-        var hash = await this.passwordsCryptography.GeneratePasswordHash(password, salt, cancellationToken);
-        return (salt, hash);
+        var saltBytes = await this.passwordsCryptography.GeneratePasswordSalt(cancellationToken);
+        var passwordBytes = await this.passwordsCryptography.GeneratePasswordHash(password, saltBytes, cancellationToken);
+        var salt = Convert.ToBase64String(saltBytes);
+        var passwordHash = Convert.ToBase64String(passwordBytes);
+        return (salt, passwordHash);
     }
 }
