@@ -32,9 +32,9 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                 name: "Streams",
                 columns: table => new
                 {
-                    StreamId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    StreamId = table.Column<byte[]>(type: "binary(16)", nullable: false),
                     EntityType = table.Column<string>(type: "longtext", nullable: false),
-                    EntityId = table.Column<Guid>(type: "char(36)", nullable: false)
+                    EntityId = table.Column<byte[]>(type: "binary(16)", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -46,8 +46,8 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                 name: "Events",
                 columns: table => new
                 {
-                    EventId = table.Column<Guid>(type: "char(36)", nullable: false),
-                    StreamId = table.Column<Guid>(type: "char(36)", nullable: false),
+                    EventId = table.Column<byte[]>(type: "binary(16)", nullable: false),
+                    StreamId = table.Column<byte[]>(type: "binary(16)", nullable: false),
                     EntityType = table.Column<string>(type: "longtext", nullable: false),
                     EventTime = table.Column<DateTime>(type: "datetime(6)", nullable: false),
                     TypeName = table.Column<string>(type: "longtext", nullable: false),
@@ -59,6 +59,7 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.EventId);
+                    table.UniqueConstraint("AK_Events_Position", x => x.Position);
                     table.ForeignKey(
                         name: "FK_Events_Streams_StreamId",
                         column: x => x.StreamId,

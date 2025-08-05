@@ -11,7 +11,7 @@ using MultiNinja.Backend.Infrastructure.WritesRepository.EfCore;
 namespace MultiNinja.Backend.WritesDatabase.Migrations
 {
     [DbContext(typeof(WriteContext))]
-    [Migration("20250805210838_InitialMigration")]
+    [Migration("20250805213700_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -24,9 +24,9 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
 
             modelBuilder.Entity("MultiNinja.Backend.Infrastructure.WritesRepository.EfCore.Event", b =>
                 {
-                    b.Property<Guid>("EventId")
+                    b.Property<byte[]>("EventId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("EntityType")
                         .IsRequired()
@@ -43,8 +43,9 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<Guid>("StreamId")
-                        .HasColumnType("char(36)");
+                    b.Property<byte[]>("StreamId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("TypeName")
                         .IsRequired()
@@ -54,6 +55,8 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
                         .HasColumnType("bigint unsigned");
 
                     b.HasKey("EventId");
+
+                    b.HasAlternateKey("Position");
 
                     b.HasIndex("StreamId");
 
@@ -75,12 +78,13 @@ namespace MultiNinja.Backend.WritesDatabase.Migrations
 
             modelBuilder.Entity("MultiNinja.Backend.Infrastructure.WritesRepository.EfCore.Stream", b =>
                 {
-                    b.Property<Guid>("StreamId")
+                    b.Property<byte[]>("StreamId")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("char(36)");
+                        .HasColumnType("binary(16)");
 
-                    b.Property<Guid>("EntityId")
-                        .HasColumnType("char(36)");
+                    b.Property<byte[]>("EntityId")
+                        .IsRequired()
+                        .HasColumnType("binary(16)");
 
                     b.Property<string>("EntityType")
                         .IsRequired()
