@@ -10,7 +10,7 @@ import DivisionComponent from './division/division';
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: App,
+    Component: App,  
   },
   {
     path: 'multiplication',
