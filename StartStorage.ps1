@@ -1,0 +1,1 @@
+docker compose --profile storage up -d

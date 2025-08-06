@@ -19,6 +19,9 @@ services:
       - local.multi-ninja.databases
     ports:
       - 10001:3306
+    profiles:
+      - storage
+      - full
 
   multi-ninja.backend.readmodel.local:
     container_name: multi-ninja.backend.readmodel.local
@@ -38,32 +41,39 @@ services:
       - local.multi-ninja.databases
     ports:
       - 10002:3306
+    profiles:
+      - storage
+      - full
 
-  # multi-ninja.backend.local:
-    # container_name: multi-ninja.backend.local
-    # hostname: multi-ninja.backend.local
-    # image: multi-ninja-backend:local
-    # restart: always
-    # environment:
-      # - ConnectionStrings__WritesDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
-      # - ConnectionStrings__ReadDatabase=Server=multi-ninja.backend.readmodel.local;Port=3306;Database=read_model;Uid=multi-ninja-reads;Pwd=multi-ninja-reads-password;
-    # ports:
-      # - 10003:8080
-    # networks:
-      # - local.multi-ninja.databases
-    # depends_on:
-      # - multi-ninja.backend.writemodel.local
-      # - multi-ninja.backend.readmodel.local
+  multi-ninja.backend.local:
+    container_name: multi-ninja.backend.local
+    hostname: multi-ninja.backend.local
+    image: multi-ninja-backend:local
+    restart: always
+    environment:
+      - ConnectionStrings__WritesDatabase=Server=multi-ninja.backend.writemodel.local;Port=3306;Database=write_model;Uid=multi-ninja-writes;Pwd=multi-ninja-writes-password;
+      - ConnectionStrings__ReadsDatabase=Server=multi-ninja.backend.readmodel.local;Port=3306;Database=read_model;Uid=multi-ninja-reads;Pwd=multi-ninja-reads-password;
+    ports:
+      - 10003:8080
+    networks:
+      - local.multi-ninja.databases
+    depends_on:
+      - multi-ninja.backend.writemodel.local
+      - multi-ninja.backend.readmodel.local
+    profiles:
+      - full
 
-  # multi-ninja.frontend.local:
-    # container_name: multi-ninja.frontend.local
-    # hostname: multi-ninja.frontend.local
-    # image: multi-ninja-frontend:local
-    # restart: always
-    # ports:
-      # - 10004:80
-    # depends_on:
-      # - multi-ninja.backend.local
+  multi-ninja.frontend.local:
+    container_name: multi-ninja.frontend.local
+    hostname: multi-ninja.frontend.local
+    image: multi-ninja-frontend:local
+    restart: always
+    ports:
+      - 10004:80
+    depends_on:
+      - multi-ninja.backend.local
+    profiles:
+      - full
 
   multi-ninja.backend.dbadmin.local:
     container_name: multi-ninja.backend.dbadmin.local
@@ -80,6 +90,9 @@ services:
       - local.multi-ninja.databases
     depends_on:
       - multi-ninja.backend.writemodel.local
+    profiles:
+      - storage
+      - full
 
 networks:
   local.multi-ninja.databases:
