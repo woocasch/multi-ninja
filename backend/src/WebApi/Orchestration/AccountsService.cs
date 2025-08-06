@@ -57,7 +57,7 @@ public sealed class AccountsService : IAccountsService
 
     public async Task<CreateTokenResponse?> CreateToken(CreateTokenRequest request, CancellationToken cancellationToken)
     {
-        var query = new VerifyCredentialsQuery(request.Email, request.Password);
+        var query = new VerifyCredentialsQuery(request.UserName, request.Password);
         var result = await this.mediator.Fetch(query, cancellationToken);
         if (result.Id is null)
         {

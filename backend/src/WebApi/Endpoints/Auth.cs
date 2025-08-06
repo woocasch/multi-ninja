@@ -24,7 +24,7 @@ public static class Auth
         IAccountsService accountsService,
         CancellationToken cancellationToken)
     {
-        var request = new CreateTokenRequest(input.Email, input.Password);
+        var request = new CreateTokenRequest(input.UserName, input.Password);
         var response = await accountsService.CreateToken(request, cancellationToken);
         if (response is null)
         {
