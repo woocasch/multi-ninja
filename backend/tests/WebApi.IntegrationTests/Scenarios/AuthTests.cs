@@ -56,7 +56,12 @@ public sealed class AuthTests : IClassFixture<WebApiFactory>
         var createTokenResponseContent = await createTokenResponse.Content.ReadAsStringAsync();
         var createTokenOutput = SerializationProvider.Deserialize<CreateTokenOutput>(createTokenResponseContent);
         createTokenOutput.ShouldNotBeNull();
-        createTokenOutput.Token.ShouldNotBeNullOrEmpty();
+        createTokenOutput.UserName.ShouldBe(createAccountInput.UserName);
+        createTokenOutput.DisplayName.ShouldBe(createAccountInput.DisplayName);
+        var authorizationHeaders = createTokenResponse.Headers.GetValues("Authorization").ToList();
+        authorizationHeaders.ShouldNotBeNull();
+        authorizationHeaders.ShouldHaveSingleItem();
+        authorizationHeaders[0].ShouldStartWith("Bearer");
     }
 
     [Fact]

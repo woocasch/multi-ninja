@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MultiNinja.Backend.Application.ReadsRepository;
 using MultiNinja.Backend.Application.ReadsRepository.Users;
 
@@ -21,5 +22,18 @@ public sealed class UsersRepository : IUsers
         };
         
         await this.readsContext.Users.AddAsync(payload, cancellationToken);
+    }
+
+    public async Task<UserData?> GetUserById(GetUserByIdParameters parameters, CancellationToken cancellationToken)
+    {
+        var user = await this.readsContext.Users
+            .Where(u => u.UserId == parameters.Id)
+            .FirstOrDefaultAsync(cancellationToken);
+        if (user is null)
+        {
+            return null;
+        }
+        
+        return new(user.UserId, user.DisplayName);
     }
 }

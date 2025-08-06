@@ -8,7 +8,8 @@ public static class ServiceCollectionExtensions
         this IServiceCollection services)
     {
         services
-            .RegisterCommandHandler<CreateUserCommand, CreateUserCommandHandler>();
+            .RegisterCommandHandler<CreateUserCommand, CreateUserCommandHandler>()
+            .RegisterQueryHandler<GetUserByUserNameQuery, GetUserResult, GetUserByUserNameQueryHandler>();
         return services;
     }
 }

@@ -5,4 +5,6 @@ namespace MultiNinja.Backend.Application.ReadsRepository;
 public interface IUsers
 {
     Task CreateUser(CreateUserParameters parameters, CancellationToken cancellationToken);
+    
+    Task<UserData?> GetUserById(GetUserByIdParameters parameters, CancellationToken cancellationToken);
 }

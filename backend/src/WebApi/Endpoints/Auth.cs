@@ -22,6 +22,7 @@ public static class Auth
     public static async Task<IResult> CreateToken(
         [FromBody] CreateTokenInput input,
         IAccountsService accountsService,
+        HttpContext httpContext,
         CancellationToken cancellationToken)
     {
         var request = new CreateTokenRequest(input.UserName, input.Password);
@@ -31,6 +32,7 @@ public static class Auth
             return Results.BadRequest();
         }
 
-        return Results.Ok(new CreateTokenOutput(response.Token));
+        httpContext.Response.Headers.Authorization = $"Bearer {response.Token}";
+        return Results.Ok(new CreateTokenOutput(response.UserName, response.DisplayName));
     }
 }

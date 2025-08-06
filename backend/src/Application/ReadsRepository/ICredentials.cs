@@ -6,5 +6,5 @@ public interface ICredentials
 {
     Task<bool> Create(CreateCredentialsParameters parameters, CancellationToken cancellationToken);
     
-    Task<CredentialsRecord?> SearchByUserName(SearchByEmailParameters parameters, CancellationToken cancellationToken);
+    Task<CredentialsRecord?> SearchByUserName(SearchByUserNameParameters parameters, CancellationToken cancellationToken);
 }

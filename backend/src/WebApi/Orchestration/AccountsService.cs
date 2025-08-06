@@ -64,6 +64,13 @@ public sealed class AccountsService : IAccountsService
             return null;
         }
 
-        return new("gpdsamgodsapmsogps");
+        var getUserQuery = new GetUserByUserNameQuery(request.UserName);
+        var getUserResult = await this.mediator.Fetch(getUserQuery, cancellationToken);
+        if (getUserResult.User is null)
+        {
+            return null;
+        }
+
+        return new(request.UserName, getUserResult.User.DisplayName, "TOKEN_WILL_BE_GENERATED_LATER");
     }
 }

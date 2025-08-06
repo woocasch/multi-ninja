@@ -26,7 +26,7 @@ public sealed class CredentialsRepository : ICredentials
         return true;
     }
 
-    public async Task<CredentialsRecord?> SearchByUserName(SearchByEmailParameters parameters, CancellationToken cancellationToken)
+    public async Task<CredentialsRecord?> SearchByUserName(SearchByUserNameParameters parameters, CancellationToken cancellationToken)
     {
         var found = await this.readsContext.Credentials
             .Where(c => c.UserName == parameters.UserName)
@@ -41,7 +41,7 @@ public sealed class CredentialsRepository : ICredentials
             throw new InvalidOperationException("Expected at most single record");
         }
 
-        var result = new CredentialsRecord(found[0].Id, found[0].UserName);
+        var result = new CredentialsRecord(found[0].Id, found[0].UserId, found[0].UserName);
         return result;
     }
 }
