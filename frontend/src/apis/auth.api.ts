@@ -1,27 +1,18 @@
 import axios from 'axios';
-
-export interface AuthenticateResponse {
-    userName?: string;
-    displayName?: string;
-    token?: string;
-}
-
-interface CreateTokenOutput {
-    userName: string;
-    displayName: string;
-}
+import * as Contracts from './auth.contracts';
+import * as Payloads from './auth.payloads';
 
 export class AuthApi {
-    public async Authenticate(userName: string, password: string): Promise<AuthenticateResponse> {
+    public async Authenticate(userName: string, password: string): Promise<Contracts.AuthenticateResponse> {
         const body = {
             userName: userName,
             password: password
         };
-        const response = await axios.post<CreateTokenOutput>(
+        const response = await axios.post<Payloads.CreateTokenOutput>(
             'http://localhost:5078/api/auth/createToken',
             body);
-        console.log(response);
-        if (response.status != 200){
+
+        if (response.status != 200) {
             return {
                 token: '',
                 userName: '',

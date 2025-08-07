@@ -1,12 +1,13 @@
-export interface CheckCredentialsRequest {
+export interface SetTokenDataRequest {
+    userId?: string;
+    userName?: string;
+    firstName?: string;
+    lastName?: string;
 }
 
-export interface CheckCredentialsResponse {
-    isAuthenticated: boolean;
-    displayName?: string;
-    userName?: string;
+export interface SetTokenDataResponse {
 }
 
 export interface Service {
-    CheckCredentials(request: CheckCredentialsRequest): Promise<CheckCredentialsResponse>;
+    SetTokenData(request: SetTokenDataRequest): SetTokenDataResponse;
 }

@@ -6,7 +6,8 @@ public static class AuthExtensions
         this WebApplication app)
     {
         app
-            .MapPost("/api/auth", Auth.CreateAccount);
+            .MapPost("/api/auth/ensureAccountCreated", Auth.EnsureAccountCreated)
+            .RequireAuthorization();
 
         app
             .MapPost("/api/auth/createToken", Auth.CreateToken);

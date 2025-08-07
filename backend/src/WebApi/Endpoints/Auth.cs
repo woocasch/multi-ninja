@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
 using MultiNinja.Backend.WebApi.Endpoints.AuthModels;
 using MultiNinja.Backend.WebApi.Orchestration;
@@ -7,16 +8,17 @@ namespace MultiNinja.Backend.WebApi.Endpoints;
 
 public static class Auth
 {
-    public static async Task<IResult> CreateAccount(
-        [FromBody]CreateAccountInput input,
-        IAccountsService authenticationController,
+    public static async Task<IResult> EnsureAccountCreated(
+        ClaimsPrincipal claimsPrincipal,
         CancellationToken cancellationToken)
     {
-        var request = new CreateAccountRequest(input.UserName, input.Password, input.DisplayName);
-        var response = await authenticationController.CreateAccount(request, cancellationToken);
-        return response.Match(
-            r => Results.Accepted($"/api/auth/{r.Id}", new CreateAccountOutput(r.Id)),
-            _ => Results.InternalServerError());
+        await Task.Yield();
+        return Results.Ok(claimsPrincipal.Claims.ToDictionary(c => c.Type, c => c.Value));
+        // var request = new CreateAccountRequest(string.Empty, string.Empty, string.Empty);
+        // var response = await authenticationController.CreateAccount(request, cancellationToken);
+        // return response.Match(
+        //     r => Results.Accepted($"/api/auth/{r.Id}", new CreateAccountOutput(r.Id)),
+        //     _ => Results.InternalServerError());
     }
 
     public static async Task<IResult> CreateToken(

@@ -1,25 +1,11 @@
-import { AuthApi } from './auth.api';
 import * as Contract from './auth.contract';
 
 export class ServiceImplementation implements Contract.Service {
-    private readonly authApi: AuthApi = new AuthApi();
-
-    async CheckCredentials(_: Contract.CheckCredentialsRequest): Promise<Contract.CheckCredentialsResponse> {
-        const response = await this.authApi.Authenticate('woocasch', 'secret-password');
-        if (!response.token) {
-            return {
-                isAuthenticated: false,
-                userName: '',
-                displayName: '',
-            };
-        }
-
-        // SET TOKEN AS DEFAULT AUTHENTICATION AUTOMATICALLY
-        return {
-            isAuthenticated: true,
-            userName: response.userName,
-            displayName: response.displayName
-        };
+    SetTokenData(request: Contract.SetTokenDataRequest): Contract.SetTokenDataResponse {
+        localStorage.setItem('TOKENDATA_USERID', request.userId ?? '---');
+        localStorage.setItem('TOKENDATA_USERNAME', request.userName ?? '---');
+        localStorage.setItem('TOKENDATA_DISPLAYNAME', `${request.firstName ?? '---'} ${request.lastName ?? '---'}`);
+        return {};
     }
 }
 
