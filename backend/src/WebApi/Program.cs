@@ -29,6 +29,7 @@ builder.Services
     });
 
 builder.Services.AddOpenApi();
+builder.Services.AddCors();
 
 var app = builder.Build();
 
@@ -37,6 +38,13 @@ app
     .MapOpenApi();
 app
     .MapScalarApiReference();
+
+app.UseCors(options =>
+    options
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .SetIsOriginAllowed(_ => true)
+        .AllowCredentials());
 
 app.Run();
 

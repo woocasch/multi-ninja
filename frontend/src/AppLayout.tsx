@@ -1,9 +1,12 @@
-import { Outlet } from "react-router";
+import { NavLink, Outlet } from "react-router";
+import UserDisplayComponent from "./auth/user-display";
+import './AppLayout.scss';
 
 export default function AppLayoutComponent() {
     return(  <div className="root_container">
     <div className="menu">
-      <a href="/">Start</a>
+      <NavLink to="/">Start</NavLink>
+      <UserDisplayComponent />
     </div>
         <Outlet />
     <div className="footer">

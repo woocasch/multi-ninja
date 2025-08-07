@@ -24,6 +24,10 @@ const router = createBrowserRouter([
         path: 'division',
         Component: DivisionComponent,
       },
+      {
+        path: '*',
+        Component: App,
+      },
     ]
   }]);
 
